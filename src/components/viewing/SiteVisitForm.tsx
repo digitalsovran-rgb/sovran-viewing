@@ -583,8 +583,29 @@ export default function SiteVisitForm() {
     return false;
   };
 
-  const goNext = () => {
+  const goNext = async () => {
     if (step === 7) {
+      try {
+        const response = await fetch('/api/ghl-submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            firstName: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            extensionType: selectedProjectType,
+            services: selectedServices,
+            budget: selectedBudget,
+            timing: selectedStartTiming,
+            postcode,
+          }),
+        });
+        if (!response.ok) {
+          console.error('GHL submission failed with status', response.status);
+        }
+      } catch (err) {
+        console.error('GHL submission request failed:', err);
+      }
       setSubmitted(true);
       if (typeof window !== 'undefined' && (window as any).dataLayer) {
         (window as any).dataLayer.push({
