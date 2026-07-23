@@ -27,7 +27,6 @@ export default function ViewingHero() {
       `}</style>
       <section
         id="viewing-hero"
-        data-theme="dark"
         style={{
           position: 'relative',
           height: '100vh',
@@ -89,6 +88,21 @@ export default function ViewingHero() {
               maxWidth: '1180px',
             }}
           >
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              style={{
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: 500,
+                fontSize: '14px',
+                color: '#c9a96e',
+                marginBottom: '14px',
+              }}
+            >
+              01
+            </motion.p>
+
             <motion.p
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}

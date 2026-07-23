@@ -10,20 +10,50 @@ const stats = [
   { target: 1000, format: (n: number) => `${Math.round(n).toLocaleString('en-GB')}+`, label: 'Projects Completed' },
 ];
 
-const columns = [
+const cards = [
   {
-    text: "Sovran brings architecture, planning and construction together as one team, working across London and the Home Counties. Every specialist involved in a project stays on it from beginning to end.",
-    icon: '/media/icon1.png',
+    title: 'Architecture & Design',
+    body: "We turn a brief into a workable design, drawings, 3D visuals and planning submissions shaped around how you actually want to live. Every layout decision is tested against light, flow and function before it reaches site.",
   },
   {
-    text: "From a single extension to a complete transformation, our architects, designers and construction specialists carry a project from first sketch to final handover, across residential, commercial and hospitality spaces.",
-    icon: '/media/icon2.png',
+    title: 'Construction & Delivery',
+    body: "The same team that designed the project builds it. Skilled trades, dedicated site management, and a single point of accountability from foundation to final finish.",
   },
   {
-    text: "The home you walk through on a Sovran site visit reflects the standard behind every project we deliver, unstaged and unedited for a photograph.",
-    icon: '/media/icon3.png',
+    title: 'Guidance & Advice',
+    body: "Before you commit to anything, we assess what's realistic for your site, your budget and your timeline, and tell you honestly what it will take to get there.",
   },
 ];
+
+function SectionTag({ number, label }: { number: string; label: string }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}>
+      <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500, fontSize: '14px', color: '#C9A96E' }}>
+        {number}
+      </span>
+      <span
+        style={{
+          fontSize: '12px',
+          fontWeight: 600,
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase',
+          color: '#C9A96E',
+        }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+}
+
+function ArrowIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#0a0a0a" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="3" y1="10" x2="16" y2="10" />
+      <polyline points="10,4 16,10 10,16" />
+    </svg>
+  );
+}
 
 function CountUpStat({
   target,
@@ -53,30 +83,50 @@ function CountUpStat({
 
 export default function ViewingAbout() {
   const ref = useRef<HTMLElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '0px 0px -120px 0px', amount: 0.3 });
+  const isInView = useInView(ref, { once: true, margin: '0px 0px -120px 0px', amount: 0.2 });
   const statsRef = useRef<HTMLDivElement>(null);
   const isStatsInView = useInView(statsRef, { once: true, margin: '0px 0px -80px 0px', amount: 0.4 });
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const [activeCard, setActiveCard] = useState(0);
-
-  useEffect(() => {
-    const handler = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handler);
-    return () => window.removeEventListener('resize', handler);
-  }, []);
-
-  const handleCarouselScroll = () => {
-    const el = carouselRef.current;
-    if (!el || !el.firstElementChild) return;
-    const cardWidth = (el.firstElementChild as HTMLElement).offsetWidth + 16;
-    const idx = Math.round(el.scrollLeft / cardWidth);
-    setActiveCard(Math.max(0, Math.min(idx, columns.length - 1)));
-  };
 
   return (
     <>
       <style>{`
+        .partner-cards {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+        .partner-card {
+          position: relative;
+          background-color: #ede9e3;
+          border: 1px solid rgba(10,10,10,0.08);
+          padding: 36px 32px 64px;
+          min-height: 280px;
+        }
+        .partner-card-tag {
+          font-size: 13px;
+          font-weight: 300;
+          letter-spacing: 0.08em;
+          color: #C9A96E;
+        }
+        .partner-card-title {
+          font-size: 20px;
+          font-weight: 700;
+          color: #0a0a0a;
+          letter-spacing: -0.005em;
+          margin-top: 14px;
+        }
+        .partner-card-body {
+          font-size: 14px;
+          font-weight: 400;
+          color: rgba(10,10,10,0.62);
+          line-height: 1.65;
+          margin-top: 14px;
+        }
+        .partner-card-arrow {
+          position: absolute;
+          right: 28px;
+          bottom: 28px;
+        }
         .about-stats {
           display: flex;
         }
@@ -88,92 +138,11 @@ export default function ViewingAbout() {
         .about-stat + .about-stat {
           border-left: 1px solid rgba(10,10,10,0.12);
         }
-        .about-columns {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 40px;
-          text-align: left;
-        }
-        .about-column {
-          border-top: 2px solid #C9A96E;
-          padding-top: 24px;
-        }
-        .about-column p {
-          font-size: 15px;
-          font-weight: 400;
-          color: rgba(10,10,10,0.65);
-          line-height: 1.75;
-          letter-spacing: normal;
-        }
-        .about-column-icon {
-          display: block;
-          width: 160px;
-          max-width: 55%;
-          height: auto;
-          margin: 28px auto 0;
-        }
-        .about-carousel-icon {
-          display: block;
-          width: 130px;
-          max-width: 50%;
-          height: auto;
-          margin: 24px auto 0;
-        }
-        .about-carousel {
-          display: flex;
-          overflow-x: auto;
-          scroll-snap-type: x mandatory;
-          -webkit-overflow-scrolling: touch;
-          gap: 16px;
-          scrollbar-width: none;
-        }
-        .about-carousel::-webkit-scrollbar {
-          display: none;
-        }
-        .about-carousel-card {
-          flex: 0 0 82%;
-          scroll-snap-align: start;
-          background-color: #ffffff;
-          border: 1px solid rgba(10,10,10,0.08);
-          border-radius: 10px;
-          padding: 28px 24px;
-          box-shadow: 0 6px 20px rgba(10,10,10,0.06);
-        }
-        .about-carousel-number {
-          display: block;
-          font-size: 12px;
-          font-weight: 700;
-          letter-spacing: 0.12em;
-          color: #C9A96E;
-          margin-bottom: 14px;
-        }
-        .about-carousel-card p {
-          font-size: 15px;
-          font-weight: 400;
-          color: rgba(10,10,10,0.65);
-          line-height: 1.75;
-          letter-spacing: normal;
-          text-align: left;
-        }
-        .about-carousel-dots {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          margin-top: 20px;
-        }
-        .about-carousel-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background-color: rgba(10,10,10,0.2);
-          transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-        .about-carousel-dot.active {
-          background-color: #C9A96E;
-          transform: scale(1.5);
-        }
         @media (max-width: 768px) {
+          .partner-cards {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
           .about-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -190,32 +159,30 @@ export default function ViewingAbout() {
           .about-stat:nth-child(-n+2) {
             border-bottom: 1px solid rgba(10,10,10,0.12);
           }
-          .about-columns {
-            grid-template-columns: 1fr;
-            gap: 32px;
-          }
         }
       `}</style>
-      <section ref={ref} data-theme="light" style={{ backgroundColor: '#F5F0EB', padding: '110px 0' }}>
-        <div className="inner" style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto' }}>
+      <section ref={ref} style={{ backgroundColor: '#F5F0EB', padding: '110px 0' }}>
+        <div className="inner">
+          <SectionTag number="04" label="The Partner" />
+
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
             style={{
-              fontSize: 'clamp(34px, 4.2vw, 56px)',
+              fontSize: 'clamp(32px, 3.8vw, 52px)',
               fontWeight: 900,
               color: '#0a0a0a',
               letterSpacing: '-0.01em',
-              lineHeight: 1.1,
+              lineHeight: 1.08,
             }}
           >
-            Designed And Built By Sovran.
+            Delivered By Sovran
           </motion.h2>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
             transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
             style={{
               fontSize: '12px',
@@ -223,88 +190,68 @@ export default function ViewingAbout() {
               color: '#C9A96E',
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
-              marginTop: '16px',
+              marginTop: '18px',
             }}
           >
             Your Design And Build Partner
           </motion.p>
-        </div>
 
-        {isMobile ? (
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-            style={{ marginTop: '48px' }}
-          >
-            <div className="inner about-carousel" ref={carouselRef} onScroll={handleCarouselScroll}>
-              {columns.map((col, i) => (
-                <div key={i} className="about-carousel-card">
-                  <span className="about-carousel-number">{String(i + 1).padStart(2, '0')}</span>
-                  <p>{col.text}</p>
-                  <img src={col.icon} alt="" className="about-carousel-icon" />
-                </div>
-              ))}
-            </div>
-            <div className="about-carousel-dots">
-              {columns.map((_, i) => (
-                <span key={i} className={`about-carousel-dot${i === activeCard ? ' active' : ''}`} />
-              ))}
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-            className="inner about-columns"
+            className="partner-cards"
             style={{ marginTop: '56px' }}
           >
-            {columns.map((col, i) => (
-              <div key={i} className="about-column">
-                <p>{col.text}</p>
-                <img src={col.icon} alt="" className="about-column-icon" />
+            {cards.map((card, i) => (
+              <div key={card.title} className="partner-card">
+                <span className="partner-card-tag">/{String(i + 1).padStart(2, '0')}</span>
+                <h3 className="partner-card-title">{card.title}</h3>
+                <p className="partner-card-body">{card.body}</p>
+                <span className="partner-card-arrow">
+                  <ArrowIcon />
+                </span>
               </div>
             ))}
           </motion.div>
-        )}
 
-        <motion.div
-          ref={statsRef}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
-          className="inner about-stats"
-          style={{ marginTop: '72px' }}
-        >
-          {stats.map((stat) => (
-            <div key={stat.label} className="about-stat">
-              <div
-                style={{
-                  fontSize: 'clamp(26px, 2.8vw, 36px)',
-                  fontWeight: 900,
-                  color: '#0a0a0a',
-                  letterSpacing: '-0.005em',
-                  lineHeight: 1,
-                  marginBottom: '10px',
-                }}
-              >
-                <CountUpStat target={stat.target} format={stat.format} trigger={isStatsInView} />
+          <motion.div
+            ref={statsRef}
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
+            className="about-stats"
+            style={{ marginTop: '72px' }}
+          >
+            {stats.map((stat) => (
+              <div key={stat.label} className="about-stat">
+                <div
+                  style={{
+                    fontSize: 'clamp(26px, 2.8vw, 36px)',
+                    fontWeight: 900,
+                    color: '#0a0a0a',
+                    letterSpacing: '-0.005em',
+                    lineHeight: 1,
+                    marginBottom: '10px',
+                  }}
+                >
+                  <CountUpStat target={stat.target} format={stat.format} trigger={isStatsInView} />
+                </div>
+                <div
+                  style={{
+                    fontSize: '11px',
+                    fontWeight: 500,
+                    color: 'rgba(10,10,10,0.55)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                  }}
+                >
+                  {stat.label}
+                </div>
               </div>
-              <div
-                style={{
-                  fontSize: '11px',
-                  fontWeight: 500,
-                  color: 'rgba(10,10,10,0.55)',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.12em',
-                }}
-              >
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </motion.div>
+            ))}
+          </motion.div>
+        </div>
       </section>
     </>
   );
