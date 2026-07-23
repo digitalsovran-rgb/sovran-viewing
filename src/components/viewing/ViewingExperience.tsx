@@ -78,6 +78,14 @@ function PathIcon() {
   );
 }
 
+function CheckIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#C9A96E" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="3,8.5 6.5,12 13,4" />
+    </svg>
+  );
+}
+
 const discoverItems = [
   { Icon: LayoutIcon, title: 'Layout & Flow' },
   { Icon: SunIcon, title: 'Space & Natural Light' },
@@ -85,6 +93,12 @@ const discoverItems = [
   { Icon: HouseIcon, title: 'Everyday Comfort' },
   { Icon: TrendIcon, title: 'Long-Term Value' },
   { Icon: PathIcon, title: 'The Full Journey' },
+];
+
+const discoverBenefits = [
+  "Real decisions and materials, explained in person, not through a brochure",
+  "The chance to ask a specialist anything, on the spot",
+  "A clear sense of what's achievable for your own home, before you commit to anything",
 ];
 
 export default function ViewingExperience() {
@@ -140,6 +154,32 @@ export default function ViewingExperience() {
           line-height: 1.75;
           letter-spacing: normal;
         }
+        .discover-benefits-list {
+          list-style: none;
+          margin: 28px auto 0;
+          padding: 0;
+          max-width: 560px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          text-align: left;
+        }
+        .discover-benefits-list li {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+        }
+        .discover-benefits-list li svg {
+          flex-shrink: 0;
+          margin-top: 4px;
+        }
+        .discover-benefits-list li span {
+          font-size: 15px;
+          font-weight: 400;
+          color: rgba(10,10,10,0.7);
+          line-height: 1.65;
+          letter-spacing: normal;
+        }
         @media (max-width: 768px) {
           .discover-icon-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
           .discover-card { padding: 28px 14px; }
@@ -190,8 +230,16 @@ export default function ViewingExperience() {
 
         <div className="inner" style={{ marginTop: '40px', textAlign: 'center' }}>
           <p className="discover-feature-caption">
-            Guided by a Sovran Design &amp; Build Specialist, you&apos;ll walk a completed home and see the real decisions, materials, and craftsmanship behind it, not a rendering of the finished result.
+            Guided by a Sovran Design &amp; Build Specialist, you&apos;ll walk a completed home and see exactly how it was made to work.
           </p>
+          <ul className="discover-benefits-list">
+            {discoverBenefits.map((text) => (
+              <li key={text}>
+                <CheckIcon />
+                <span>{text}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
     </>

@@ -11,9 +11,18 @@ const stats = [
 ];
 
 const columns = [
-  "Sovran brings architecture, planning and construction together as one team, working across London and the Home Counties. Every specialist involved in a project stays on it from beginning to end.",
-  "From a single extension to a complete transformation, our architects, designers and construction specialists carry a project from first sketch to final handover, across residential, commercial and hospitality spaces.",
-  "The home you walk through on a Sovran site visit reflects the standard behind every project we deliver, unstaged and unedited for a photograph.",
+  {
+    text: "Sovran brings architecture, planning and construction together as one team, working across London and the Home Counties. Every specialist involved in a project stays on it from beginning to end.",
+    icon: '/media/icon1.png',
+  },
+  {
+    text: "From a single extension to a complete transformation, our architects, designers and construction specialists carry a project from first sketch to final handover, across residential, commercial and hospitality spaces.",
+    icon: '/media/icon2.png',
+  },
+  {
+    text: "The home you walk through on a Sovran site visit reflects the standard behind every project we deliver, unstaged and unedited for a photograph.",
+    icon: '/media/icon3.png',
+  },
 ];
 
 function CountUpStat({
@@ -95,6 +104,18 @@ export default function ViewingAbout() {
           color: rgba(10,10,10,0.65);
           line-height: 1.75;
           letter-spacing: normal;
+        }
+        .about-column-icon {
+          display: block;
+          width: 44px;
+          height: auto;
+          margin: 22px auto 0;
+        }
+        .about-carousel-icon {
+          display: block;
+          width: 40px;
+          height: auto;
+          margin: 20px auto 0;
         }
         .about-cta-btn {
           display: inline-block;
@@ -233,10 +254,11 @@ export default function ViewingAbout() {
             style={{ marginTop: '48px' }}
           >
             <div className="inner about-carousel" ref={carouselRef} onScroll={handleCarouselScroll}>
-              {columns.map((text, i) => (
+              {columns.map((col, i) => (
                 <div key={i} className="about-carousel-card">
                   <span className="about-carousel-number">{String(i + 1).padStart(2, '0')}</span>
-                  <p>{text}</p>
+                  <p>{col.text}</p>
+                  <img src={col.icon} alt="" className="about-carousel-icon" />
                 </div>
               ))}
             </div>
@@ -254,9 +276,10 @@ export default function ViewingAbout() {
             className="inner about-columns"
             style={{ marginTop: '56px' }}
           >
-            {columns.map((text, i) => (
+            {columns.map((col, i) => (
               <div key={i} className="about-column">
-                <p>{text}</p>
+                <p>{col.text}</p>
+                <img src={col.icon} alt="" className="about-column-icon" />
               </div>
             ))}
           </motion.div>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 const FEATURE_ICON_PROPS = {
@@ -40,7 +40,7 @@ function MagnifyIcon() {
   );
 }
 
-function NoPressureIcon() {
+function AccountabilityIcon() {
   return (
     <svg {...FEATURE_ICON_PROPS}>
       <circle cx="14" cy="14" r="10" />
@@ -53,19 +53,12 @@ const features = [
   { Icon: GuideIcon, label: 'A Specialist By Your Side' },
   { Icon: AskIcon, label: 'Ask Anything, Anytime' },
   { Icon: MagnifyIcon, label: 'See Real Materials Up Close' },
-  { Icon: NoPressureIcon, label: 'No Pressure, No Sales Pitch' },
+  { Icon: AccountabilityIcon, label: 'Full Accountability, Start To Finish' },
 ];
 
 export default function ViewingSpecialist() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: '0px 0px -120px 0px', amount: 0.2 });
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
-
-  useEffect(() => {
-    const handler = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handler);
-    return () => window.removeEventListener('resize', handler);
-  }, []);
 
   return (
     <>
@@ -119,10 +112,10 @@ export default function ViewingSpecialist() {
         ref={ref}
         style={{ backgroundColor: '#0a0a0a' }}
       >
-        <div className="specialist-row" style={{ display: 'flex', minHeight: '640px' }}>
+        <div className="specialist-row" style={{ display: 'flex', flexDirection: 'row-reverse', minHeight: '640px' }}>
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: 50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
             className="specialist-image-col"
             style={{
@@ -134,7 +127,7 @@ export default function ViewingSpecialist() {
             }}
           >
             <img
-              src={isMobile ? '/media/drawhmob.png?v=2' : '/media/drawh.png'}
+              src="/media/drawh.png"
               alt="Architectural line drawing of a Sovran home"
               style={{
                 maxWidth: '100%',
@@ -147,8 +140,8 @@ export default function ViewingSpecialist() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: -50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
             className="specialist-text-col"
             style={{
