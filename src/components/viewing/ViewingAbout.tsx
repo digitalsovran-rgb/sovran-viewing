@@ -22,7 +22,7 @@ const cards = [
     body: "The same team that designed the project builds it. Skilled trades, dedicated site management, and a single point of accountability from foundation to final finish.",
   },
   {
-    icon: '/media/icon3.png',
+    icon: '/media/icon3.png?v=2',
     title: 'Guidance & Advice',
     body: "Before you commit to anything, we assess what's realistic for your site, your budget and your timeline, and tell you honestly what it will take to get there.",
   },
@@ -92,9 +92,9 @@ export default function ViewingAbout() {
         }
         .partner-card-icon {
           display: block;
-          width: 92px;
+          width: 112px;
           height: auto;
-          margin-top: 20px;
+          margin: 20px auto 0;
         }
         .partner-card-title {
           font-size: 20px;
@@ -191,7 +191,7 @@ export default function ViewingAbout() {
           >
             {cards.map((card, i) => (
               <div key={card.title} className="partner-card">
-                <span className="partner-card-tag">/{String(i + 1).padStart(2, '0')}</span>
+                <span className="partner-card-tag">{String(i + 1).padStart(2, '0')}</span>
                 <img src={card.icon} alt="" className="partner-card-icon" />
                 <h3 className="partner-card-title">{card.title}</h3>
                 <p className="partner-card-body">{card.body}</p>

@@ -12,30 +12,53 @@ function StickyCTABar() {
   const barRef = useRef<HTMLButtonElement>(null);
   const [hovered, setHovered] = useState(false);
   const [heroPast, setHeroPast] = useState(false);
-  const [formOrFooterVisible, setFormOrFooterVisible] = useState(false);
+  const [pastFormTop, setPastFormTop] = useState(false);
   const [theme, setTheme] = useState<SectionTheme>('dark');
 
-  // Hero visibility — the bar is allowed to appear once the hero has scrolled out of view.
+  // Visibility — a single scroll-position check against two fixed document-space boundaries
+  // (the hero's bottom edge and the form's top edge), recomputed fresh on every scroll rather
+  // than relying on independent per-section IntersectionObserver entries. That per-section
+  // approach was the source of the flicker/reappear bug: multiple observers (form, footer)
+  // could independently toggle visibility while scrolling within either section.
   useEffect(() => {
-    const hero = document.getElementById('viewing-hero');
-    if (!hero) return;
-    const o = new IntersectionObserver(([e]) => setHeroPast(!e.isIntersecting), { threshold: 0 });
-    o.observe(hero);
-    return () => o.disconnect();
-  }, []);
+    let ticking = false;
 
-  // Form/footer visibility — the bar is fully unmounted once either comes into view.
-  useEffect(() => {
-    const form = document.getElementById('viewing-form');
-    const footer = document.querySelector<HTMLElement>('footer');
-    const targets = [form, footer].filter((el): el is HTMLElement => el !== null);
-    if (targets.length === 0) return;
-    const o = new IntersectionObserver(
-      (entries) => setFormOrFooterVisible(entries.some((e) => e.isIntersecting)),
-      { threshold: 0 }
-    );
-    targets.forEach((t) => o.observe(t));
-    return () => o.disconnect();
+    const update = () => {
+      ticking = false;
+      const hero = document.getElementById('viewing-hero');
+      const form = document.getElementById('viewing-form');
+      if (!hero || !form) return;
+
+      const heroBottom = hero.getBoundingClientRect().bottom + window.scrollY;
+      const formTop = form.getBoundingClientRect().top + window.scrollY;
+      const viewportTop = window.scrollY;
+      const viewportBottom = window.scrollY + window.innerHeight;
+
+      setHeroPast(viewportTop >= heroBottom);
+      setPastFormTop(viewportBottom >= formTop);
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+
+    // Section boundaries shift as images finish loading (no scroll event fires for that),
+    // so also recompute whenever the page's rendered height changes.
+    const resizeObserver = new ResizeObserver(onScroll);
+    resizeObserver.observe(document.body);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      resizeObserver.disconnect();
+    };
   }, []);
 
   // Color adaptation — an IntersectionObserver whose root is shrunk down to just the thin
@@ -95,7 +118,7 @@ function StickyCTABar() {
     };
   }, []);
 
-  if (formOrFooterVisible) return null;
+  if (pastFormTop) return null;
 
   const isOverDark = theme === 'dark';
   const bg = isOverDark ? '#ffffff' : '#0a0a0a';
@@ -118,8 +141,8 @@ function StickyCTABar() {
         bottom: 0,
         width: '100%',
         zIndex: 100,
-        backgroundColor: hovered ? '#c9a96e' : bg,
-        color: hovered ? '#0a0a0a' : color,
+        backgroundColor: hovered ? color : bg,
+        color: hovered ? bg : color,
         border: 'none',
         borderTop: '1px solid rgba(128,128,128,0.15)',
         padding: '20px 24px',

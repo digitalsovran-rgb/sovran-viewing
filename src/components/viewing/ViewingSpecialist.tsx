@@ -144,7 +144,7 @@ export default function ViewingSpecialist() {
               </div>
             ) : (
               <img
-                src="/media/planpc.png"
+                src="/media/planpc.png?v=2"
                 alt="Architectural plan drawing"
                 style={{
                   position: 'absolute',
