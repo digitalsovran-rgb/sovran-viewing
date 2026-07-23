@@ -12,14 +12,17 @@ const stats = [
 
 const cards = [
   {
+    icon: '/media/icon1.png',
     title: 'Architecture & Design',
     body: "We turn a brief into a workable design, drawings, 3D visuals and planning submissions shaped around how you actually want to live. Every layout decision is tested against light, flow and function before it reaches site.",
   },
   {
+    icon: '/media/icon2.png',
     title: 'Construction & Delivery',
     body: "The same team that designed the project builds it. Skilled trades, dedicated site management, and a single point of accountability from foundation to final finish.",
   },
   {
+    icon: '/media/icon3.png',
     title: 'Guidance & Advice',
     body: "Before you commit to anything, we assess what's realistic for your site, your budget and your timeline, and tell you honestly what it will take to get there.",
   },
@@ -79,7 +82,7 @@ export default function ViewingAbout() {
           background-color: #ede9e3;
           border: 1px solid rgba(10,10,10,0.08);
           padding: 36px 32px 64px;
-          min-height: 280px;
+          min-height: 340px;
         }
         .partner-card-tag {
           font-size: 13px;
@@ -87,12 +90,18 @@ export default function ViewingAbout() {
           letter-spacing: 0.08em;
           color: #C9A96E;
         }
+        .partner-card-icon {
+          display: block;
+          width: 92px;
+          height: auto;
+          margin-top: 20px;
+        }
         .partner-card-title {
           font-size: 20px;
           font-weight: 700;
           color: #0a0a0a;
           letter-spacing: -0.005em;
-          margin-top: 14px;
+          margin-top: 18px;
         }
         .partner-card-body {
           font-size: 14px;
@@ -183,6 +192,7 @@ export default function ViewingAbout() {
             {cards.map((card, i) => (
               <div key={card.title} className="partner-card">
                 <span className="partner-card-tag">/{String(i + 1).padStart(2, '0')}</span>
+                <img src={card.icon} alt="" className="partner-card-icon" />
                 <h3 className="partner-card-title">{card.title}</h3>
                 <p className="partner-card-body">{card.body}</p>
                 <span className="partner-card-arrow">

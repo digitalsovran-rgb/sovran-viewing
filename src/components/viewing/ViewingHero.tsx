@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import KenBurnsCarousel from './KenBurnsCarousel';
+
+const DESKTOP_IMAGES = ['/media/hero.png', '/media/hero2.png', '/media/hero3.png'];
+const MOBILE_IMAGES = ['/media/heromob.png', '/media/heromob2.png', '/media/heromob3.png'];
 
 export default function ViewingHero() {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
@@ -20,7 +24,12 @@ export default function ViewingHero() {
         @media (max-width: 767px) {
           #viewing-hero { min-height: 640px !important; }
           .viewing-hero-content { padding: 0 24px 64px !important; max-width: none !important; }
-          .viewing-hero-h1 { font-size: clamp(32px, 10vw, 48px) !important; }
+          .viewing-hero-eyebrow {
+            font-size: 11px !important;
+            margin-bottom: 28px !important;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.9) !important;
+          }
+          .viewing-hero-h1 { font-size: clamp(26px, 8vw, 36px) !important; line-height: 1.15 !important; }
           .viewing-hero-desc { font-size: 14px !important; max-width: none !important; }
           .viewing-hero-btn { width: 100% !important; text-align: center !important; }
         }
@@ -37,7 +46,7 @@ export default function ViewingHero() {
           backgroundColor: '#0a0a0a',
         }}
       >
-        {/* Background — single static image per breakpoint */}
+        {/* Background — rotating Ken Burns carousel, per breakpoint */}
         <motion.div
           className="viewing-hero-bg"
           initial={{ opacity: 0, scale: 1.05 }}
@@ -45,28 +54,26 @@ export default function ViewingHero() {
           transition={{ duration: 1.8, ease: 'easeOut' }}
           style={{ position: 'absolute', inset: 0 }}
         >
-          <img
-            src={isMobile ? '/media/heromob.png' : '/media/hero.png'}
+          <KenBurnsCarousel
+            images={isMobile ? MOBILE_IMAGES : DESKTOP_IMAGES}
             alt="A completed Sovran home extension"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center',
-            }}
+            interval={6500}
+            fadeDuration={1.2}
+            zoomScale={1.09}
+            panX={-2.5}
+            panY={-1.5}
           />
         </motion.div>
 
         {/* Gradient overlay — light enough for the photo to read clearly, just enough contrast
-            at the bottom-left for the eyebrow/headline/body text to stay legible. */}
+            at the bottom-left for the eyebrow/headline/body text to stay legible. Mobile gets
+            a slightly stronger stack so the eyebrow line stays legible against the rotating images. */}
         <div
           style={{
             position: 'absolute',
             inset: 0,
             background: isMobile
-              ? 'linear-gradient(0deg, rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.42) 45%, rgba(10,10,10,0.12) 75%, rgba(10,10,10,0) 100%)'
+              ? 'linear-gradient(0deg, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.52) 45%, rgba(10,10,10,0.18) 75%, rgba(10,10,10,0) 100%)'
               : 'linear-gradient(0deg, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.3) 40%, rgba(10,10,10,0.05) 70%, rgba(10,10,10,0) 100%)',
           }}
         />
@@ -90,6 +97,7 @@ export default function ViewingHero() {
             }}
           >
             <motion.p
+              className="viewing-hero-eyebrow"
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}

@@ -1,5 +1,9 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import KenBurnsCarousel from './KenBurnsCarousel';
+
+const DESKTOP_VISIT_IMAGES = ['/media/visitpc.png', '/media/visitpc2.png'];
+const MOBILE_VISIT_IMAGES = ['/media/visitmob.png', '/media/visitmob2.png'];
 
 const journeyPoints = [
   "The layout and flow decisions that shaped how the finished home works, day to day.",
@@ -13,6 +17,13 @@ const journeyPoints = [
 export default function ViewingExperience() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '0px 0px -120px 0px', amount: 0.2 });
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
 
   return (
     <>
@@ -31,7 +42,7 @@ export default function ViewingExperience() {
           flex-shrink: 0;
           width: 34px;
           font-size: 20px;
-          font-weight: 700;
+          font-weight: 500;
           color: #C9A96E;
           line-height: 1.6;
         }
@@ -48,10 +59,11 @@ export default function ViewingExperience() {
           line-height: 1.6;
           letter-spacing: normal;
         }
-        .visit-feature-image {
+        .visit-feature-image-wrap {
+          position: relative;
           width: 100%;
           height: clamp(280px, 44vw, 560px);
-          object-fit: cover;
+          overflow: hidden;
           display: block;
         }
         @media (max-width: 768px) {
@@ -111,11 +123,15 @@ export default function ViewingExperience() {
             ))}
           </motion.ul>
 
-          <div style={{ marginTop: '64px' }}>
-            <img
-              src="/media/constr1.png"
+          <div className="visit-feature-image-wrap" style={{ marginTop: '64px' }}>
+            <KenBurnsCarousel
+              images={isMobile ? MOBILE_VISIT_IMAGES : DESKTOP_VISIT_IMAGES}
               alt="A completed Sovran extension"
-              className="visit-feature-image"
+              interval={7000}
+              fadeDuration={1.2}
+              zoomScale={1.06}
+              panX={-2}
+              panY={-1}
             />
           </div>
         </div>
