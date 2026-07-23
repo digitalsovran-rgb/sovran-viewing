@@ -27,6 +27,7 @@ export default function ViewingHero() {
       `}</style>
       <section
         id="viewing-hero"
+        data-theme="dark"
         style={{
           position: 'relative',
           height: '100vh',
@@ -89,21 +90,6 @@ export default function ViewingHero() {
             }}
           >
             <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              style={{
-                fontFamily: 'Inter, sans-serif',
-                fontWeight: 500,
-                fontSize: '14px',
-                color: '#c9a96e',
-                marginBottom: '14px',
-              }}
-            >
-              01
-            </motion.p>
-
-            <motion.p
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
@@ -116,7 +102,7 @@ export default function ViewingHero() {
                 marginBottom: '20px',
               }}
             >
-              A Private Home Viewing Experience
+              For Homeowners Planning An Extension, Renovation Or New Build
             </motion.p>
 
             <motion.h1
@@ -135,7 +121,7 @@ export default function ViewingHero() {
                 maxWidth: '1100px',
               }}
             >
-              Private Viewing of a Completed Home Extension
+              Step Inside A Finished Sovran Home Before You Build Your Own
             </motion.h1>
 
             <motion.p
@@ -147,13 +133,13 @@ export default function ViewingHero() {
                 fontSize: 'clamp(15px, 1.3vw, 18px)',
                 fontWeight: 400,
                 color: 'rgba(255,255,255,0.72)',
-                maxWidth: '480px',
+                maxWidth: '520px',
                 margin: '28px 0 0',
                 lineHeight: 1.7,
                 letterSpacing: 'normal',
               }}
             >
-              A rare walkthrough of a finished Sovran project, guided by one of our Design &amp; Build Specialists. Not photographs. Not a brochure. The real space, as it was made to be lived in.
+              If you&apos;re planning an extension, renovation or new build, this is the inspiration you need. Walk through a finished Sovran project in person, see the real layout, the real finishes and the real standard of work, and speak directly with the specialist who delivered it.
             </motion.p>
 
             <motion.div

@@ -1,24 +1,20 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
-function SectionTag({ number, label }: { number: string; label: string }) {
+function SectionLabel({ label }: { label: string }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}>
-      <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500, fontSize: '14px', color: '#C9A96E' }}>
-        {number}
-      </span>
-      <span
-        style={{
-          fontSize: '12px',
-          fontWeight: 600,
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-          color: '#C9A96E',
-        }}
-      >
-        {label}
-      </span>
-    </div>
+    <p
+      style={{
+        fontSize: '12px',
+        fontWeight: 600,
+        letterSpacing: '0.18em',
+        textTransform: 'uppercase',
+        color: '#C9A96E',
+        marginBottom: '20px',
+      }}
+    >
+      {label}
+    </p>
   );
 }
 
@@ -35,7 +31,7 @@ export default function ViewingSpecialist() {
           .expect-image-col { flex: 0 0 340px !important; width: 100% !important; }
         }
       `}</style>
-      <section id="specialist-section" ref={ref} style={{ backgroundColor: '#0a0a0a' }}>
+      <section id="specialist-section" ref={ref} data-theme="dark" style={{ backgroundColor: '#0a0a0a' }}>
         <div className="expect-row" style={{ display: 'flex', alignItems: 'stretch' }}>
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -50,7 +46,7 @@ export default function ViewingSpecialist() {
             }}
           >
             <div>
-              <SectionTag number="03" label="The Experience" />
+              <SectionLabel label="The Experience" />
               <h2
                 style={{
                   fontSize: 'clamp(30px, 3.4vw, 48px)',

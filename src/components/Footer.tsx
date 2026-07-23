@@ -249,6 +249,7 @@ export default function Footer() {
 
       <footer
         ref={footerRef}
+        data-theme="dark"
         style={{
           backgroundColor: '#0a0a0a',
           position: 'relative',

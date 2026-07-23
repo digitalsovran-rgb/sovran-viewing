@@ -25,27 +25,6 @@ const cards = [
   },
 ];
 
-function SectionTag({ number, label }: { number: string; label: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}>
-      <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500, fontSize: '14px', color: '#C9A96E' }}>
-        {number}
-      </span>
-      <span
-        style={{
-          fontSize: '12px',
-          fontWeight: 600,
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-          color: '#C9A96E',
-        }}
-      >
-        {label}
-      </span>
-    </div>
-  );
-}
-
 function ArrowIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#0a0a0a" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
@@ -161,10 +140,8 @@ export default function ViewingAbout() {
           }
         }
       `}</style>
-      <section ref={ref} style={{ backgroundColor: '#F5F0EB', padding: '110px 0' }}>
+      <section ref={ref} data-theme="light" style={{ backgroundColor: '#F5F0EB', padding: '110px 0' }}>
         <div className="inner">
-          <SectionTag number="04" label="The Partner" />
-
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}

@@ -10,27 +10,6 @@ const journeyPoints = [
   "The full journey from first sketch to completed home, with the person who led it there to answer your questions.",
 ];
 
-function SectionTag({ number, label }: { number: string; label: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}>
-      <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500, fontSize: '14px', color: '#C9A96E' }}>
-        {number}
-      </span>
-      <span
-        style={{
-          fontSize: '12px',
-          fontWeight: 600,
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-          color: '#C9A96E',
-        }}
-      >
-        {label}
-      </span>
-    </div>
-  );
-}
-
 export default function ViewingExperience() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '0px 0px -120px 0px', amount: 0.2 });
@@ -40,21 +19,27 @@ export default function ViewingExperience() {
       <style>{`
         .visit-list-item {
           display: flex;
-          gap: 32px;
+          align-items: flex-start;
+          gap: 22px;
           padding: 26px 0;
           border-bottom: 1px solid rgba(10,10,10,0.08);
         }
         .visit-list-item:last-child {
           border-bottom: none;
         }
-        .visit-list-prefix {
+        .visit-list-number {
           flex-shrink: 0;
-          width: 48px;
-          font-size: 13px;
-          font-weight: 300;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
+          width: 34px;
+          font-size: 20px;
+          font-weight: 700;
           color: #C9A96E;
+          line-height: 1.6;
+        }
+        .visit-list-rule {
+          flex-shrink: 0;
+          width: 2px;
+          height: 27px;
+          background-color: #C9A96E;
         }
         .visit-list-text {
           font-size: 17px;
@@ -70,25 +55,18 @@ export default function ViewingExperience() {
           display: block;
         }
         @media (max-width: 768px) {
-          .visit-list-item { gap: 18px; padding: 20px 0; }
-          .visit-list-prefix { width: 38px; font-size: 12px; }
+          .visit-list-item { gap: 16px; padding: 20px 0; }
+          .visit-list-number { width: 28px; font-size: 17px; }
+          .visit-list-rule { height: 22px; }
           .visit-list-text { font-size: 15px; }
         }
       `}</style>
-      <section style={{ backgroundColor: '#F5F0EB', padding: '100px 0' }}>
+      <section data-theme="light" style={{ backgroundColor: '#F5F0EB', padding: '100px 0' }}>
         <div className="inner" ref={ref}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-          >
-            <SectionTag number="02" label="The Offer" />
-          </motion.div>
-
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             style={{
               fontSize: 'clamp(32px, 3.8vw, 52px)',
               fontWeight: 900,
@@ -104,7 +82,7 @@ export default function ViewingExperience() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+            transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
             style={{
               fontSize: '17px',
               fontWeight: 400,
@@ -121,12 +99,13 @@ export default function ViewingExperience() {
           <motion.ul
             initial={{ opacity: 0, y: 24 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
+            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
             style={{ listStyle: 'none', margin: '56px 0 0', padding: 0 }}
           >
             {journeyPoints.map((text, i) => (
               <li key={i} className="visit-list-item">
-                <span className="visit-list-prefix">/{String(i + 1).padStart(2, '0')}</span>
+                <span className="visit-list-number">{String(i + 1).padStart(2, '0')}</span>
+                <span className="visit-list-rule" />
                 <span className="visit-list-text">{text}</span>
               </li>
             ))}
