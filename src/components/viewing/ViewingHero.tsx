@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import ImageCarousel from './ImageCarousel';
-
-const DESKTOP_IMAGES = ['/media/hero.png', '/media/hero2.png', '/media/hero3.png'];
-const MOBILE_IMAGES = ['/media/heromob.png', '/media/heromob2.png', '/media/heromob3.png'];
 
 export default function ViewingHero() {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
@@ -40,7 +36,7 @@ export default function ViewingHero() {
           backgroundColor: '#0a0a0a',
         }}
       >
-        {/* Background */}
+        {/* Background — single static image per breakpoint */}
         <motion.div
           className="viewing-hero-bg"
           initial={{ opacity: 0, scale: 1.05 }}
@@ -48,22 +44,29 @@ export default function ViewingHero() {
           transition={{ duration: 1.8, ease: 'easeOut' }}
           style={{ position: 'absolute', inset: 0 }}
         >
-          <ImageCarousel
-            images={isMobile ? MOBILE_IMAGES : DESKTOP_IMAGES}
+          <img
+            src={isMobile ? '/media/heromob.png' : '/media/hero.png'}
             alt="A completed Sovran home extension"
-            interval={5000}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center',
+            }}
           />
         </motion.div>
 
-        {/* Gradient overlay — near-transparent up top for negative space, dark toward the bottom-left text block.
-            Mobile gets a heavier, higher-reaching overlay so the eyebrow/headline stay legible across all rotating images. */}
+        {/* Gradient overlay — light enough for the photo to read clearly, just enough contrast
+            at the bottom-left for the eyebrow/headline/body text to stay legible. */}
         <div
           style={{
             position: 'absolute',
             inset: 0,
             background: isMobile
-              ? 'linear-gradient(0deg, rgba(10,10,10,0.96) 0%, rgba(10,10,10,0.88) 42%, rgba(10,10,10,0.4) 72%, rgba(10,10,10,0.12) 100%)'
-              : 'linear-gradient(0deg, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.5) 38%, rgba(10,10,10,0.05) 68%, rgba(10,10,10,0) 100%)',
+              ? 'linear-gradient(0deg, rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.42) 45%, rgba(10,10,10,0.12) 75%, rgba(10,10,10,0) 100%)'
+              : 'linear-gradient(0deg, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.3) 40%, rgba(10,10,10,0.05) 70%, rgba(10,10,10,0) 100%)',
           }}
         />
 

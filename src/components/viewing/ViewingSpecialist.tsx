@@ -1,24 +1,23 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import ImageCarousel from './ImageCarousel';
-
-const CAROUSEL_IMAGES = [
-  '/media/inside1.png',
-  '/media/plann1.png',
-  '/media/inside2.png',
-  '/media/plann2.png',
-];
 
 export default function ViewingSpecialist() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: '0px 0px -120px 0px', amount: 0.2 });
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
 
   return (
     <>
       <style>{`
         @media (max-width: 767px) {
           .specialist-row { flex-direction: column !important; min-height: unset !important; }
-          .specialist-carousel-col { flex: 0 0 340px !important; width: 100% !important; }
+          .specialist-image-col { flex: 0 0 340px !important; width: 100% !important; }
           .specialist-text-col { flex: auto !important; width: 100% !important; padding: 48px 24px !important; }
         }
       `}</style>
@@ -32,10 +31,26 @@ export default function ViewingSpecialist() {
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="specialist-carousel-col"
-            style={{ flex: '0 0 58%', position: 'relative', overflow: 'hidden' }}
+            className="specialist-image-col"
+            style={{
+              flex: '0 0 58%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '48px',
+            }}
           >
-            <ImageCarousel images={CAROUSEL_IMAGES} alt="Inside a completed Sovran home and its planning drawings" />
+            <img
+              src={isMobile ? '/media/drawhmob.png' : '/media/drawh.png'}
+              alt="Architectural line drawing of a Sovran home"
+              style={{
+                maxWidth: '100%',
+                maxHeight: '100%',
+                width: 'auto',
+                height: 'auto',
+                objectFit: 'contain',
+              }}
+            />
           </motion.div>
 
           <motion.div
