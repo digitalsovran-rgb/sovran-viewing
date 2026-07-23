@@ -98,7 +98,13 @@ function FloatingCTA() {
     <>
       <style>{`
         @media (max-width: 767px) {
-          .floating-cta { bottom: 16px !important; right: 16px !important; }
+          .floating-cta {
+            bottom: 16px !important;
+            right: 16px !important;
+            left: 16px !important;
+            width: auto !important;
+            padding: 18px 32px !important;
+          }
         }
       `}</style>
       <button
@@ -120,10 +126,11 @@ function FloatingCTA() {
           border: `1px solid ${hovered ? '#c9a96e' : baseBorder}`,
           borderRadius: 0,
           boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-          fontSize: '13px',
+          fontSize: '14px',
           fontWeight: 500,
           fontFamily: 'Inter, sans-serif',
           textTransform: 'uppercase',
+          textAlign: 'center',
           letterSpacing: '0.1em',
           cursor: 'pointer',
           opacity: shouldShow ? 1 : 0,
