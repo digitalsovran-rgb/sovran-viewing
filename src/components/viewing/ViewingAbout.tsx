@@ -1,22 +1,52 @@
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { animate, motion, useInView } from 'framer-motion';
+
+const STAT_ANIMATION_DURATION = 1.8;
 
 const stats = [
-  { value: '15+', label: 'Years of Experience' },
-  { value: '97%', label: 'Planning Success Rate' },
-  { value: '£25M+', label: 'Value Delivered' },
-  { value: '1,000+', label: 'Projects Completed' },
+  { target: 15, format: (n: number) => `${Math.round(n)}+`, label: 'Years of Experience' },
+  { target: 97, format: (n: number) => `${Math.round(n)}%`, label: 'Planning Success Rate' },
+  { target: 25, format: (n: number) => `£${Math.round(n)}M+`, label: 'Value Delivered' },
+  { target: 1000, format: (n: number) => `${Math.round(n).toLocaleString('en-GB')}+`, label: 'Projects Completed' },
 ];
 
 const columns = [
-  "Sovran brings architecture, planning and construction together as one team, working across London and the Home Counties. We listen first, then bring the right people together to make what we hear real.",
+  "Sovran brings architecture, planning and construction together as one team, working across London and the Home Counties. Every specialist involved in a project stays on it from beginning to end.",
   "From a single extension to a complete transformation, our architects, designers and construction specialists carry a project from first sketch to final handover, across residential, commercial and hospitality spaces.",
-  "What you see on a Sovran site visit is the same standard we hold on every project we deliver, not a version of it dressed for a photograph.",
+  "The home you walk through on a Sovran site visit reflects the standard behind every project we deliver, unstaged and unedited for a photograph.",
 ];
+
+function CountUpStat({
+  target,
+  format,
+  trigger,
+}: {
+  target: number;
+  format: (n: number) => string;
+  trigger: boolean;
+}) {
+  const [display, setDisplay] = useState(format(0));
+  const startedRef = useRef(false);
+
+  useEffect(() => {
+    if (!trigger || startedRef.current) return;
+    startedRef.current = true;
+    const controls = animate(0, target, {
+      duration: STAT_ANIMATION_DURATION,
+      ease: 'easeOut',
+      onUpdate: (v) => setDisplay(format(v)),
+    });
+    return () => controls.stop();
+  }, [trigger, target, format]);
+
+  return <>{display}</>;
+}
 
 export default function ViewingAbout() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: '0px 0px -120px 0px', amount: 0.3 });
+  const statsRef = useRef<HTMLDivElement>(null);
+  const isStatsInView = useInView(statsRef, { once: true, margin: '0px 0px -80px 0px', amount: 0.4 });
 
   return (
     <>
@@ -48,6 +78,24 @@ export default function ViewingAbout() {
           color: rgba(10,10,10,0.65);
           line-height: 1.75;
           letter-spacing: normal;
+        }
+        .about-cta-btn {
+          display: inline-block;
+          background-color: transparent;
+          color: #0a0a0a;
+          border: 1px solid #0a0a0a;
+          font-size: 13px;
+          font-weight: 500;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          padding: 16px 40px;
+          cursor: pointer;
+          text-decoration: none;
+          transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .about-cta-btn:hover {
+          background-color: #0a0a0a;
+          color: #ffffff;
         }
         @media (max-width: 768px) {
           .about-stats {
@@ -121,6 +169,7 @@ export default function ViewingAbout() {
         </motion.div>
 
         <motion.div
+          ref={statsRef}
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
@@ -133,13 +182,13 @@ export default function ViewingAbout() {
                 style={{
                   fontSize: 'clamp(26px, 2.8vw, 36px)',
                   fontWeight: 900,
-                  color: '#c9a96e',
+                  color: '#0a0a0a',
                   letterSpacing: '-0.005em',
                   lineHeight: 1,
                   marginBottom: '10px',
                 }}
               >
-                {stat.value}
+                <CountUpStat target={stat.target} format={stat.format} trigger={isStatsInView} />
               </div>
               <div
                 style={{
@@ -155,6 +204,17 @@ export default function ViewingAbout() {
             </div>
           ))}
         </motion.div>
+
+        <div className="inner" style={{ marginTop: '48px', textAlign: 'center' }}>
+          <a
+            href="https://sovrangroup.co.uk"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="about-cta-btn"
+          >
+            Discover More About Sovran
+          </a>
+        </div>
       </section>
     </>
   );

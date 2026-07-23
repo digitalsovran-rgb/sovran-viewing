@@ -162,22 +162,6 @@ export default function ViewingExperience() {
           >
             What You&apos;ll Discover Inside
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 40 }}
-            animate={isHeadingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
-            style={{
-              fontSize: '16px',
-              fontWeight: 400,
-              color: 'rgba(0,0,0,0.55)',
-              maxWidth: '520px',
-              margin: '18px auto 0',
-              lineHeight: 1.7,
-              letterSpacing: 'normal',
-            }}
-          >
-            Guided by a Sovran Design &amp; Build Specialist, you&apos;ll walk a completed home and see exactly how it was made to work.
-          </motion.p>
         </div>
 
         <motion.div
@@ -206,7 +190,7 @@ export default function ViewingExperience() {
 
         <div className="inner" style={{ marginTop: '40px', textAlign: 'center' }}>
           <p className="discover-feature-caption">
-            Guided by a Sovran Design &amp; Build Specialist, you&apos;ll walk through the real decisions, materials, and craftsmanship behind the home, not a rendering of it, the finished result.
+            Guided by a Sovran Design &amp; Build Specialist, you&apos;ll walk a completed home and see the real decisions, materials, and craftsmanship behind it, not a rendering of the finished result.
           </p>
         </div>
       </section>

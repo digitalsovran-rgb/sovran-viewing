@@ -17,7 +17,16 @@ export default function ViewingSpecialist() {
       <style>{`
         @media (max-width: 767px) {
           .specialist-row { flex-direction: column !important; min-height: unset !important; }
-          .specialist-image-col { flex: 0 0 340px !important; width: 100% !important; }
+          .specialist-image-col {
+            flex: 0 0 auto !important;
+            width: 100% !important;
+            padding: 32px 24px !important;
+          }
+          .specialist-image-col img {
+            width: 100% !important;
+            max-height: none !important;
+            height: auto !important;
+          }
           .specialist-text-col { flex: auto !important; width: 100% !important; padding: 48px 24px !important; }
         }
       `}</style>
@@ -41,7 +50,7 @@ export default function ViewingSpecialist() {
             }}
           >
             <img
-              src={isMobile ? '/media/drawhmob.png' : '/media/drawh.png'}
+              src={isMobile ? '/media/drawhmob.png?v=2' : '/media/drawh.png'}
               alt="Architectural line drawing of a Sovran home"
               style={{
                 maxWidth: '100%',
