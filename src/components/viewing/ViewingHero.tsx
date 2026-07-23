@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import KenBurnsCarousel from './KenBurnsCarousel';
+import ActivityLine from './ActivityLine';
 
 const DESKTOP_IMAGES = ['/media/hero.png', '/media/hero2.png', '/media/hero3.png'];
 const MOBILE_IMAGES = ['/media/heromob.png', '/media/heromob2.png', '/media/heromob3.png'];
@@ -23,15 +24,17 @@ export default function ViewingHero() {
       <style>{`
         @media (max-width: 767px) {
           #viewing-hero { min-height: 640px !important; }
-          .viewing-hero-content { padding: 0 24px 64px !important; max-width: none !important; }
+          .viewing-hero-content { padding: 0 24px 40px !important; max-width: none !important; }
           .viewing-hero-eyebrow {
-            font-size: 11px !important;
-            margin-bottom: 28px !important;
+            font-size: 10px !important;
+            margin-bottom: 14px !important;
             text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.9) !important;
           }
-          .viewing-hero-h1 { font-size: clamp(26px, 8vw, 36px) !important; line-height: 1.15 !important; }
-          .viewing-hero-desc { font-size: 14px !important; max-width: none !important; }
+          .viewing-hero-h1 { font-size: clamp(22px, 6.4vw, 30px) !important; line-height: 1.16 !important; }
+          .viewing-hero-desc { font-size: 13px !important; max-width: none !important; margin-top: 14px !important; }
           .viewing-hero-btn { width: 100% !important; text-align: center !important; }
+          .viewing-hero-cta-wrap { margin-top: 22px !important; }
+          .viewing-hero-activity { margin-top: 16px !important; }
         }
       `}</style>
       <section
@@ -151,6 +154,7 @@ export default function ViewingHero() {
             </motion.p>
 
             <motion.div
+              className="viewing-hero-cta-wrap"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
@@ -183,6 +187,8 @@ export default function ViewingHero() {
                 Register Your Interest
               </button>
             </motion.div>
+
+            <ActivityLine />
           </div>
         </div>
       </section>

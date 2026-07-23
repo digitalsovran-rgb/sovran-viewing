@@ -3,7 +3,6 @@ import ViewingHero from './components/viewing/ViewingHero';
 import ViewingExperience from './components/viewing/ViewingExperience';
 import ViewingSpecialist from './components/viewing/ViewingSpecialist';
 import ViewingAbout from './components/viewing/ViewingAbout';
-import ActivityLine from './components/viewing/ActivityLine';
 import SiteVisitForm from './components/viewing/SiteVisitForm';
 import Footer from './components/Footer';
 
@@ -170,7 +169,6 @@ export default function App() {
       <ViewingExperience />
       <ViewingSpecialist />
       <ViewingAbout />
-      <ActivityLine />
       <SiteVisitForm />
       <Footer />
       <StickyCTABar />
