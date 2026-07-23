@@ -107,33 +107,17 @@ export default function ViewingAbout() {
         }
         .about-column-icon {
           display: block;
-          width: 44px;
+          width: 160px;
+          max-width: 55%;
           height: auto;
-          margin: 22px auto 0;
+          margin: 28px auto 0;
         }
         .about-carousel-icon {
           display: block;
-          width: 40px;
+          width: 130px;
+          max-width: 50%;
           height: auto;
-          margin: 20px auto 0;
-        }
-        .about-cta-btn {
-          display: inline-block;
-          background-color: transparent;
-          color: #0a0a0a;
-          border: 1px solid #0a0a0a;
-          font-size: 13px;
-          font-weight: 500;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          padding: 16px 40px;
-          cursor: pointer;
-          text-decoration: none;
-          transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        .about-cta-btn:hover {
-          background-color: #0a0a0a;
-          color: #ffffff;
+          margin: 24px auto 0;
         }
         .about-carousel {
           display: flex;
@@ -212,7 +196,7 @@ export default function ViewingAbout() {
           }
         }
       `}</style>
-      <section ref={ref} style={{ backgroundColor: '#F5F0EB', padding: '110px 0' }}>
+      <section ref={ref} data-theme="light" style={{ backgroundColor: '#F5F0EB', padding: '110px 0' }}>
         <div className="inner" style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto' }}>
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
@@ -321,17 +305,6 @@ export default function ViewingAbout() {
             </div>
           ))}
         </motion.div>
-
-        <div className="inner" style={{ marginTop: '48px', textAlign: 'center' }}>
-          <a
-            href="https://sovrangroup.co.uk"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="about-cta-btn"
-          >
-            Discover More About Sovran
-          </a>
-        </div>
       </section>
     </>
   );

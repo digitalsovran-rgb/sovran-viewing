@@ -185,7 +185,7 @@ export default function ViewingExperience() {
           .discover-card { padding: 28px 14px; }
         }
       `}</style>
-      <section style={{ backgroundColor: '#F5F0EB', padding: '100px 0' }}>
+      <section data-theme="light" style={{ backgroundColor: '#F5F0EB', padding: '100px 0' }}>
         <div className="inner" ref={headingRef} style={{ textAlign: 'center' }}>
           <motion.h2
             initial={{ opacity: 0, y: 40 }}

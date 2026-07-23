@@ -27,6 +27,7 @@ export default function ViewingHero() {
       `}</style>
       <section
         id="viewing-hero"
+        data-theme="dark"
         style={{
           position: 'relative',
           height: '100vh',

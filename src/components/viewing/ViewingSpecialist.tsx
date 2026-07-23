@@ -110,6 +110,7 @@ export default function ViewingSpecialist() {
       <section
         id="specialist-section"
         ref={ref}
+        data-theme="dark"
         style={{ backgroundColor: '#0a0a0a' }}
       >
         <div className="specialist-row" style={{ display: 'flex', flexDirection: 'row-reverse', minHeight: '640px' }}>
