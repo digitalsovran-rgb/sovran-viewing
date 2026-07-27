@@ -96,7 +96,7 @@ export default function ViewingHero() {
             className="viewing-hero-content"
             style={{
               padding: '0 clamp(24px, 6vw, 90px) clamp(56px, 9vh, 110px)',
-              maxWidth: '1180px',
+              maxWidth: '940px',
             }}
           >
             <motion.p
@@ -122,17 +122,16 @@ export default function ViewingHero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.25, ease: 'easeOut' }}
               style={{
-                fontSize: 'clamp(40px, 6.2vw, 88px)',
+                fontSize: 'clamp(34px, 4.6vw, 64px)',
                 fontWeight: 900,
                 color: '#ffffff',
-                lineHeight: 1,
+                lineHeight: 1.05,
                 letterSpacing: '-0.015em',
                 textTransform: 'uppercase',
                 fontFamily: 'Inter, sans-serif',
-                maxWidth: '1100px',
               }}
             >
-              Step Inside A Finished Sovran Home Before You Build Your Own
+              Private Viewing Of A Completed Project
             </motion.h1>
 
             <motion.p
@@ -144,13 +143,12 @@ export default function ViewingHero() {
                 fontSize: 'clamp(15px, 1.3vw, 18px)',
                 fontWeight: 400,
                 color: 'rgba(255,255,255,0.72)',
-                maxWidth: '520px',
                 margin: '28px 0 0',
                 lineHeight: 1.7,
                 letterSpacing: 'normal',
               }}
             >
-              If you&apos;re planning an extension, renovation or new build, this is the inspiration you need. Walk through a finished Sovran project in person, see the real layout, the real finishes and the real standard of work, and speak directly with the specialist who delivered it.
+              If you&apos;re planning an extension or renovation, this is the inspiration you need. Walk through a completed project, see the real layout and standard of work we carry out. Also, you get to speak directly with the specialist who delivered it.
             </motion.p>
 
             <motion.div

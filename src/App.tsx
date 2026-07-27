@@ -8,6 +8,8 @@ import Footer from './components/Footer';
 
 type SectionTheme = 'dark' | 'light';
 
+const BAR_BOTTOM_OFFSET = 20;
+
 function StickyCTABar() {
   const barRef = useRef<HTMLButtonElement>(null);
   const [hovered, setHovered] = useState(false);
@@ -84,8 +86,8 @@ function StickyCTABar() {
     };
 
     const build = () => {
-      const barHeight = barRef.current?.offsetHeight || 64;
-      const topExclude = Math.max(window.innerHeight - barHeight, 0);
+      const barHeight = barRef.current?.offsetHeight || 60;
+      const topExclude = Math.max(window.innerHeight - barHeight - BAR_BOTTOM_OFFSET, 0);
       observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -136,24 +138,25 @@ function StickyCTABar() {
       onMouseLeave={() => setHovered(false)}
       style={{
         position: 'fixed',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: '100%',
+        left: '50%',
+        bottom: `${BAR_BOTTOM_OFFSET}px`,
         zIndex: 100,
+        maxWidth: 'calc(100% - 40px)',
         backgroundColor: hovered ? color : bg,
         color: hovered ? bg : color,
         border: 'none',
-        borderTop: '1px solid rgba(128,128,128,0.15)',
-        padding: '20px 24px',
+        borderRadius: '10px',
+        boxShadow: '0 10px 30px rgba(0,0,0,0.28)',
+        padding: '18px 40px',
         fontFamily: 'Inter, sans-serif',
         fontSize: '13px',
         fontWeight: 600,
         letterSpacing: '0.15em',
         textTransform: 'uppercase',
         textAlign: 'center',
+        whiteSpace: 'nowrap',
         cursor: 'pointer',
-        transform: heroPast ? 'translateY(0)' : 'translateY(100%)',
+        transform: `translateX(-50%) ${heroPast ? 'translateY(0)' : 'translateY(150%)'}`,
         transition: 'transform 0.4s ease, background-color 0.25s ease, color 0.25s ease',
       }}
     >

@@ -28,15 +28,6 @@ const cards = [
   },
 ];
 
-function ArrowIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#0a0a0a" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="3" y1="10" x2="16" y2="10" />
-      <polyline points="10,4 16,10 10,16" />
-    </svg>
-  );
-}
-
 function CountUpStat({
   target,
   format,
@@ -81,8 +72,8 @@ export default function ViewingAbout() {
           position: relative;
           background-color: #ede9e3;
           border: 1px solid rgba(10,10,10,0.08);
-          padding: 36px 32px 64px;
-          min-height: 340px;
+          padding: 36px 32px 40px;
+          min-height: 300px;
         }
         .partner-card-tag {
           font-size: 13px;
@@ -109,11 +100,6 @@ export default function ViewingAbout() {
           color: rgba(10,10,10,0.62);
           line-height: 1.65;
           margin-top: 14px;
-        }
-        .partner-card-arrow {
-          position: absolute;
-          right: 28px;
-          bottom: 28px;
         }
         .about-stats {
           display: flex;
@@ -195,9 +181,6 @@ export default function ViewingAbout() {
                 <img src={card.icon} alt="" className="partner-card-icon" />
                 <h3 className="partner-card-title">{card.title}</h3>
                 <p className="partner-card-body">{card.body}</p>
-                <span className="partner-card-arrow">
-                  <ArrowIcon />
-                </span>
               </div>
             ))}
           </motion.div>
