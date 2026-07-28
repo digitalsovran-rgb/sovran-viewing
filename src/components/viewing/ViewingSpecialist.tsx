@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 const checklistItems = [
@@ -37,13 +37,6 @@ function SectionLabel({ label }: { label: string }) {
 export default function ViewingSpecialist() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: '0px 0px -120px 0px', amount: 0.2 });
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
-
-  useEffect(() => {
-    const handler = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handler);
-    return () => window.removeEventListener('resize', handler);
-  }, []);
 
   return (
     <>
@@ -73,7 +66,7 @@ export default function ViewingSpecialist() {
         @media (max-width: 767px) {
           .expect-row { flex-direction: column !important; }
           .expect-text-col { flex: auto !important; width: 100% !important; padding: 64px 24px 48px !important; }
-          .expect-image-col { flex: 0 0 auto !important; width: 100% !important; min-height: 0 !important; }
+          .expect-image-col { flex: 0 0 auto !important; width: 100% !important; min-height: clamp(280px, 60vw, 420px) !important; }
         }
       `}</style>
       <section id="specialist-section" ref={ref} data-theme="dark" style={{ backgroundColor: '#0a0a0a' }}>
@@ -161,38 +154,19 @@ export default function ViewingSpecialist() {
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
             transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
             className="expect-image-col"
-            style={
-              isMobile
-                ? { flex: '0 0 auto', width: '100%' }
-                : { flex: '0 0 50%', position: 'relative', minHeight: '480px' }
-            }
+            style={{ flex: '0 0 50%', position: 'relative', minHeight: '480px' }}
           >
-            {isMobile ? (
-              <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                <img
-                  src="/media/planmobh.png"
-                  alt="Architectural plan drawing, top half"
-                  style={{ display: 'block', width: '100%', height: 'auto' }}
-                />
-                <img
-                  src="/media/planmobf.png"
-                  alt="Architectural plan drawing, bottom half"
-                  style={{ display: 'block', width: '100%', height: 'auto' }}
-                />
-              </div>
-            ) : (
-              <img
-                src="/media/planpc.png?v=2"
-                alt="Architectural plan drawing"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
-              />
-            )}
+            <img
+              src="/media/houseic.png"
+              alt="A finished Sovran home"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+            />
           </motion.div>
         </div>
       </section>
