@@ -1,6 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 
+const checklistItems = [
+  'Warmer, more energy efficient homes',
+  'Lower running costs',
+  'More natural light throughout',
+  'Healthier, more comfortable living',
+  'Built to hold their value for years to come',
+];
+
+function CheckIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#C9A96E" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="3,8.5 6.5,12 13,4" />
+    </svg>
+  );
+}
+
 function SectionLabel({ label }: { label: string }) {
   return (
     <p
@@ -32,6 +48,28 @@ export default function ViewingSpecialist() {
   return (
     <>
       <style>{`
+        .expect-checklist {
+          list-style: none;
+          margin: 24px 0 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .expect-checklist li {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          font-size: 15px;
+          font-weight: 400;
+          color: rgba(255,255,255,0.85);
+          line-height: 1.5;
+          letter-spacing: normal;
+        }
+        .expect-checklist svg {
+          flex-shrink: 0;
+          margin-top: 3px;
+        }
         @media (max-width: 767px) {
           .expect-row { flex-direction: column !important; }
           .expect-text-col { flex: auto !important; width: 100% !important; padding: 64px 24px 48px !important; }
@@ -53,7 +91,7 @@ export default function ViewingSpecialist() {
             }}
           >
             <div>
-              <SectionLabel label="The Experience" />
+              <SectionLabel label="The Future" />
               <h2
                 style={{
                   fontSize: 'clamp(30px, 3.4vw, 48px)',
@@ -63,7 +101,7 @@ export default function ViewingSpecialist() {
                   lineHeight: 1.1,
                 }}
               >
-                What To Expect From Your Visit
+                Designed For What&apos;s Next
               </h2>
               <p
                 style={{
@@ -76,8 +114,32 @@ export default function ViewingSpecialist() {
                   maxWidth: '520px',
                 }}
               >
-                You&apos;ll be welcomed into the home and walked through it room by room, at your own pace. There&apos;s time to stop, look closely, and ask about anything you notice, from the materials underfoot to the reasoning behind a layout decision. Nothing is rushed, and nothing is scripted.
+                From March 2027, new UK building standards raise the bar for how homes perform, not just how they look. At Sovran, we design every project with that shift already in mind.
               </p>
+
+              <ul className="expect-checklist" style={{ maxWidth: '520px' }}>
+                {checklistItems.map((item) => (
+                  <li key={item}>
+                    <CheckIcon />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <p
+                style={{
+                  fontSize: '15px',
+                  fontWeight: 400,
+                  color: 'rgba(255,255,255,0.78)',
+                  lineHeight: 1.75,
+                  letterSpacing: 'normal',
+                  marginTop: '24px',
+                  maxWidth: '520px',
+                }}
+              >
+                Many of our projects also include smart lighting, heating and security, giving homeowners control over comfort and efficiency from a single app.
+              </p>
+
               <p
                 style={{
                   fontSize: '12px',
@@ -86,34 +148,10 @@ export default function ViewingSpecialist() {
                   letterSpacing: '0.15em',
                   textTransform: 'uppercase',
                   marginTop: '28px',
-                }}
-              >
-                Hosted By The Team Behind Live Sovran Projects Across London.
-              </p>
-              <p
-                style={{
-                  fontSize: '15px',
-                  fontWeight: 400,
-                  color: '#ffffff',
-                  lineHeight: 1.7,
-                  letterSpacing: 'normal',
-                  marginTop: '24px',
                   maxWidth: '520px',
                 }}
               >
-                Bring your own plans, your own questions, or just an idea. You&apos;ll leave with a clearer sense of what&apos;s realistic for your home.
-              </p>
-              <p
-                style={{
-                  fontSize: '13px',
-                  fontWeight: 400,
-                  color: 'rgba(245,240,235,0.5)',
-                  lineHeight: 1.6,
-                  letterSpacing: 'normal',
-                  marginTop: '18px',
-                }}
-              >
-                Places are limited to keep each visit personal and unhurried.
+                Ask how these standards shape the home you&apos;re about to walk through, and what they could mean for your own project.
               </p>
             </div>
           </motion.div>
