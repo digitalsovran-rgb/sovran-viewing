@@ -64,3 +64,44 @@ export default function KenBurnsCarousel({
     </div>
   );
 }
+
+// A single static image with a continuous, slow breathing zoom (in, then back out, on loop) —
+// used where a section has only one image and doesn't need the cross-fade/rotation logic above.
+export function KenBurnsStatic({
+  src,
+  alt,
+  duration = 14,
+  zoomScale = 1.08,
+}: {
+  src: string;
+  alt: string;
+  duration?: number;
+  zoomScale?: number;
+}) {
+  const animName = `kenburns-static-${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
+
+  return (
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+      <style>{`
+        @keyframes ${animName} {
+          0% { transform: scale(1); }
+          100% { transform: scale(${zoomScale}); }
+        }
+      `}</style>
+      <img
+        src={src}
+        alt={alt}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          objectPosition: 'center',
+          animation: `${animName} ${duration}s ease-in-out infinite alternate`,
+          willChange: 'transform',
+        }}
+      />
+    </div>
+  );
+}

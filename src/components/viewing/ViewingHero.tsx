@@ -148,7 +148,7 @@ export default function ViewingHero() {
                 letterSpacing: 'normal',
               }}
             >
-              If you&apos;re planning an extension or renovation, this is the inspiration you need. Walk through a completed project, see the real layout and standard of work we carry out. Also, you get to speak directly with the specialist who delivered it.
+              If you&apos;re planning your next design and build project, this is the inspiration you need. Walk through a finished home, see the real layout and standard of work we carry out, and speak directly with the specialist who delivered it.
             </motion.p>
 
             <motion.div

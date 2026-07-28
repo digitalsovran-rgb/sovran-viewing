@@ -629,9 +629,9 @@ export default function SiteVisitForm() {
   };
 
   const getStepHeading = () => {
-    if (step === 5 && postcodeSubStep === 'loading') return 'Checking Our Availability';
+    if (step === 5 && postcodeSubStep === 'loading') return 'Checking Remaining Slots';
     if (step === 5 && postcodeSubStep === 'result')
-      return 'Good news, one of our project managers is available to discuss your project.';
+      return 'Good news, we have found a slot available.';
     return stepHeadings[step];
   };
 
@@ -664,7 +664,7 @@ export default function SiteVisitForm() {
             marginBottom: '60px',
           }}
         >
-          Book A Site Visit.
+          Confirm Your Viewing.
         </h2>
 
 
@@ -1086,7 +1086,7 @@ export default function SiteVisitForm() {
                                   letterSpacing: 'normal',
                                 }}
                               >
-                                Checking project manager availability...
+                                Checking remaining slots...
                               </p>
                             </div>
                           )}

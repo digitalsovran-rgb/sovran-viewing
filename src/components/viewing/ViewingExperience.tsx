@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import KenBurnsCarousel from './KenBurnsCarousel';
+import { KenBurnsStatic } from './KenBurnsCarousel';
 
-const DESKTOP_VISIT_IMAGES = ['/media/visitpc.png', '/media/visitpc2.png'];
-const MOBILE_VISIT_IMAGES = ['/media/visitmob.png', '/media/visitmob2.png'];
+const DESKTOP_VISIT_IMAGE = '/media/visitpc.png';
+const MOBILE_VISIT_IMAGE = '/media/visitmob.png';
 
 const journeyPoints = [
   "The layout and flow decisions that shaped how the finished home works, day to day.",
@@ -105,7 +105,7 @@ export default function ViewingExperience() {
               marginTop: '22px',
             }}
           >
-            A working look at a finished Sovran extension, renovation or new build, guided in person from start to finish.
+            A working look at a finished Sovran design and build project, guided in person from start to finish.
           </motion.p>
 
           <motion.ul
@@ -124,14 +124,11 @@ export default function ViewingExperience() {
           </motion.ul>
 
           <div className="visit-feature-image-wrap" style={{ marginTop: '64px' }}>
-            <KenBurnsCarousel
-              images={isMobile ? MOBILE_VISIT_IMAGES : DESKTOP_VISIT_IMAGES}
-              alt="A completed Sovran extension"
-              interval={7000}
-              fadeDuration={1.2}
+            <KenBurnsStatic
+              src={isMobile ? MOBILE_VISIT_IMAGE : DESKTOP_VISIT_IMAGE}
+              alt="A completed Sovran design and build project"
+              duration={14}
               zoomScale={1.06}
-              panX={-2}
-              panY={-1}
             />
           </div>
         </div>

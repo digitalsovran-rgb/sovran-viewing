@@ -10,20 +10,17 @@ const stats = [
   { target: 1000, format: (n: number) => `${Math.round(n).toLocaleString('en-GB')}+`, label: 'Projects Completed' },
 ];
 
-const cards = [
+const features = [
   {
-    icon: '/media/icon1.png',
-    title: 'Architecture & Design',
-    body: "We turn a brief into a workable design, drawings, 3D visuals and planning submissions shaped around how you actually want to live. Every layout decision is tested against light, flow and function before it reaches site.",
+    label: 'Design Led',
+    body: "Every project starts with drawings, 3D visuals and planning submissions shaped around how you want to live, tested against light, flow and function before it reaches site.",
   },
   {
-    icon: '/media/icon2.png',
-    title: 'Construction & Delivery',
-    body: "The same team that designed the project builds it. Skilled trades, dedicated site management, and a single point of accountability from foundation to final finish.",
+    label: 'One Team',
+    body: "The same team that designs a project builds it, with skilled trades and a single point of accountability from foundation to final finish.",
   },
   {
-    icon: '/media/icon3.png?v=2',
-    title: 'Guidance & Advice',
+    label: 'Honest Guidance',
     body: "Before you commit to anything, we assess what's realistic for your site, your budget and your timeline, and tell you honestly what it will take to get there.",
   },
 ];
@@ -63,43 +60,30 @@ export default function ViewingAbout() {
   return (
     <>
       <style>{`
-        .partner-cards {
+        .about-feature-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
+          gap: 40px;
         }
-        .partner-card {
-          position: relative;
-          background-color: #ede9e3;
-          border: 1px solid rgba(10,10,10,0.08);
-          padding: 36px 32px 40px;
-          min-height: 300px;
+        .about-feature-rule {
+          width: 40px;
+          height: 2px;
+          background-color: #C9A96E;
         }
-        .partner-card-tag {
+        .about-feature-label {
           font-size: 13px;
-          font-weight: 300;
-          letter-spacing: 0.08em;
-          color: #C9A96E;
-        }
-        .partner-card-icon {
-          display: block;
-          width: 112px;
-          height: auto;
-          margin: 20px auto 0;
-        }
-        .partner-card-title {
-          font-size: 20px;
           font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
           color: #0a0a0a;
-          letter-spacing: -0.005em;
           margin-top: 18px;
         }
-        .partner-card-body {
+        .about-feature-body {
           font-size: 14px;
           font-weight: 400;
           color: rgba(10,10,10,0.62);
           line-height: 1.65;
-          margin-top: 14px;
+          margin-top: 10px;
         }
         .about-stats {
           display: flex;
@@ -113,9 +97,9 @@ export default function ViewingAbout() {
           border-left: 1px solid rgba(10,10,10,0.12);
         }
         @media (max-width: 768px) {
-          .partner-cards {
+          .about-feature-grid {
             grid-template-columns: 1fr;
-            gap: 16px;
+            gap: 32px;
           }
           .about-stats {
             display: grid;
@@ -137,10 +121,26 @@ export default function ViewingAbout() {
       `}</style>
       <section ref={ref} data-theme="light" style={{ backgroundColor: '#F5F0EB', padding: '110px 0' }}>
         <div className="inner">
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            style={{
+              fontSize: '12px',
+              fontWeight: 600,
+              color: '#C9A96E',
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              marginBottom: '18px',
+            }}
+          >
+            About Sovran
+          </motion.p>
+
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
             style={{
               fontSize: 'clamp(32px, 3.8vw, 52px)',
               fontWeight: 900,
@@ -149,38 +149,38 @@ export default function ViewingAbout() {
               lineHeight: 1.08,
             }}
           >
-            Delivered By Sovran
+            Delivered By Sovran.
           </motion.h2>
 
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
             style={{
-              fontSize: '12px',
-              fontWeight: 600,
-              color: '#C9A96E',
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              marginTop: '18px',
+              fontSize: '17px',
+              fontWeight: 400,
+              color: 'rgba(10,10,10,0.65)',
+              lineHeight: 1.7,
+              letterSpacing: 'normal',
+              maxWidth: '640px',
+              marginTop: '22px',
             }}
           >
-            Your Design And Build Partner
+            Behind every project is a family, a vision, and a home worth building properly. Sovran brings architects, designers and construction specialists together as one team, delivering design and build projects across London and the Home Counties.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-            className="partner-cards"
+            transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
+            className="about-feature-grid"
             style={{ marginTop: '56px' }}
           >
-            {cards.map((card, i) => (
-              <div key={card.title} className="partner-card">
-                <span className="partner-card-tag">{String(i + 1).padStart(2, '0')}</span>
-                <img src={card.icon} alt="" className="partner-card-icon" />
-                <h3 className="partner-card-title">{card.title}</h3>
-                <p className="partner-card-body">{card.body}</p>
+            {features.map((feature) => (
+              <div key={feature.label}>
+                <div className="about-feature-rule" />
+                <p className="about-feature-label">{feature.label}</p>
+                <p className="about-feature-body">{feature.body}</p>
               </div>
             ))}
           </motion.div>
