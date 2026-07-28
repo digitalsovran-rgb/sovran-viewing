@@ -66,7 +66,21 @@ export default function ViewingSpecialist() {
         @media (max-width: 767px) {
           .expect-row { flex-direction: column !important; }
           .expect-text-col { flex: auto !important; width: 100% !important; padding: 64px 24px 48px !important; }
-          .expect-image-col { flex: 0 0 auto !important; width: 100% !important; min-height: clamp(280px, 60vw, 420px) !important; }
+          .expect-image-col {
+            flex: 0 0 auto !important;
+            width: 100% !important;
+            min-height: 0 !important;
+            position: static !important;
+            margin-left: 0 !important;
+            padding-bottom: 48px !important;
+          }
+          .expect-image {
+            position: static !important;
+            display: block !important;
+            width: 100% !important;
+            height: clamp(280px, 60vw, 420px) !important;
+            object-position: 68% center !important;
+          }
         }
       `}</style>
       <section id="specialist-section" ref={ref} data-theme="dark" style={{ backgroundColor: '#0a0a0a' }}>
@@ -154,9 +168,10 @@ export default function ViewingSpecialist() {
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
             transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
             className="expect-image-col"
-            style={{ flex: '0 0 50%', position: 'relative', minHeight: '480px' }}
+            style={{ flex: '0 0 50%', position: 'relative', minHeight: '480px', marginLeft: '-56px' }}
           >
             <img
+              className="expect-image"
               src="/media/houseic.png"
               alt="A finished Sovran home"
               style={{
@@ -165,6 +180,7 @@ export default function ViewingSpecialist() {
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
+                objectPosition: '68% center',
               }}
             />
           </motion.div>
