@@ -79,6 +79,7 @@ export default function ViewingSpecialist() {
             display: block !important;
             width: 100% !important;
             height: clamp(280px, 60vw, 420px) !important;
+            object-fit: cover !important;
             object-position: 68% center !important;
           }
         }
@@ -179,8 +180,8 @@ export default function ViewingSpecialist() {
                 inset: 0,
                 width: '100%',
                 height: '100%',
-                objectFit: 'cover',
-                objectPosition: '68% center',
+                objectFit: 'contain',
+                objectPosition: 'center',
               }}
             />
           </motion.div>
