@@ -70,6 +70,7 @@ export default function ViewingSpecialist() {
             flex: 0 0 auto !important;
             width: 100% !important;
             min-height: 0 !important;
+            aspect-ratio: auto !important;
             position: static !important;
             margin-left: 0 !important;
             padding-bottom: 48px !important;
@@ -85,14 +86,14 @@ export default function ViewingSpecialist() {
         }
       `}</style>
       <section id="specialist-section" ref={ref} data-theme="dark" style={{ backgroundColor: '#0a0a0a' }}>
-        <div className="expect-row" style={{ display: 'flex', alignItems: 'stretch' }}>
+        <div className="expect-row" style={{ display: 'flex', alignItems: 'center' }}>
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
             className="expect-text-col"
             style={{
-              flex: '0 0 50%',
+              flex: '0 0 44%',
               display: 'flex',
               alignItems: 'center',
               padding: '100px 64px',
@@ -169,7 +170,12 @@ export default function ViewingSpecialist() {
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
             transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
             className="expect-image-col"
-            style={{ flex: '0 0 50%', position: 'relative', minHeight: '480px', marginLeft: '-56px' }}
+            style={{
+              flex: '1 1 auto',
+              position: 'relative',
+              aspectRatio: '1920 / 1080',
+              marginLeft: '-56px',
+            }}
           >
             <img
               className="expect-image"
