@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import KenBurnsCarousel from './KenBurnsCarousel';
 import ActivityLine from './ActivityLine';
 
-const DESKTOP_IMAGES = ['/media/hero.png', '/media/hero2.png', '/media/hero3.png'];
-const MOBILE_IMAGES = ['/media/heromob.png', '/media/heromob2.png', '/media/heromob3.png'];
+const DESKTOP_IMAGES = ['/media/hero.png', '/media/hero2.png?v=2', '/media/hero3.png?v=2'];
+const MOBILE_IMAGES = ['/media/heromob.png', '/media/heromob2.png?v=2', '/media/heromob3.png?v=2'];
 
 export default function ViewingHero() {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
