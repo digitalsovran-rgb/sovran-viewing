@@ -629,7 +629,7 @@ export default function SiteVisitForm() {
   };
 
   const getStepHeading = () => {
-    if (step === 5 && postcodeSubStep === 'loading') return 'Checking Remaining Slots';
+    if (step === 5 && postcodeSubStep === 'loading') return 'One Moment';
     if (step === 5 && postcodeSubStep === 'result')
       return 'Good news, we have found a slot available.';
     return stepHeadings[step];
