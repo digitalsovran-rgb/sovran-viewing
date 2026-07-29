@@ -587,7 +587,7 @@ export default function SiteVisitForm() {
   const goNext = async () => {
     if (step === 7) {
       try {
-        const response = await fetch('/api/ghl-submit', {
+        const response = await fetch('/api/monday-submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -602,10 +602,10 @@ export default function SiteVisitForm() {
           }),
         });
         if (!response.ok) {
-          console.error('GHL submission failed with status', response.status);
+          console.error('Monday submission failed with status', response.status);
         }
       } catch (err) {
-        console.error('GHL submission request failed:', err);
+        console.error('Monday submission request failed:', err);
       }
       setSubmitted(true);
       if (typeof window !== 'undefined' && (window as any).dataLayer) {

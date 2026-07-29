@@ -1,9 +1,16 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Redis } from '@upstash/redis';
 
-const GHL_LOCATION_ID = 'VNX7VxNMqlGtrJbs2RGG';
-const GHL_TAG = 'Site Visit Landing Page';
 const PAGE_PATH = '/';
+
+// UK-local calendar date, matching the key format written by api/monday-submit.ts.
+function getUKDateKey(): string {
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/London' }));
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
 
 const redis = new Redis({
   url: process.env.KV_REST_API_URL ?? '',
@@ -111,37 +118,10 @@ async function getPageViewsToday(): Promise<number> {
 
 async function getBookingsToday(): Promise<number> {
   try {
-    const apiKey = process.env.GHL_API_KEY;
-    if (!apiKey) return 0;
-
-    const now = new Date();
-    const startOfDay = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-    const endOfDay = startOfDay + 24 * 60 * 60 * 1000 - 1;
-
-    const res = await fetch('https://services.leadconnectorhq.com/contacts/search', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        Version: '2021-07-28',
-      },
-      body: JSON.stringify({
-        locationId: GHL_LOCATION_ID,
-        pageLimit: 1,
-        filters: [
-          { field: 'tags', operator: 'contains', value: GHL_TAG },
-          { field: 'dateAdded', operator: 'range', value: { gte: startOfDay, lte: endOfDay } },
-        ],
-      }),
-    });
-    if (!res.ok) return 0;
-
-    const data = (await res.json()) as { total?: number; contacts?: unknown[] };
-    if (typeof data.total === 'number') return data.total;
-    if (Array.isArray(data.contacts)) return data.contacts.length;
-    return 0;
+    const value = await redis.get<number>(`stats:formSubmissions:${getUKDateKey()}`);
+    return typeof value === 'number' ? value : 0;
   } catch (err) {
-    console.error('GHL bookingsToday fetch failed:', err);
+    console.error('Redis formSubmissions read failed:', err);
     return 0;
   }
 }
