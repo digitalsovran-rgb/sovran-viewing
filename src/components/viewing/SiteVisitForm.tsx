@@ -674,20 +674,9 @@ export default function SiteVisitForm() {
               fontWeight: 700,
               color: '#F5F0EB',
               letterSpacing: 'normal',
-              marginBottom: '8px',
             }}
           >
             Only {getSlotCount()} slots remain.
-          </p>
-          <p
-            style={{
-              fontSize: '14px',
-              fontWeight: 400,
-              color: 'rgba(245,240,235,0.6)',
-              letterSpacing: 'normal',
-            }}
-          >
-            Booked on a first-come basis, resets twice daily.
           </p>
         </div>
 
