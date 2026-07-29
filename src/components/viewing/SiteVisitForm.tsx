@@ -655,6 +655,42 @@ export default function SiteVisitForm() {
         style={{ backgroundColor: '#0a0a0a', padding: '100px 0' }}
       >
       <div className="inner">
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <p
+            style={{
+              fontSize: '12px',
+              fontWeight: 600,
+              color: '#C9A96E',
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              marginBottom: '10px',
+            }}
+          >
+            Limited Availability This Month
+          </p>
+          <p
+            style={{
+              fontSize: '18px',
+              fontWeight: 700,
+              color: '#F5F0EB',
+              letterSpacing: 'normal',
+              marginBottom: '8px',
+            }}
+          >
+            Only {getSlotCount()} slots remain.
+          </p>
+          <p
+            style={{
+              fontSize: '14px',
+              fontWeight: 400,
+              color: 'rgba(245,240,235,0.6)',
+              letterSpacing: 'normal',
+            }}
+          >
+            Booked on a first-come basis, resets twice daily.
+          </p>
+        </div>
+
         <h2
           style={{
             fontSize: 'clamp(34px, 4vw, 52px)',
