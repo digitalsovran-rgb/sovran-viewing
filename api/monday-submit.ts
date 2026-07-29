@@ -19,6 +19,12 @@ function getBudgetValue(budget: string | undefined): number {
   return budgetValueMap[budget ?? ''] ?? 0;
 }
 
+function extractFirstName(fullName: string | undefined): string {
+  const trimmed = (fullName ?? '').trim();
+  if (!trimmed) return '';
+  return trimmed.split(/\s+/)[0];
+}
+
 function buildNotes(
   services: string[] | undefined,
   timing: string | undefined,
@@ -119,6 +125,7 @@ async function createMondayItem(
     text_mm47r0fc: buildNotes(services as string[] | undefined, timing as string | undefined, postcode as string | undefined),
     dropdown_mm47gc2c: { labels: ['Website'] },
     deal_stage: { label: 'New Enquiry' },
+    text_mm5q24an: extractFirstName(firstName as string | undefined),
   };
   const itemName = (firstName as string) || 'Unnamed Lead';
 
