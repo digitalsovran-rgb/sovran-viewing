@@ -20,7 +20,7 @@ const features = [
     body: "The same team that designs a project builds it, with skilled trades and a single point of accountability from foundation to final finish.",
   },
   {
-    label: 'Honest Guidance',
+    label: 'Accountability',
     body: "Before you commit to anything, we assess what's realistic for your site, your budget and your timeline, and tell you honestly what it will take to get there.",
   },
 ];
