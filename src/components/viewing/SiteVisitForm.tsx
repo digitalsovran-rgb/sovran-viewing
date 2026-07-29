@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getSlotCount } from '../../utils/slotCount';
 
 type FormData = {
   name: string;
@@ -1093,6 +1094,18 @@ export default function SiteVisitForm() {
 
                           {postcodeSubStep === 'result' && (
                             <div style={{ paddingTop: '8px' }}>
+                              <p
+                                style={{
+                                  fontSize: '12px',
+                                  fontWeight: 600,
+                                  color: '#c9a96e',
+                                  letterSpacing: '0.15em',
+                                  textTransform: 'uppercase',
+                                  marginBottom: '12px',
+                                }}
+                              >
+                                {getSlotCount()} slots left
+                              </p>
                               <p
                                 style={{
                                   fontSize: '14px',
