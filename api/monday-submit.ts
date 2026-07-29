@@ -37,25 +37,20 @@ function getUKDateKey(): string {
   return `${year}-${month}-${day}`;
 }
 
-async function createMondayItem(body: Record<string, unknown>): Promise<boolean> {
-  const apiKey = process.env.MONDAY_API_TOKEN;
-  if (!apiKey) {
-    console.error('Monday API key is not configured (MONDAY_API_TOKEN is undefined)');
-    return false;
-  }
+const MAX_ATTEMPTS = 3; // 1 initial attempt + 2 retries
+const RETRY_DELAY_MS = 500;
 
-  const { firstName, email, phone, extensionType, services, budget, timing, postcode } = body;
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-  const columnValues = {
-    email_mm51mezw: { email: email ?? '', text: email ?? '' },
-    phone_mm51yhe7: { phone: phone ?? '', countryShortName: 'GB' },
-    dropdown_mm47dr86: { labels: extensionType ? [extensionType] : [] },
-    numeric_mm47arbw: String(getBudgetValue(budget as string | undefined)),
-    text_mm47r0fc: buildNotes(services as string[] | undefined, timing as string | undefined, postcode as string | undefined),
-    dropdown_mm47gc2c: { labels: ['Website'] },
-    deal_stage: { label: 'New Enquiry' },
-  };
+type MondayAttemptResult = { ok: true; id: string } | { ok: false; error: unknown };
 
+async function attemptMondayRequest(
+  apiKey: string,
+  itemName: string,
+  columnValues: Record<string, unknown>
+): Promise<MondayAttemptResult> {
   const query = `mutation ($boardId: ID!, $itemName: String!, $columnValues: JSON!) {
     create_item (board_id: $boardId, item_name: $itemName, column_values: $columnValues) {
       id
@@ -73,7 +68,7 @@ async function createMondayItem(body: Record<string, unknown>): Promise<boolean>
         query,
         variables: {
           boardId: MONDAY_BOARD_ID,
-          itemName: (firstName as string) || 'Unnamed Lead',
+          itemName,
           columnValues: JSON.stringify(columnValues),
         },
       }),
@@ -81,14 +76,58 @@ async function createMondayItem(body: Record<string, unknown>): Promise<boolean>
 
     const data = await mondayResponse.json().catch(() => null);
     if (!mondayResponse.ok || data?.errors) {
-      console.error('Monday item creation failed:', data?.errors ?? mondayResponse.status);
-      return false;
+      return { ok: false, error: data?.errors ?? `HTTP ${mondayResponse.status}` };
     }
-    return true;
+    const id = data?.data?.create_item?.id;
+    if (!id) {
+      return { ok: false, error: 'Monday response did not include a created item id' };
+    }
+    return { ok: true, id };
   } catch (err) {
-    console.error('Monday item creation request failed:', err);
-    return false;
+    return { ok: false, error: err };
   }
+}
+
+async function createMondayItem(
+  body: Record<string, unknown>
+): Promise<{ success: boolean; itemId?: string }> {
+  const apiKey = process.env.MONDAY_API_TOKEN;
+  if (!apiKey) {
+    console.error('Monday API key is not configured (MONDAY_API_TOKEN is undefined)');
+    return { success: false };
+  }
+
+  const { firstName, email, phone, extensionType, services, budget, timing, postcode } = body;
+
+  const columnValues = {
+    email_mm51mezw: { email: email ?? '', text: email ?? '' },
+    phone_mm51yhe7: { phone: phone ?? '', countryShortName: 'GB' },
+    dropdown_mm47dr86: { labels: extensionType ? [extensionType] : [] },
+    numeric_mm47arbw: String(getBudgetValue(budget as string | undefined)),
+    text_mm47r0fc: buildNotes(services as string[] | undefined, timing as string | undefined, postcode as string | undefined),
+    dropdown_mm47gc2c: { labels: ['Website'] },
+    deal_stage: { label: 'New Enquiry' },
+  };
+  const itemName = (firstName as string) || 'Unnamed Lead';
+
+  let lastError: unknown = null;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    const result = await attemptMondayRequest(apiKey, itemName, columnValues);
+    if (result.ok) {
+      console.log(
+        `[monday-submit] item created on attempt ${attempt}/${MAX_ATTEMPTS} — item ID: ${result.id}`
+      );
+      return { success: true, itemId: result.id };
+    }
+    lastError = result.error;
+    console.error(`[monday-submit] attempt ${attempt}/${MAX_ATTEMPTS} failed:`, result.error);
+    if (attempt < MAX_ATTEMPTS) {
+      await sleep(RETRY_DELAY_MS);
+    }
+  }
+
+  console.error('[monday-submit] all attempts exhausted, item was not created. Last error:', lastError);
+  return { success: false };
 }
 
 async function incrementFormSubmissionCounter(): Promise<void> {
@@ -100,12 +139,19 @@ async function incrementFormSubmissionCounter(): Promise<void> {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  console.log('[monday-submit] invoked');
+
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
 
-  const success = await createMondayItem(req.body ?? {});
+  const { success, itemId } = await createMondayItem(req.body ?? {});
+  console.log(
+    success
+      ? `[monday-submit] outcome: success — item ID ${itemId}`
+      : '[monday-submit] outcome: failure — see attempt logs above for error details'
+  );
 
   // Tracks completed form submissions, not CRM delivery — increments regardless of Monday outcome.
   await incrementFormSubmissionCounter();
