@@ -35,6 +35,8 @@ export default function ViewingHero() {
           .viewing-hero-btn { width: 100% !important; text-align: center !important; }
           .viewing-hero-cta-wrap { margin-top: 22px !important; }
           .viewing-hero-activity { margin-top: 16px !important; }
+          .viewing-hero-logo-wrap { top: 24px !important; }
+          .viewing-hero-logo { height: 26px !important; }
         }
       `}</style>
       <section
@@ -80,6 +82,32 @@ export default function ViewingHero() {
               : 'linear-gradient(0deg, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.3) 40%, rgba(10,10,10,0.05) 70%, rgba(10,10,10,0) 100%)',
           }}
         />
+
+        {/* Wordmark — centered near the top, independent of the bottom-anchored text block.
+            Centered via a flex wrapper rather than transform: translateX(-50%), since Framer
+            Motion manages the transform property itself for the y-animation on the image. */}
+        <div
+          className="viewing-hero-logo-wrap"
+          style={{
+            position: 'absolute',
+            top: 'clamp(28px, 5vh, 56px)',
+            left: 0,
+            right: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            zIndex: 1,
+          }}
+        >
+          <motion.img
+            className="viewing-hero-logo"
+            src="/media/logo-sovran-white.png"
+            alt="Sovran"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            style={{ height: 'clamp(30px, 3.2vw, 40px)' }}
+          />
+        </div>
 
         {/* Content — anchored bottom-left, asymmetrical */}
         <div
