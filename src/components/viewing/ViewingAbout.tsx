@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { animate, motion, useInView } from 'framer-motion';
+import { AnimatePresence, animate, motion, useInView } from 'framer-motion';
 
 const STAT_ANIMATION_DURATION = 1.8;
 
@@ -56,6 +56,8 @@ export default function ViewingAbout() {
   const isInView = useInView(ref, { once: true, margin: '0px 0px -120px 0px', amount: 0.2 });
   const statsRef = useRef<HTMLDivElement>(null);
   const isStatsInView = useInView(statsRef, { once: true, margin: '0px 0px -80px 0px', amount: 0.4 });
+  const [activeFeature, setActiveFeature] = useState(features[0].label);
+  const activeFeatureData = features.find((f) => f.label === activeFeature) ?? features[0];
 
   return (
     <>
@@ -96,11 +98,40 @@ export default function ViewingAbout() {
         .about-stat + .about-stat {
           border-left: 1px solid rgba(10,10,10,0.12);
         }
+        .about-feature-tabs { display: none; }
+        .about-feature-tablist {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+        .about-feature-tab {
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: rgba(10,10,10,0.55);
+          background-color: transparent;
+          border: 1px solid rgba(10,10,10,0.15);
+          border-radius: 999px;
+          padding: 9px 16px;
+          cursor: pointer;
+          transition: background-color 0.25s, border-color 0.25s, color 0.25s;
+        }
+        .about-feature-tab.active {
+          background-color: #C9A96E;
+          border-color: #C9A96E;
+          color: #0a0a0a;
+        }
+        .about-feature-tab-body {
+          font-size: 14px;
+          font-weight: 400;
+          color: rgba(10,10,10,0.62);
+          line-height: 1.65;
+          margin-top: 20px;
+        }
         @media (max-width: 768px) {
-          .about-feature-grid {
-            grid-template-columns: 1fr;
-            gap: 32px;
-          }
+          .about-feature-grid { display: none !important; }
+          .about-feature-tabs { display: block; }
           .about-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -183,6 +214,39 @@ export default function ViewingAbout() {
                 <p className="about-feature-body">{feature.body}</p>
               </div>
             ))}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
+            className="about-feature-tabs"
+            style={{ marginTop: '56px' }}
+          >
+            <div className="about-feature-tablist">
+              {features.map((feature) => (
+                <button
+                  key={feature.label}
+                  type="button"
+                  className={`about-feature-tab${feature.label === activeFeature ? ' active' : ''}`}
+                  onClick={() => setActiveFeature(feature.label)}
+                >
+                  {feature.label}
+                </button>
+              ))}
+            </div>
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={activeFeatureData.label}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="about-feature-tab-body"
+              >
+                {activeFeatureData.body}
+              </motion.p>
+            </AnimatePresence>
           </motion.div>
 
           <motion.div

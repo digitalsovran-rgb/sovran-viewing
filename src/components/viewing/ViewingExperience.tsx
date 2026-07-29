@@ -88,7 +88,7 @@ export default function ViewingExperience() {
               maxWidth: '760px',
             }}
           >
-            What This Visit Gives You
+            What You&apos;ll See On Your Visit
           </motion.h2>
 
           <motion.p

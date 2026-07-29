@@ -26,12 +26,12 @@ export default function ViewingHero() {
           #viewing-hero { min-height: 640px !important; }
           .viewing-hero-content { padding: 0 24px 40px !important; max-width: none !important; }
           .viewing-hero-eyebrow {
-            font-size: 10px !important;
+            font-size: 11px !important;
             margin-bottom: 14px !important;
             text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.9) !important;
           }
-          .viewing-hero-h1 { font-size: clamp(22px, 6.4vw, 30px) !important; line-height: 1.16 !important; }
-          .viewing-hero-desc { font-size: 13px !important; max-width: none !important; margin-top: 14px !important; }
+          .viewing-hero-h1 { font-size: clamp(25px, 7.2vw, 34px) !important; line-height: 1.16 !important; }
+          .viewing-hero-desc { font-size: 14.5px !important; max-width: none !important; margin-top: 14px !important; }
           .viewing-hero-btn { width: 100% !important; text-align: center !important; }
           .viewing-hero-cta-wrap { margin-top: 22px !important; }
           .viewing-hero-activity { margin-top: 16px !important; }
@@ -105,7 +105,7 @@ export default function ViewingHero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
               style={{
-                fontSize: '12px',
+                fontSize: '13.5px',
                 fontWeight: 600,
                 letterSpacing: '0.22em',
                 color: '#c9a96e',
@@ -122,7 +122,7 @@ export default function ViewingHero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.25, ease: 'easeOut' }}
               style={{
-                fontSize: 'clamp(34px, 4.6vw, 64px)',
+                fontSize: 'clamp(38px, 5.2vw, 72px)',
                 fontWeight: 900,
                 color: '#ffffff',
                 lineHeight: 1.05,
@@ -131,7 +131,7 @@ export default function ViewingHero() {
                 fontFamily: 'Inter, sans-serif',
               }}
             >
-              Private Viewing Of A Completed Project
+              Private Viewing Of A Design And Build Project
             </motion.h1>
 
             <motion.p
@@ -140,12 +140,13 @@ export default function ViewingHero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.45 }}
               style={{
-                fontSize: 'clamp(15px, 1.3vw, 18px)',
+                fontSize: 'clamp(17px, 1.45vw, 20px)',
                 fontWeight: 400,
                 color: 'rgba(255,255,255,0.72)',
                 margin: '28px 0 0',
                 lineHeight: 1.7,
                 letterSpacing: 'normal',
+                textAlign: 'justify',
               }}
             >
               If you&apos;re planning your next design and build project, this is the inspiration you need. Walk through a finished home, see the real layout and standard of work we carry out, and speak directly with the specialist who delivered it.
