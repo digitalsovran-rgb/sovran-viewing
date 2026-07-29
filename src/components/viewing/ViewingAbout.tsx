@@ -99,35 +99,48 @@ export default function ViewingAbout() {
           border-left: 1px solid rgba(10,10,10,0.12);
         }
         .about-feature-tabs { display: none; }
+        .about-feature-tabs-block {
+          border-radius: 8px;
+          overflow: hidden;
+        }
         .about-feature-tablist {
           display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
+          border: 1px solid rgba(10,10,10,0.35);
+          border-bottom: none;
         }
         .about-feature-tab {
+          flex: 1;
           font-size: 12px;
           font-weight: 700;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.06em;
           text-transform: uppercase;
-          color: rgba(10,10,10,0.55);
+          color: #0a0a0a;
           background-color: transparent;
-          border: 1px solid rgba(10,10,10,0.15);
-          border-radius: 999px;
-          padding: 9px 16px;
+          border: none;
+          border-right: 1px solid rgba(10,10,10,0.35);
+          padding: 14px 8px;
           cursor: pointer;
-          transition: background-color 0.25s, border-color 0.25s, color 0.25s;
+          text-align: center;
+          transition: background-color 0.25s, color 0.25s;
+        }
+        .about-feature-tab:last-child {
+          border-right: none;
         }
         .about-feature-tab.active {
-          background-color: #C9A96E;
-          border-color: #C9A96E;
-          color: #0a0a0a;
+          background-color: #0a0a0a;
+          color: #ffffff;
+        }
+        .about-feature-tab-panel {
+          border: 1px solid rgba(10,10,10,0.35);
+          padding: 20px 18px;
+          overflow: hidden;
         }
         .about-feature-tab-body {
           font-size: 14px;
           font-weight: 400;
           color: rgba(10,10,10,0.62);
           line-height: 1.65;
-          margin-top: 20px;
+          margin: 0;
         }
         @media (max-width: 768px) {
           .about-feature-grid { display: none !important; }
@@ -223,30 +236,34 @@ export default function ViewingAbout() {
             className="about-feature-tabs"
             style={{ marginTop: '56px' }}
           >
-            <div className="about-feature-tablist">
-              {features.map((feature) => (
-                <button
-                  key={feature.label}
-                  type="button"
-                  className={`about-feature-tab${feature.label === activeFeature ? ' active' : ''}`}
-                  onClick={() => setActiveFeature(feature.label)}
-                >
-                  {feature.label}
-                </button>
-              ))}
+            <div className="about-feature-tabs-block">
+              <div className="about-feature-tablist">
+                {features.map((feature) => (
+                  <button
+                    key={feature.label}
+                    type="button"
+                    className={`about-feature-tab${feature.label === activeFeature ? ' active' : ''}`}
+                    onClick={() => setActiveFeature(feature.label)}
+                  >
+                    {feature.label}
+                  </button>
+                ))}
+              </div>
+              <div className="about-feature-tab-panel">
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={activeFeatureData.label}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="about-feature-tab-body"
+                  >
+                    {activeFeatureData.body}
+                  </motion.p>
+                </AnimatePresence>
+              </div>
             </div>
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={activeFeatureData.label}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                className="about-feature-tab-body"
-              >
-                {activeFeatureData.body}
-              </motion.p>
-            </AnimatePresence>
           </motion.div>
 
           <motion.div
