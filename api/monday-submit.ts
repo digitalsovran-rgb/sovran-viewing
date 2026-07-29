@@ -44,7 +44,16 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-type MondayAttemptResult = { ok: true; id: string } | { ok: false; error: unknown };
+type MondayAttemptResult = { ok: true; id: string } | { ok: false; error: string };
+
+function toErrorMessage(err: unknown): string {
+  if (err instanceof Error) return err.message;
+  try {
+    return JSON.stringify(err);
+  } catch {
+    return String(err);
+  }
+}
 
 async function attemptMondayRequest(
   apiKey: string,
@@ -76,7 +85,10 @@ async function attemptMondayRequest(
 
     const data = await mondayResponse.json().catch(() => null);
     if (!mondayResponse.ok || data?.errors) {
-      return { ok: false, error: data?.errors ?? `HTTP ${mondayResponse.status}` };
+      const message = data?.errors
+        ? `Monday GraphQL error: ${toErrorMessage(data.errors)}`
+        : `Monday API returned HTTP ${mondayResponse.status}`;
+      return { ok: false, error: message };
     }
     const id = data?.data?.create_item?.id;
     if (!id) {
@@ -84,7 +96,7 @@ async function attemptMondayRequest(
     }
     return { ok: true, id };
   } catch (err) {
-    return { ok: false, error: err };
+    return { ok: false, error: `Network error calling Monday API: ${toErrorMessage(err)}` };
   }
 }
 
@@ -110,7 +122,7 @@ async function createMondayItem(
   };
   const itemName = (firstName as string) || 'Unnamed Lead';
 
-  let lastError: unknown = null;
+  let lastError: string | null = null;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     const result = await attemptMondayRequest(apiKey, itemName, columnValues);
     if (result.ok) {
