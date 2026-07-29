@@ -38,9 +38,9 @@ function getUKDateKey(): string {
 }
 
 async function createMondayItem(body: Record<string, unknown>): Promise<boolean> {
-  const apiKey = process.env.MONDAY_API_KEY;
+  const apiKey = process.env.MONDAY_API_TOKEN;
   if (!apiKey) {
-    console.error('Monday API key is not configured (MONDAY_API_KEY is undefined)');
+    console.error('Monday API key is not configured (MONDAY_API_TOKEN is undefined)');
     return false;
   }
 
