@@ -36,7 +36,6 @@ export default function ViewingHero() {
           .viewing-hero-cta-wrap { margin-top: 22px !important; }
           .viewing-hero-activity { margin-top: 16px !important; }
           .viewing-hero-logo-wrap { top: 24px !important; }
-          .viewing-hero-logo { height: 26px !important; }
         }
       `}</style>
       <section
@@ -105,7 +104,7 @@ export default function ViewingHero() {
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            style={{ height: 'clamp(30px, 3.2vw, 40px)' }}
+            style={{ width: '120px', height: 'auto' }}
           />
         </div>
 
