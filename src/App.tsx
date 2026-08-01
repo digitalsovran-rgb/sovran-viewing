@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { getSlotCount } from './utils/slotCount';
 import ViewingHero from './components/viewing/ViewingHero';
 import ViewingExperience from './components/viewing/ViewingExperience';
 import ViewingSpecialist from './components/viewing/ViewingSpecialist';
@@ -147,7 +148,7 @@ function StickyCTABar() {
         border: 'none',
         borderRadius: '10px',
         boxShadow: '0 10px 30px rgba(0,0,0,0.28)',
-        padding: '18px 40px',
+        padding: '12px 40px',
         fontFamily: 'Inter, sans-serif',
         fontSize: '13px',
         fontWeight: 600,
@@ -160,7 +161,12 @@ function StickyCTABar() {
         transition: 'transform 0.4s ease, background-color 0.25s ease, color 0.25s ease',
       }}
     >
-      Register Your Interest
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <span>Register Your Interest</span>
+        <span style={{ fontSize: '8px', opacity: 0.8, marginTop: '5px' }}>
+          {getSlotCount()} slots left.
+        </span>
+      </div>
     </button>
   );
 }
