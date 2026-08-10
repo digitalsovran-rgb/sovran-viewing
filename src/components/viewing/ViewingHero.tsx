@@ -50,14 +50,10 @@ export default function ViewingHero() {
           backgroundColor: '#0a0a0a',
         }}
       >
-        {/* Background — rotating Ken Burns carousel, per breakpoint */}
-        <motion.div
-          className="viewing-hero-bg"
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.8, ease: 'easeOut' }}
-          style={{ position: 'absolute', inset: 0 }}
-        >
+        {/* Background — rotating Ken Burns carousel, per breakpoint.
+            No entrance fade on this wrapper — it sits directly behind the LCP candidate,
+            and KenBurnsCarousel's own internal crossfade already handles first-appearance. */}
+        <div className="viewing-hero-bg" style={{ position: 'absolute', inset: 0 }}>
           <KenBurnsCarousel
             images={isMobile ? MOBILE_IMAGES : DESKTOP_IMAGES}
             alt="A completed Sovran home extension"
@@ -67,7 +63,7 @@ export default function ViewingHero() {
             panX={-2.5}
             panY={-1.5}
           />
-        </motion.div>
+        </div>
 
         {/* Gradient overlay — light enough for the photo to read clearly, just enough contrast
             at the bottom-left for the eyebrow/headline/body text to stay legible. Mobile gets

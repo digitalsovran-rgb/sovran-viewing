@@ -48,6 +48,8 @@ export default function KenBurnsCarousel({
           <img
             src={images[index]}
             alt={alt}
+            fetchPriority="high"
+            loading="eager"
             style={{
               position: 'absolute',
               inset: 0,
