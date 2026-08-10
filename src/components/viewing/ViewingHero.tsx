@@ -157,11 +157,10 @@ export default function ViewingHero() {
               Private Viewing Of A Design And Build Project
             </motion.h1>
 
-            <motion.p
+            {/* Plain, unanimated — this is the confirmed LCP element (per live Lighthouse trace).
+                Its entrance fade was responsible for ~95% of total LCP render delay. */}
+            <p
               className="viewing-hero-desc"
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.45 }}
               style={{
                 fontSize: 'clamp(17px, 1.45vw, 20px)',
                 fontWeight: 400,
@@ -173,7 +172,7 @@ export default function ViewingHero() {
               }}
             >
               If you&apos;re planning your next design and build project, this is the inspiration you need. Walk through a finished home, see the real layout and standard of work we carry out, and speak directly with the specialist who delivered it.
-            </motion.p>
+            </p>
 
             <motion.div
               className="viewing-hero-cta-wrap"
