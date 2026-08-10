@@ -1,10 +1,14 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, lazy } from 'react';
 import { getSlotCount } from './utils/slotCount';
 import ViewingHero from './components/viewing/ViewingHero';
+import LazySection from './components/LazySection';
 
-// Below-the-fold sections are code-split so their JS (including SiteVisitForm's validation/
-// submission logic and Footer's gsap + ScrollTrigger import) doesn't have to finish loading,
-// parsing, and executing before the hero can mount and paint.
+// Below-the-fold sections are code-split AND viewport-gated via LazySection, so their JS
+// (including SiteVisitForm's validation/submission logic and Footer's gsap + ScrollTrigger
+// import) doesn't download or execute until the user is actually about to scroll to it —
+// React.lazy alone triggers its import() on first render regardless of scroll position, so
+// code-splitting without this gating just moved the same near-immediate load out of the
+// critical path without deferring it.
 const ViewingExperience = lazy(() => import('./components/viewing/ViewingExperience'));
 const ViewingSpecialist = lazy(() => import('./components/viewing/ViewingSpecialist'));
 const ViewingAbout = lazy(() => import('./components/viewing/ViewingAbout'));
@@ -179,21 +183,11 @@ export default function App() {
   return (
     <>
       <ViewingHero />
-      <Suspense fallback={null}>
-        <ViewingExperience />
-      </Suspense>
-      <Suspense fallback={null}>
-        <ViewingSpecialist />
-      </Suspense>
-      <Suspense fallback={null}>
-        <ViewingAbout />
-      </Suspense>
-      <Suspense fallback={null}>
-        <SiteVisitForm />
-      </Suspense>
-      <Suspense fallback={null}>
-        <Footer />
-      </Suspense>
+      <LazySection component={ViewingExperience} minHeight={1520} />
+      <LazySection component={ViewingSpecialist} minHeight={1070} />
+      <LazySection component={ViewingAbout} minHeight={1010} />
+      <LazySection component={SiteVisitForm} minHeight={900} />
+      <LazySection component={Footer} minHeight={870} />
       <StickyCTABar />
     </>
   );
