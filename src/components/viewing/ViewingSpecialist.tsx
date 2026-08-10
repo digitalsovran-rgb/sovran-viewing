@@ -179,7 +179,7 @@ export default function ViewingSpecialist() {
           >
             <img
               className="expect-image"
-              src="/media/houseic.png"
+              src="/media/houseic.webp"
               alt="A finished Sovran home"
               style={{
                 position: 'absolute',

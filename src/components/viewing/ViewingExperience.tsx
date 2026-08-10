@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { KenBurnsStatic } from './KenBurnsCarousel';
 
-const DESKTOP_VISIT_IMAGE = '/media/visitpc.png';
-const MOBILE_VISIT_IMAGE = '/media/visitmob.png';
+const DESKTOP_VISIT_IMAGE = '/media/visitpc.webp';
+const MOBILE_VISIT_IMAGE = '/media/visitmob.webp';
 
 const journeyPoints = [
   "The layout and flow decisions that shaped how the finished home works, day to day.",

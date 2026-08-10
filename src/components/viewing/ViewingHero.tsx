@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import KenBurnsCarousel from './KenBurnsCarousel';
 import ActivityLine from './ActivityLine';
 
-const DESKTOP_IMAGES = ['/media/hero.png', '/media/hero2.png?v=2', '/media/hero3.png?v=2'];
-const MOBILE_IMAGES = ['/media/heromob.png', '/media/heromob2.png?v=2', '/media/heromob3.png?v=2'];
+const DESKTOP_IMAGES = ['/media/hero.webp', '/media/hero2.webp?v=2', '/media/hero3.webp?v=2'];
+const MOBILE_IMAGES = ['/media/heromob.webp', '/media/heromob2.webp?v=2', '/media/heromob3.webp?v=2'];
 
 export default function ViewingHero() {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
@@ -99,7 +99,7 @@ export default function ViewingHero() {
         >
           <motion.img
             className="viewing-hero-logo"
-            src="/media/logo-sovran-white.png"
+            src="/media/logo-sovran-white.webp"
             alt="Sovran"
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
