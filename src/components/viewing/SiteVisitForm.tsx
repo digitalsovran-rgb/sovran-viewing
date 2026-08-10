@@ -622,7 +622,6 @@ export default function SiteVisitForm() {
         }
       `}</style>
       <section
-        id="viewing-form"
         data-theme="dark"
         style={{ backgroundColor: '#0a0a0a', padding: '100px 0' }}
       >
