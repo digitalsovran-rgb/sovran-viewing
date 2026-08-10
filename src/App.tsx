@@ -1,11 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { getSlotCount } from './utils/slotCount';
 import ViewingHero from './components/viewing/ViewingHero';
-import ViewingExperience from './components/viewing/ViewingExperience';
-import ViewingSpecialist from './components/viewing/ViewingSpecialist';
-import ViewingAbout from './components/viewing/ViewingAbout';
-import SiteVisitForm from './components/viewing/SiteVisitForm';
-import Footer from './components/Footer';
+
+// Below-the-fold sections are code-split so their JS (including SiteVisitForm's validation/
+// submission logic and Footer's gsap + ScrollTrigger import) doesn't have to finish loading,
+// parsing, and executing before the hero can mount and paint.
+const ViewingExperience = lazy(() => import('./components/viewing/ViewingExperience'));
+const ViewingSpecialist = lazy(() => import('./components/viewing/ViewingSpecialist'));
+const ViewingAbout = lazy(() => import('./components/viewing/ViewingAbout'));
+const SiteVisitForm = lazy(() => import('./components/viewing/SiteVisitForm'));
+const Footer = lazy(() => import('./components/Footer'));
 
 type SectionTheme = 'dark' | 'light';
 
@@ -175,11 +179,21 @@ export default function App() {
   return (
     <>
       <ViewingHero />
-      <ViewingExperience />
-      <ViewingSpecialist />
-      <ViewingAbout />
-      <SiteVisitForm />
-      <Footer />
+      <Suspense fallback={null}>
+        <ViewingExperience />
+      </Suspense>
+      <Suspense fallback={null}>
+        <ViewingSpecialist />
+      </Suspense>
+      <Suspense fallback={null}>
+        <ViewingAbout />
+      </Suspense>
+      <Suspense fallback={null}>
+        <SiteVisitForm />
+      </Suspense>
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
       <StickyCTABar />
     </>
   );
