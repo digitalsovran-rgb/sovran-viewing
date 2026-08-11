@@ -10,8 +10,8 @@ const redis = new Redis({
 
 const budgetValueMap: Record<string, number> = {
   'Under £150K': 100000,
-  '£150K – £500K': 325000,
-  '£500K – £1M': 750000,
+  '£150K–500K': 325000,
+  '£500K–1M': 750000,
   '£1M+': 1250000,
 };
 

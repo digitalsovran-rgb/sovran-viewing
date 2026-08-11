@@ -12,7 +12,10 @@ type AvailabilitySubStep = 'input' | 'loading' | 'result';
 
 const projectTypeOptions = ['Extension', 'Renovation', 'New Build', 'Multiple Projects'];
 
-const budgetOptions = ['Under £150K', '£150K – £500K', '£500K – £1M', '£1M+'];
+// Single £ sign per range and tight dash (no spaces) — "£150K – £500K" was the widest
+// option text in the merged Investment/Ideal Start step's two-column mobile layout, and
+// repeating the currency symbol wasted width without adding information.
+const budgetOptions = ['Under £150K', '£150K–500K', '£500K–1M', '£1M+'];
 
 const startTimingOptions = ['Within 1 Month', 'Within 3 Months', 'Within 6 Months', 'Next Year'];
 
@@ -188,27 +191,36 @@ function WheelPicker({
   value,
   onChange,
   defaultIndex = 0,
+  itemHeight = 56,
 }: {
   options: string[];
   value: string;
   onChange: (v: string) => void;
   defaultIndex?: number;
+  // Taller rows let long option text wrap to two lines instead of clipping — only needed
+  // where two pickers sit side by side (Investment/Ideal Start) and are narrow enough that
+  // their longest option can't always fit on one line even after shortening labels and
+  // reducing font-size. Step 1's picker doesn't need this, so it keeps the default.
+  itemHeight?: number;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollTimerRef = useRef<number | null>(null);
   const itemRefsRef = useRef<(HTMLDivElement | null)[]>([]);
   const spanRefsRef = useRef<(HTMLSpanElement | null)[]>([]);
 
-  const ITEM_HEIGHT = 56;
+  const ITEM_HEIGHT = itemHeight;
   const CONTAINER_HEIGHT = ITEM_HEIGHT * 3;
   const PADDING = ITEM_HEIGHT;
   // Space reserved on the left for the arrow + gap before the pill/text start. Kept as small
   // as the arrow can comfortably sit in — every px reclaimed here is a px the pill gets to use,
   // which matters now that two pickers sit side by side in the merged Investment/Ideal Start step.
-  const LEFT_OFFSET = 38;
+  const LEFT_OFFSET = 32;
 
   const longestOption = options.reduce((a, b) => a.length > b.length ? a : b, '');
-  const PILL_WIDTH = Math.max(150, longestOption.length * 8 + 60);
+  // Sized for the (now smaller, 15px/14px) option font. When a pill still can't fit its text
+  // on one line at this width — e.g. "Within 3 Months" in the narrow two-column layout — the
+  // text wraps to two lines (see the span's whiteSpace below) rather than clipping.
+  const PILL_WIDTH = Math.max(120, longestOption.length * 7 + 50);
 
   const initIdx = value
     ? (options.indexOf(value) === -1 ? defaultIndex : options.indexOf(value))
@@ -233,7 +245,7 @@ function WheelPicker({
       if (prevDiv) prevDiv.style.opacity = '0.75';
       if (prevSpan) {
         prevSpan.style.color = '#0a0a0a';
-        prevSpan.style.fontSize = '16px';
+        prevSpan.style.fontSize = '14px';
         prevSpan.style.fontWeight = '400';
         prevSpan.style.letterSpacing = 'normal';
       }
@@ -244,7 +256,7 @@ function WheelPicker({
     if (newDiv) newDiv.style.opacity = '1';
     if (newSpan) {
       newSpan.style.color = '#0a0a0a';
-      newSpan.style.fontSize = '17px';
+      newSpan.style.fontSize = '15px';
       newSpan.style.fontWeight = '700';
       newSpan.style.letterSpacing = '-0.01em';
     }
@@ -399,12 +411,15 @@ function WheelPicker({
                   width: `${PILL_WIDTH}px`,
                   maxWidth: 'calc(100% - 4px)',
                   textAlign: 'center',
-                  fontSize: isInitial ? '17px' : '16px',
+                  fontSize: isInitial ? '15px' : '14px',
                   fontWeight: isInitial ? 700 : 400,
                   color: '#0a0a0a',
                   letterSpacing: isInitial ? '-0.01em' : 'normal',
-                  whiteSpace: 'nowrap',
-                  lineHeight: 1.3,
+                  // Wraps to a second line (centered, no clipping) if the pill is too narrow
+                  // to fit the text on one line, rather than truncating.
+                  whiteSpace: 'normal',
+                  wordBreak: 'break-word',
+                  lineHeight: 1.25,
                 }}
               >
                 {opt}
@@ -783,7 +798,8 @@ export default function SiteVisitForm() {
                                       options={budgetOptions}
                                       value={selectedBudget}
                                       onChange={setSelectedBudget}
-                                      defaultIndex={budgetOptions.indexOf('£150K – £500K')}
+                                      defaultIndex={budgetOptions.indexOf('£150K–500K')}
+                                      itemHeight={72}
                                     />
                                   ) : (
                                     <div
@@ -814,6 +830,7 @@ export default function SiteVisitForm() {
                                       value={selectedStartTiming}
                                       onChange={setSelectedStartTiming}
                                       defaultIndex={startTimingOptions.indexOf('Within 1 Month')}
+                                      itemHeight={72}
                                     />
                                   ) : (
                                     <div
