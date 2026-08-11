@@ -25,13 +25,8 @@ function extractFirstName(fullName: string | undefined): string {
   return trimmed.split(/\s+/)[0];
 }
 
-function buildNotes(
-  services: string[] | undefined,
-  timing: string | undefined,
-  postcode: string | undefined
-): string {
-  const serviceList = Array.isArray(services) && services.length > 0 ? services.join(', ') : 'None selected';
-  return `Services: ${serviceList}\nPreferred Timing: ${timing || 'Not specified'}\nPostcode: ${postcode || 'Not provided'}`;
+function buildNotes(budget: string | undefined, timing: string | undefined): string {
+  return `Investment: ${budget || 'Not specified'}\nIdeal Start: ${timing || 'Not specified'}`;
 }
 
 // UK-local calendar date, so the counter rolls over at UK midnight rather than UTC midnight.
@@ -115,14 +110,14 @@ async function createMondayItem(
     return { success: false };
   }
 
-  const { firstName, email, phone, extensionType, services, budget, timing, postcode } = body;
+  const { firstName, email, phone, extensionType, budget, timing } = body;
 
   const columnValues = {
     email_mm51mezw: { email: email ?? '', text: email ?? '' },
     phone_mm51yhe7: { phone: phone ?? '', countryShortName: 'GB' },
     dropdown_mm47dr86: { labels: extensionType ? [extensionType] : [] },
     numeric_mm47arbw: String(getBudgetValue(budget as string | undefined)),
-    text_mm47r0fc: buildNotes(services as string[] | undefined, timing as string | undefined, postcode as string | undefined),
+    text_mm47r0fc: buildNotes(budget as string | undefined, timing as string | undefined),
     dropdown_mm47gc2c: { labels: ['Website'] },
     deal_stage: { label: 'New Enquiry' },
     text_mm5q24an: extractFirstName(firstName as string | undefined),

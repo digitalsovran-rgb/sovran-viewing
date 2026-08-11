@@ -8,45 +8,34 @@ type FormData = {
   phone: string;
 };
 
-type PostcodeSubStep = 'input' | 'loading' | 'result';
+type AvailabilitySubStep = 'input' | 'loading' | 'result';
 
 const projectTypeOptions = ['Extension', 'Renovation', 'New Build', 'Multiple Projects'];
-
-const serviceOptions = [
-  {
-    label: 'Design',
-    tooltip:
-      'Full architectural drawings, 3D renders, planning submissions, and material selections tailored to your home.',
-  },
-  {
-    label: 'Build',
-    tooltip:
-      'Full construction management, skilled trades, and site supervision from foundation to final finish.',
-  },
-];
 
 const budgetOptions = ['Under £150K', '£150K – £500K', '£500K – £1M', '£1M+'];
 
 const startTimingOptions = ['Within 1 Month', 'Within 3 Months', 'Within 6 Months', 'Next Year'];
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 2;
 
 const progressMap: Record<number, string> = {
-  1: '20%',
-  2: '40%',
-  3: '60%',
-  4: '80%',
-  5: '100%',
+  1: '50%',
+  2: '100%',
 };
 
 const stepHeadings: Record<number, string> = {
   1: 'What type of project are you planning?',
-  2: 'What services do you need?',
-  3: 'Investment Goals',
-  4: 'When are you looking to start your project?',
-  5: 'Location of Your Project',
-  6: "What's your name?",
-  7: 'Enter your details and we will reach you shortly.',
+  2: 'Investment & Ideal Start',
+  3: 'Enter your details and we will reach you shortly.',
+};
+
+const columnLabelStyle: React.CSSProperties = {
+  fontSize: '11px',
+  fontWeight: 500,
+  textTransform: 'uppercase',
+  letterSpacing: '0.15em',
+  color: 'rgba(0,0,0,0.45)',
+  marginBottom: '16px',
 };
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/;
@@ -94,83 +83,6 @@ function SelectCard({
     >
       {label}
     </button>
-  );
-}
-
-function InfoTooltip({ text }: { text: string }) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <span
-      style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', marginLeft: '8px' }}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
-      <button
-        type="button"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setOpen((o) => !o);
-        }}
-        aria-label="More information"
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '16px',
-          height: '16px',
-          padding: 0,
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-        }}
-      >
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <circle cx="7" cy="7" r="6.25" stroke="rgba(0,0,0,0.4)" strokeWidth="1" />
-          <line x1="7" y1="6.2" x2="7" y2="10" stroke="rgba(0,0,0,0.6)" strokeWidth="1.2" strokeLinecap="round" />
-          <circle cx="7" cy="4.1" r="0.75" fill="rgba(0,0,0,0.6)" />
-        </svg>
-      </button>
-      {open && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 'calc(100% + 10px)',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '220px',
-            backgroundColor: '#0a0a0a',
-            color: '#f5f0eb',
-            fontSize: '12px',
-            fontWeight: 400,
-            lineHeight: 1.55,
-            padding: '12px 14px',
-            borderRadius: '4px',
-            textTransform: 'none',
-            letterSpacing: 'normal',
-            zIndex: 10,
-            boxShadow: '0 10px 28px rgba(0,0,0,0.35)',
-            textAlign: 'left',
-          }}
-        >
-          {text}
-          <div
-            style={{
-              position: 'absolute',
-              top: '100%',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: 0,
-              height: 0,
-              borderLeft: '6px solid transparent',
-              borderRight: '6px solid transparent',
-              borderTop: '6px solid #0a0a0a',
-            }}
-          />
-        </div>
-      )}
-    </span>
   );
 }
 
@@ -290,6 +202,10 @@ function WheelPicker({
   const ITEM_HEIGHT = 56;
   const CONTAINER_HEIGHT = ITEM_HEIGHT * 3;
   const PADDING = ITEM_HEIGHT;
+  // Space reserved on the left for the arrow + gap before the pill/text start. Kept as small
+  // as the arrow can comfortably sit in — every px reclaimed here is a px the pill gets to use,
+  // which matters now that two pickers sit side by side in the merged Investment/Ideal Start step.
+  const LEFT_OFFSET = 38;
 
   const longestOption = options.reduce((a, b) => a.length > b.length ? a : b, '');
   const PILL_WIDTH = Math.max(150, longestOption.length * 8 + 60);
@@ -404,10 +320,10 @@ function WheelPicker({
       }} />
       {/* Static chevron arrow */}
       <svg
-        width="32" height="32" viewBox="0 0 24 24"
+        width="20" height="20" viewBox="0 0 24 24"
         style={{
           position: 'absolute',
-          left: '14px',
+          left: '8px',
           top: '50%',
           transform: 'translateY(-50%)',
           zIndex: 4,
@@ -422,9 +338,9 @@ function WheelPicker({
       <div style={{
         position: 'absolute',
         top: `${PADDING}px`,
-        left: '54px',
+        left: `${LEFT_OFFSET}px`,
         width: `${PILL_WIDTH}px`,
-        maxWidth: 'calc(100% - 58px)',
+        maxWidth: `calc(100% - ${LEFT_OFFSET + 4}px)`,
         height: `${ITEM_HEIGHT}px`,
         backgroundColor: 'rgba(10,10,10,0.08)',
         border: '2px solid #0a0a0a',
@@ -463,7 +379,7 @@ function WheelPicker({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'flex-start',
-                paddingLeft: '54px',
+                paddingLeft: `${LEFT_OFFSET}px`,
                 scrollSnapAlign: 'center',
                 opacity: isInitial ? 1 : 0.75,
                 transition: 'opacity 0.15s ease',
@@ -506,11 +422,9 @@ export default function SiteVisitForm() {
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(1);
   const [selectedProjectType, setSelectedProjectType] = useState('');
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedBudget, setSelectedBudget] = useState('');
   const [selectedStartTiming, setSelectedStartTiming] = useState('');
-  const [postcode, setPostcode] = useState('');
-  const [postcodeSubStep, setPostcodeSubStep] = useState<PostcodeSubStep>('input');
+  const [availabilitySubStep, setAvailabilitySubStep] = useState<AvailabilitySubStep>('input');
   const [formData, setFormData] = useState<FormData>({ name: '', email: '', phone: '' });
   const [emailBlurred, setEmailBlurred] = useState(false);
   const [phoneBlurred, setPhoneBlurred] = useState(false);
@@ -526,38 +440,30 @@ export default function SiteVisitForm() {
   const progress = progressMap[step] ?? '14%';
 
   useEffect(() => {
-    if (postcodeSubStep === 'loading') {
-      const t = setTimeout(() => setPostcodeSubStep('result'), 4000);
+    if (availabilitySubStep === 'loading') {
+      const t = setTimeout(() => setAvailabilitySubStep('result'), 4000);
       return () => clearTimeout(t);
     }
-  }, [postcodeSubStep]);
+  }, [availabilitySubStep]);
 
   const emailValid = validateEmail(formData.email);
   const phoneValid = validatePhone(formData.phone);
-
-  const toggleService = (label: string) => {
-    setSelectedServices((prev) =>
-      prev.includes(label) ? prev.filter((s) => s !== label) : [...prev, label]
-    );
-  };
+  const investmentStepValid = selectedBudget !== '' && selectedStartTiming !== '';
+  const nameStepValid = formData.name.trim() !== '';
 
   const handleCheckAvailability = () => {
-    setPostcodeSubStep('loading');
+    setAvailabilitySubStep('loading');
   };
 
   const canNext = () => {
     if (step === 1) return selectedProjectType !== '';
-    if (step === 2) return selectedServices.length > 0;
-    if (step === 3) return selectedBudget !== '';
-    if (step === 4) return selectedStartTiming !== '';
-    if (step === 5) return false;
-    if (step === 6) return formData.name.trim() !== '';
-    if (step === 7) return emailValid && phoneValid && formData.email.trim() !== '' && formData.phone.trim() !== '';
+    if (step === 2) return false;
+    if (step === 3) return emailValid && phoneValid && formData.email.trim() !== '' && formData.phone.trim() !== '';
     return false;
   };
 
   const goNext = async () => {
-    if (step === 7) {
+    if (step === 3) {
       try {
         const response = await fetch('/api/monday-submit', {
           method: 'POST',
@@ -567,10 +473,8 @@ export default function SiteVisitForm() {
             email: formData.email,
             phone: formData.phone,
             extensionType: selectedProjectType,
-            services: selectedServices,
             budget: selectedBudget,
             timing: selectedStartTiming,
-            postcode,
           }),
         });
         if (!response.ok) {
@@ -593,8 +497,8 @@ export default function SiteVisitForm() {
   };
 
   const goBack = () => {
-    if (step === 5 && postcodeSubStep !== 'input') {
-      setPostcodeSubStep('input');
+    if (step === 2 && availabilitySubStep !== 'input') {
+      setAvailabilitySubStep('input');
       return;
     }
     setDirection(-1);
@@ -602,14 +506,14 @@ export default function SiteVisitForm() {
   };
 
   const getStepHeading = () => {
-    if (step === 5 && postcodeSubStep === 'loading') return 'One Moment';
-    if (step === 5 && postcodeSubStep === 'result')
-      return 'Good news, we have found a slot available.';
+    if (step === 2 && availabilitySubStep === 'loading') return 'One Moment';
+    if (step === 2 && availabilitySubStep === 'result')
+      return 'Good News, We Have a Slot Available.';
     return stepHeadings[step];
   };
 
-  const showBack = step > 1 && !(step === 5 && postcodeSubStep === 'loading');
-  const showNext = step !== 5;
+  const showBack = step > 1 && !(step === 2 && availabilitySubStep === 'loading');
+  const showNext = step !== 2;
 
   return (
     <>
@@ -618,7 +522,12 @@ export default function SiteVisitForm() {
         @media (max-width: 768px) {
           .form-name-grid { grid-template-columns: 1fr !important; }
           .form-options-grid { grid-template-columns: 1fr !important; }
+          /* Same padding as every other step, no exceptions — the merged Investment/Ideal
+             Start step must not grow the card. Its two-column layout is tightened instead
+             (smaller inter-column gap; WheelPicker's own left offset is also reduced, see
+             LEFT_OFFSET below) so it fits within this fixed size. */
           .form-inner { padding: 40px 24px !important; }
+          .investment-timing-grid { gap: 8px !important; }
         }
       `}</style>
       <section
@@ -730,11 +639,9 @@ export default function SiteVisitForm() {
                   setStep(1);
                   setDirection(1);
                   setSelectedProjectType('');
-                  setSelectedServices([]);
                   setSelectedBudget('');
                   setSelectedStartTiming('');
-                  setPostcode('');
-                  setPostcodeSubStep('input');
+                  setAvailabilitySubStep('input');
                   setFormData({ name: '', email: '', phone: '' });
                   setEmailBlurred(false);
                   setPhoneBlurred(false);
@@ -765,8 +672,8 @@ export default function SiteVisitForm() {
             </motion.div>
           ) : (
             <>
-              {/* Progress bar — only shown on steps 1–5 */}
-              {step <= 5 && (
+              {/* Progress bar — only shown on the counted steps (1–TOTAL_STEPS) */}
+              {step <= TOTAL_STEPS && (
                 <div
                   style={{
                     height: '2px',
@@ -787,22 +694,6 @@ export default function SiteVisitForm() {
                     }}
                   />
                 </div>
-              )}
-
-              {/* Step indicator — only shown on steps 1–5 */}
-              {step <= 5 && (
-                <p
-                  style={{
-                    fontSize: '12px',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.15em',
-                    color: 'rgba(0,0,0,0.4)',
-                    marginBottom: '8px',
-                  }}
-                >
-                  Step {step} of {TOTAL_STEPS}
-                </p>
               )}
 
               {/* Heading */}
@@ -862,165 +753,104 @@ export default function SiteVisitForm() {
                     )
                   )}
 
-                  {/* STEP 2 — Services needed */}
+                  {/* STEP 2 — Investment + Ideal Start (merged), then availability check */}
                   {step === 2 && (
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '20px',
-                        marginBottom: '40px',
-                      }}
-                    >
-                      {serviceOptions.map((opt) => (
-                        <div
-                          key={opt.label}
-                          style={{ display: 'flex', alignItems: 'center', gap: '0px' }}
-                        >
-                          <label
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '12px',
-                              cursor: 'pointer',
-                            }}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={selectedServices.includes(opt.label)}
-                              onChange={() => toggleService(opt.label)}
-                              style={{
-                                width: '18px',
-                                height: '18px',
-                                accentColor: '#c9a96e',
-                                cursor: 'pointer',
-                                flexShrink: 0,
-                              }}
-                            />
-                            <span
-                              style={{
-                                fontSize: '14px',
-                                fontWeight: 600,
-                                color: '#0a0a0a',
-                                letterSpacing: '0.08em',
-                                textTransform: 'uppercase',
-                              }}
-                            >
-                              {opt.label}
-                            </span>
-                          </label>
-                          <InfoTooltip text={opt.tooltip} />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* STEP 3 — Investment goals */}
-                  {step === 3 && (
-                    isMobile ? (
-                      <div style={{ marginBottom: '40px' }}>
-                        <WheelPicker
-                          options={budgetOptions}
-                          value={selectedBudget}
-                          onChange={setSelectedBudget}
-                          defaultIndex={budgetOptions.indexOf('£150K – £500K')}
-                        />
-                      </div>
-                    ) : (
-                      <div
-                        className="form-options-grid"
-                        style={{
-                          display: 'grid',
-                          gridTemplateColumns: 'repeat(2, 1fr)',
-                          gap: '12px',
-                          marginBottom: '40px',
-                        }}
-                      >
-                        {budgetOptions.map((opt) => (
-                          <SelectCard
-                            key={opt}
-                            label={opt}
-                            selected={selectedBudget === opt}
-                            onClick={() => setSelectedBudget(opt)}
-                          />
-                        ))}
-                      </div>
-                    )
-                  )}
-
-                  {/* STEP 4 — Start timing */}
-                  {step === 4 && (
-                    isMobile ? (
-                      <div style={{ marginBottom: '40px' }}>
-                        <WheelPicker
-                          options={startTimingOptions}
-                          value={selectedStartTiming}
-                          onChange={setSelectedStartTiming}
-                          defaultIndex={startTimingOptions.indexOf('Within 1 Month')}
-                        />
-                      </div>
-                    ) : (
-                      <div
-                        className="form-options-grid"
-                        style={{
-                          display: 'grid',
-                          gridTemplateColumns: 'repeat(2, 1fr)',
-                          gap: '12px',
-                          marginBottom: '40px',
-                        }}
-                      >
-                        {startTimingOptions.map((opt) => (
-                          <SelectCard
-                            key={opt}
-                            label={opt}
-                            selected={selectedStartTiming === opt}
-                            onClick={() => setSelectedStartTiming(opt)}
-                          />
-                        ))}
-                      </div>
-                    )
-                  )}
-
-                  {/* STEP 5 — Postcode */}
-                  {step === 5 && (
                     <div style={{ marginBottom: '40px' }}>
                       <AnimatePresence mode="wait">
                         <motion.div
-                          key={postcodeSubStep}
+                          key={availabilitySubStep}
                           variants={fadeVariants}
                           initial="enter"
                           animate="center"
                           exit="exit"
                           transition={{ duration: 0.3 }}
                         >
-                          {postcodeSubStep === 'input' && (
+                          {availabilitySubStep === 'input' && (
                             <div>
-                              <p
+                              <div
+                                className="investment-timing-grid"
                                 style={{
-                                  fontSize: '14px',
-                                  color: 'rgba(0,0,0,0.55)',
-                                  lineHeight: 1.65,
+                                  display: 'grid',
+                                  gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)',
+                                  gap: '24px',
                                   marginBottom: '32px',
-                                  letterSpacing: 'normal',
                                 }}
                               >
-                                Enter your postcode to check our availability.
-                              </p>
-                              <TextInput
-                                label="Postcode"
-                                value={postcode}
-                                onChange={(v) => {
-                                  const filtered = v.replace(/[^A-Za-z0-9 ]/g, '');
-                                  setPostcode(filtered);
-                                }}
-                              />
+                                <div>
+                                  <p style={columnLabelStyle}>Investment</p>
+                                  {isMobile ? (
+                                    <WheelPicker
+                                      options={budgetOptions}
+                                      value={selectedBudget}
+                                      onChange={setSelectedBudget}
+                                      defaultIndex={budgetOptions.indexOf('£150K – £500K')}
+                                    />
+                                  ) : (
+                                    <div
+                                      className="form-options-grid"
+                                      style={{
+                                        display: 'grid',
+                                        gridTemplateColumns: 'repeat(2, 1fr)',
+                                        gap: '12px',
+                                      }}
+                                    >
+                                      {budgetOptions.map((opt) => (
+                                        <SelectCard
+                                          key={opt}
+                                          label={opt}
+                                          selected={selectedBudget === opt}
+                                          onClick={() => setSelectedBudget(opt)}
+                                        />
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+
+                                <div>
+                                  <p style={columnLabelStyle}>Ideal Start</p>
+                                  {isMobile ? (
+                                    <WheelPicker
+                                      options={startTimingOptions}
+                                      value={selectedStartTiming}
+                                      onChange={setSelectedStartTiming}
+                                      defaultIndex={startTimingOptions.indexOf('Within 1 Month')}
+                                    />
+                                  ) : (
+                                    <div
+                                      className="form-options-grid"
+                                      style={{
+                                        display: 'grid',
+                                        gridTemplateColumns: 'repeat(2, 1fr)',
+                                        gap: '12px',
+                                      }}
+                                    >
+                                      {startTimingOptions.map((opt) => (
+                                        <SelectCard
+                                          key={opt}
+                                          label={opt}
+                                          selected={selectedStartTiming === opt}
+                                          onClick={() => setSelectedStartTiming(opt)}
+                                        />
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+
                               <button
                                 type="button"
                                 onClick={handleCheckAvailability}
-                                style={{ ...navBtnBase, marginTop: '32px' }}
+                                disabled={!investmentStepValid}
+                                style={{
+                                  ...navBtnBase,
+                                  cursor: investmentStepValid ? 'pointer' : 'not-allowed',
+                                  opacity: investmentStepValid ? 1 : 0.3,
+                                }}
                                 onMouseEnter={(e) => {
-                                  e.currentTarget.style.backgroundColor = '#c9a96e';
-                                  e.currentTarget.style.borderColor = '#c9a96e';
+                                  if (investmentStepValid) {
+                                    e.currentTarget.style.backgroundColor = '#c9a96e';
+                                    e.currentTarget.style.borderColor = '#c9a96e';
+                                  }
                                 }}
                                 onMouseLeave={(e) => {
                                   e.currentTarget.style.backgroundColor = '#0a0a0a';
@@ -1032,7 +862,7 @@ export default function SiteVisitForm() {
                             </div>
                           )}
 
-                          {postcodeSubStep === 'loading' && (
+                          {availabilitySubStep === 'loading' && (
                             <div style={{ paddingTop: '16px' }}>
                               <div
                                 style={{
@@ -1064,12 +894,12 @@ export default function SiteVisitForm() {
                                   letterSpacing: 'normal',
                                 }}
                               >
-                                Checking remaining slots...
+                                Checking availability for your private viewing...
                               </p>
                             </div>
                           )}
 
-                          {postcodeSubStep === 'result' && (
+                          {availabilitySubStep === 'result' && (
                             <div style={{ paddingTop: '8px' }}>
                               <p
                                 style={{
@@ -1090,17 +920,32 @@ export default function SiteVisitForm() {
                                   lineHeight: 1.65,
                                   marginBottom: '32px',
                                   letterSpacing: 'normal',
+                                  textAlign: 'justify',
                                 }}
                               >
-                                Let&apos;s get your consultation booked.
+                                One of our team will be in touch shortly to confirm your private viewing and walk you through what to expect.
                               </p>
+                              <div style={{ marginBottom: '32px' }}>
+                                <TextInput
+                                  label="Name"
+                                  value={formData.name}
+                                  onChange={(v) => setFormData((f) => ({ ...f, name: v }))}
+                                />
+                              </div>
                               <button
                                 type="button"
                                 onClick={goNext}
-                                style={{ ...navBtnBase }}
+                                disabled={!nameStepValid}
+                                style={{
+                                  ...navBtnBase,
+                                  cursor: nameStepValid ? 'pointer' : 'not-allowed',
+                                  opacity: nameStepValid ? 1 : 0.3,
+                                }}
                                 onMouseEnter={(e) => {
-                                  e.currentTarget.style.backgroundColor = '#c9a96e';
-                                  e.currentTarget.style.borderColor = '#c9a96e';
+                                  if (nameStepValid) {
+                                    e.currentTarget.style.backgroundColor = '#c9a96e';
+                                    e.currentTarget.style.borderColor = '#c9a96e';
+                                  }
                                 }}
                                 onMouseLeave={(e) => {
                                   e.currentTarget.style.backgroundColor = '#0a0a0a';
@@ -1116,26 +961,8 @@ export default function SiteVisitForm() {
                     </div>
                   )}
 
-                  {/* STEP 6 — Name */}
-                  {step === 6 && (
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '32px',
-                        marginBottom: '40px',
-                      }}
-                    >
-                      <TextInput
-                        label="Name"
-                        value={formData.name}
-                        onChange={(v) => setFormData((f) => ({ ...f, name: v }))}
-                      />
-                    </div>
-                  )}
-
-                  {/* STEP 7 — Contact details */}
-                  {step === 7 && (
+                  {/* STEP 3 — Contact details */}
+                  {step === 3 && (
                     <div
                       style={{
                         display: 'flex',
@@ -1234,7 +1061,7 @@ export default function SiteVisitForm() {
                       e.currentTarget.style.borderColor = '#0a0a0a';
                     }}
                   >
-                    {step === 7 ? 'BOOK YOUR SITE VISIT' : 'Next →'}
+                    {step === 3 ? 'BOOK YOUR SITE VISIT' : 'Next →'}
                   </button>
                 )}
               </div>
