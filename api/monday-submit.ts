@@ -118,7 +118,7 @@ async function createMondayItem(
     dropdown_mm47dr86: { labels: extensionType ? [extensionType] : [] },
     numeric_mm47arbw: String(getBudgetValue(budget as string | undefined)),
     text_mm47r0fc: buildNotes(budget as string | undefined, timing as string | undefined),
-    dropdown_mm47gc2c: { labels: ['Website'] },
+    dropdown_mm47gc2c: { labels: ['Viewing Landing Page'] },
     deal_stage: { label: 'New Enquiry' },
     text_mm5q24an: extractFirstName(firstName as string | undefined),
   };
