@@ -1,61 +1,24 @@
-import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, animate, motion, useInView } from 'framer-motion';
-
-const STAT_ANIMATION_DURATION = 1.8;
-
-const stats = [
-  { target: 15, format: (n: number) => `${Math.round(n)}+`, label: 'Years of Experience' },
-  { target: 97, format: (n: number) => `${Math.round(n)}%`, label: 'Planning Success Rate' },
-  { target: 25, format: (n: number) => `£${Math.round(n)}M+`, label: 'Value Delivered' },
-  { target: 1000, format: (n: number) => `${Math.round(n).toLocaleString('en-GB')}+`, label: 'Projects Completed' },
-];
+import { useRef, useState } from 'react';
+import { AnimatePresence, motion, useInView } from 'framer-motion';
 
 const features = [
   {
     label: 'Design Led',
-    body: "Every project starts with drawings, 3D visuals and planning submissions shaped around how you want to live, tested against light, flow and function before it reaches site.",
+    body: 'Drawings, 3D visuals and planning strategy shaped around how you want to live, tested for light, flow and function long before work begins on site.',
   },
   {
     label: 'One Team',
-    body: "The same team that designs a project builds it, with skilled trades and a single point of accountability from foundation to final finish.",
+    body: 'The people who design your project also deliver it, with skilled trades and a single point of accountability from foundation to final finish.',
   },
   {
     label: 'Accountability',
-    body: "Before you commit to anything, we assess what's realistic for your site, your budget and your timeline, and tell you honestly what it will take to get there.",
+    body: 'Before anything is agreed, we assess what your site, budget and timeline allow, and tell you plainly what it will take.',
   },
 ];
-
-function CountUpStat({
-  target,
-  format,
-  trigger,
-}: {
-  target: number;
-  format: (n: number) => string;
-  trigger: boolean;
-}) {
-  const [display, setDisplay] = useState(format(0));
-  const startedRef = useRef(false);
-
-  useEffect(() => {
-    if (!trigger || startedRef.current) return;
-    startedRef.current = true;
-    const controls = animate(0, target, {
-      duration: STAT_ANIMATION_DURATION,
-      ease: 'easeOut',
-      onUpdate: (v) => setDisplay(format(v)),
-    });
-    return () => controls.stop();
-  }, [trigger, target, format]);
-
-  return <>{display}</>;
-}
 
 export default function ViewingAbout() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: '0px 0px -120px 0px', amount: 0.2 });
-  const statsRef = useRef<HTMLDivElement>(null);
-  const isStatsInView = useInView(statsRef, { once: true, margin: '0px 0px -80px 0px', amount: 0.4 });
   const [activeFeature, setActiveFeature] = useState(features[0].label);
   const activeFeatureData = features.find((f) => f.label === activeFeature) ?? features[0];
 
@@ -70,33 +33,32 @@ export default function ViewingAbout() {
         .about-feature-rule {
           width: 40px;
           height: 2px;
-          background-color: #C9A96E;
+          background-color: var(--sov-greige-dark);
         }
         .about-feature-label {
           font-size: 13px;
           font-weight: 700;
           letter-spacing: 0.08em;
           text-transform: uppercase;
-          color: #0a0a0a;
+          color: var(--sov-black);
           margin-top: 18px;
         }
         .about-feature-body {
           font-size: 14px;
           font-weight: 400;
-          color: rgba(10,10,10,0.62);
+          color: var(--sov-grey);
           line-height: 1.65;
           margin-top: 10px;
         }
-        .about-stats {
-          display: flex;
-        }
-        .about-stat {
-          flex: 1;
+        .about-credentials {
           text-align: center;
-          padding: 0 24px;
-        }
-        .about-stat + .about-stat {
-          border-left: 1px solid rgba(10,10,10,0.12);
+          text-transform: uppercase;
+          font-size: 12px;
+          letter-spacing: 0.16em;
+          font-weight: 500;
+          color: var(--sov-grey);
+          line-height: 1.9;
+          margin-top: 56px;
         }
         .about-feature-tabs { display: none; }
         .about-feature-tabs-block {
@@ -114,8 +76,8 @@ export default function ViewingAbout() {
           font-weight: 700;
           letter-spacing: 0.06em;
           text-transform: uppercase;
-          color: #0a0a0a;
-          background-color: transparent;
+          color: var(--sov-black);
+          background-color: var(--sov-white);
           border: none;
           border-right: 1px solid rgba(10,10,10,0.35);
           padding: 14px 8px;
@@ -127,8 +89,8 @@ export default function ViewingAbout() {
           border-right: none;
         }
         .about-feature-tab.active {
-          background-color: #0a0a0a;
-          color: #ffffff;
+          background-color: var(--sov-greige-dark);
+          color: var(--sov-white);
         }
         .about-feature-tab-panel {
           border: 1px solid rgba(10,10,10,0.35);
@@ -138,32 +100,16 @@ export default function ViewingAbout() {
         .about-feature-tab-body {
           font-size: 14px;
           font-weight: 400;
-          color: rgba(10,10,10,0.62);
+          color: var(--sov-grey);
           line-height: 1.65;
           margin: 0;
         }
         @media (max-width: 768px) {
           .about-feature-grid { display: none !important; }
           .about-feature-tabs { display: block; }
-          .about-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-          }
-          .about-stat {
-            padding: 24px 12px;
-          }
-          .about-stat + .about-stat {
-            border-left: none;
-          }
-          .about-stat:nth-child(odd) {
-            border-right: 1px solid rgba(10,10,10,0.12);
-          }
-          .about-stat:nth-child(-n+2) {
-            border-bottom: 1px solid rgba(10,10,10,0.12);
-          }
         }
       `}</style>
-      <section ref={ref} data-theme="light" style={{ backgroundColor: '#F5F0EB', padding: '110px 0' }}>
+      <section ref={ref} data-theme="light" style={{ backgroundColor: 'var(--sov-white)', padding: '110px 0' }}>
         <div className="inner">
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -172,7 +118,7 @@ export default function ViewingAbout() {
             style={{
               fontSize: '12px',
               fontWeight: 600,
-              color: '#C9A96E',
+              color: 'var(--sov-greige-dark)',
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
               marginBottom: '18px',
@@ -188,7 +134,7 @@ export default function ViewingAbout() {
             style={{
               fontSize: 'clamp(32px, 3.8vw, 52px)',
               fontWeight: 900,
-              color: '#0a0a0a',
+              color: 'var(--sov-black)',
               letterSpacing: '-0.01em',
               lineHeight: 1.08,
             }}
@@ -197,20 +143,36 @@ export default function ViewingAbout() {
           </motion.h2>
 
           <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
+            style={{
+              textTransform: 'uppercase',
+              fontSize: '13px',
+              letterSpacing: '0.18em',
+              fontWeight: 600,
+              color: 'var(--sov-greige-dark)',
+              margin: '12px 0 0',
+            }}
+          >
+            Your Design And Build Partner
+          </motion.p>
+
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
             style={{
               fontSize: '17px',
               fontWeight: 400,
-              color: 'rgba(10,10,10,0.65)',
+              color: 'var(--sov-grey)',
               lineHeight: 1.7,
               letterSpacing: 'normal',
               maxWidth: '640px',
               marginTop: '22px',
             }}
           >
-            Behind every project is a family, a vision, and a home worth building properly. Sovran brings architects, designers and construction specialists together as one team, delivering design and build projects across London and the Home Counties.
+            Since 2011, Sovran has designed, delivered and refined exceptional spaces as one integrated team. Architecture, planning, interiors and the build are led by the same people, for clients across London and the wider UK.
           </motion.p>
 
           <motion.div
@@ -266,42 +228,9 @@ export default function ViewingAbout() {
             </div>
           </motion.div>
 
-          <motion.div
-            ref={statsRef}
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
-            className="about-stats"
-            style={{ marginTop: '72px' }}
-          >
-            {stats.map((stat) => (
-              <div key={stat.label} className="about-stat">
-                <div
-                  style={{
-                    fontSize: 'clamp(26px, 2.8vw, 36px)',
-                    fontWeight: 900,
-                    color: '#0a0a0a',
-                    letterSpacing: '-0.005em',
-                    lineHeight: 1,
-                    marginBottom: '10px',
-                  }}
-                >
-                  <CountUpStat target={stat.target} format={stat.format} trigger={isStatsInView} />
-                </div>
-                <div
-                  style={{
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    color: 'rgba(10,10,10,0.55)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                  }}
-                >
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </motion.div>
+          <p className="about-credentials">
+            15+ Years · 97% Planning Success Rate · £25M+ Value Delivered · 1,000+ Projects Completed
+          </p>
         </div>
       </section>
     </>

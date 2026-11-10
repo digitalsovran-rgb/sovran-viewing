@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import KenBurnsCarousel from './KenBurnsCarousel';
-import ActivityLine from './ActivityLine';
 
 const DESKTOP_IMAGES = ['/media/hero.webp', '/media/hero2.webp?v=2', '/media/hero3.webp?v=2'];
 const MOBILE_IMAGES = ['/media/heromob.webp', '/media/heromob2.webp?v=2', '/media/heromob3.webp?v=2'];
@@ -34,7 +33,6 @@ export default function ViewingHero() {
           .viewing-hero-desc { font-size: 14.5px !important; max-width: none !important; margin-top: 14px !important; }
           .viewing-hero-btn { width: 100% !important; text-align: center !important; }
           .viewing-hero-cta-wrap { margin-top: 22px !important; }
-          .viewing-hero-activity { margin-top: 16px !important; }
           .viewing-hero-logo-wrap { top: 24px !important; }
         }
       `}</style>
@@ -47,11 +45,11 @@ export default function ViewingHero() {
           minHeight: '760px',
           width: '100%',
           overflow: 'hidden',
-          backgroundColor: '#0a0a0a',
+          backgroundColor: 'var(--sov-black)',
         }}
       >
-        {/* Background — rotating Ken Burns carousel, per breakpoint.
-            No entrance fade on this wrapper — it sits directly behind the LCP candidate,
+        {/* Background: rotating Ken Burns carousel, per breakpoint.
+            No entrance fade on this wrapper, since it sits directly behind the LCP candidate,
             and KenBurnsCarousel's own internal crossfade already handles first-appearance. */}
         <div className="viewing-hero-bg" style={{ position: 'absolute', inset: 0 }}>
           <KenBurnsCarousel
@@ -65,7 +63,7 @@ export default function ViewingHero() {
           />
         </div>
 
-        {/* Gradient overlay — light enough for the photo to read clearly, just enough contrast
+        {/* Gradient overlay: light enough for the photo to read clearly, just enough contrast
             at the bottom-left for the eyebrow/headline/body text to stay legible. Mobile gets
             a slightly stronger stack so the eyebrow line stays legible against the rotating images. */}
         <div
@@ -78,7 +76,7 @@ export default function ViewingHero() {
           }}
         />
 
-        {/* Wordmark — centered near the top, independent of the bottom-anchored text block.
+        {/* Wordmark: centered near the top, independent of the bottom-anchored text block.
             Centered via a flex wrapper rather than transform: translateX(-50%), since Framer
             Motion manages the transform property itself for the y-animation on the image. */}
         <div
@@ -104,7 +102,7 @@ export default function ViewingHero() {
           />
         </div>
 
-        {/* Content — anchored bottom-left, asymmetrical */}
+        {/* Content: anchored bottom-left, asymmetrical */}
         <div
           style={{
             position: 'absolute',
@@ -131,12 +129,12 @@ export default function ViewingHero() {
                 fontSize: '13.5px',
                 fontWeight: 600,
                 letterSpacing: '0.22em',
-                color: '#c9a96e',
+                color: 'var(--sov-greige-light)',
                 textTransform: 'uppercase',
                 marginBottom: '20px',
               }}
             >
-              For Homeowners Planning An Extension, Renovation Or New Build
+              For Homeowners Planning A Design And Build Project
             </motion.p>
 
             <motion.h1
@@ -147,17 +145,17 @@ export default function ViewingHero() {
               style={{
                 fontSize: 'clamp(38px, 5.2vw, 72px)',
                 fontWeight: 900,
-                color: '#ffffff',
+                color: 'var(--sov-white)',
                 lineHeight: 1.05,
                 letterSpacing: '-0.015em',
                 textTransform: 'uppercase',
                 fontFamily: 'Inter, sans-serif',
               }}
             >
-              Private Viewing Of A Design And Build Project
+              A Private Viewing Of A Completed Sovran Home
             </motion.h1>
 
-            {/* Plain, unanimated — this is the confirmed LCP element (per live Lighthouse trace).
+            {/* Plain, unanimated: this is the confirmed LCP element (per live Lighthouse trace).
                 Its entrance fade was responsible for ~95% of total LCP render delay. */}
             <p
               className="viewing-hero-desc"
@@ -171,7 +169,7 @@ export default function ViewingHero() {
                 textAlign: 'justify',
               }}
             >
-              If you&apos;re planning your next design and build project, this is the inspiration you need. Walk through a finished home, see the real layout and standard of work we carry out, and speak directly with the specialist who delivered it.
+              Before committing to your own plans, see one of our finished properties in person. A Sovran design and build specialist will guide you through the layout, the materials and the decisions behind each room, and answer the questions your project raises.
             </p>
 
             <motion.div
@@ -191,25 +189,23 @@ export default function ViewingHero() {
                   textTransform: 'uppercase',
                   padding: '18px 44px',
                   cursor: 'pointer',
-                  backgroundColor: '#ffffff',
-                  color: '#0a0a0a',
-                  border: '1px solid #ffffff',
+                  backgroundColor: 'var(--sov-white)',
+                  color: 'var(--sov-black)',
+                  border: '1px solid var(--sov-white)',
                   transition: 'background-color 0.3s, border-color 0.3s, color 0.3s',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#c9a96e';
-                  e.currentTarget.style.borderColor = '#c9a96e';
+                  e.currentTarget.style.backgroundColor = 'var(--sov-greige-light)';
+                  e.currentTarget.style.borderColor = 'var(--sov-greige-light)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#ffffff';
-                  e.currentTarget.style.borderColor = '#ffffff';
+                  e.currentTarget.style.backgroundColor = 'var(--sov-white)';
+                  e.currentTarget.style.borderColor = 'var(--sov-white)';
                 }}
               >
-                Register Your Interest
+                Request A Viewing
               </button>
             </motion.div>
-
-            <ActivityLine />
           </div>
         </div>
       </section>

@@ -67,7 +67,7 @@ export default function KenBurnsCarousel({
   );
 }
 
-// A single static image with a continuous, slow breathing zoom (in, then back out, on loop) —
+// A single static image with a continuous, slow breathing zoom (in, then back out, on loop),
 // used where a section has only one image and doesn't need the cross-fade/rotation logic above.
 export function KenBurnsStatic({
   src,

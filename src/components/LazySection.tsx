@@ -6,12 +6,12 @@ import { Suspense, useEffect, useRef, useState, type ComponentType } from 'react
 // The placeholder's height should approximate the real section's rendered height so the
 // swap-in happens before the user scrolls close enough to see it, avoiding a layout jump.
 //
-// `id`, when passed, lives on the OUTER wrapper — which never unmounts — rather than on the
+// `id`, when passed, lives on the OUTER wrapper (which never unmounts) rather than on the
 // placeholder or the real component individually. That gives anything doing
 // document.getElementById(id)?.scrollIntoView(...) a stable target the whole time: before the
 // section has mounted, while it's loading, and after the real content swaps in. Putting the id
 // only on the placeholder (or only on the real component) leaves a window where the target
-// doesn't exist yet, or — worse — where a smooth scroll started against one node gets orphaned
+// doesn't exist yet, or (worse) where a smooth scroll started against one node gets orphaned
 // when that node unmounts mid-animation and is replaced by a different element with the same id.
 export default function LazySection({
   component: Component,

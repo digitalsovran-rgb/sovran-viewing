@@ -11,7 +11,7 @@ const checklistItems = [
 
 function CheckIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#C9A96E" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--sov-greige-light)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="3,8.5 6.5,12 13,4" />
     </svg>
   );
@@ -25,7 +25,7 @@ function SectionLabel({ label }: { label: string }) {
         fontWeight: 600,
         letterSpacing: '0.18em',
         textTransform: 'uppercase',
-        color: '#C9A96E',
+        color: 'var(--sov-greige-light)',
         marginBottom: '20px',
       }}
     >
@@ -85,7 +85,7 @@ export default function ViewingSpecialist() {
           }
         }
       `}</style>
-      <section id="specialist-section" ref={ref} data-theme="dark" style={{ backgroundColor: '#0a0a0a' }}>
+      <section id="specialist-section" ref={ref} data-theme="dark" style={{ backgroundColor: 'var(--sov-black)' }}>
         <div className="expect-row" style={{ display: 'flex', alignItems: 'center' }}>
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -105,12 +105,12 @@ export default function ViewingSpecialist() {
                 style={{
                   fontSize: 'clamp(30px, 3.4vw, 48px)',
                   fontWeight: 900,
-                  color: '#ffffff',
+                  color: 'var(--sov-white)',
                   letterSpacing: '-0.01em',
                   lineHeight: 1.1,
                 }}
               >
-                Designed For What&apos;s Next
+                Designed For What Comes Next
               </h2>
               <p
                 style={{
@@ -123,7 +123,7 @@ export default function ViewingSpecialist() {
                   maxWidth: '520px',
                 }}
               >
-                From March 2027, new UK building standards raise the bar for how homes perform, not just how they look. At Sovran, we design every project with that shift already in mind.
+                From March 2027, the Future Homes Standard raises the energy performance UK homes must reach, along with the move to low-carbon heating. Our team already designs to that level, with comfort and running costs in mind from the first drawing.
               </p>
 
               <ul className="expect-checklist" style={{ maxWidth: '520px' }}>
@@ -146,21 +146,21 @@ export default function ViewingSpecialist() {
                   maxWidth: '520px',
                 }}
               >
-                Many of our projects also include smart lighting, heating and security, giving homeowners control over comfort and efficiency from a single app.
+                Many of our projects also include smart lighting, heating and security, all managed from a single app.
               </p>
 
               <p
                 style={{
                   fontSize: '12px',
                   fontWeight: 600,
-                  color: '#c9a96e',
+                  color: 'var(--sov-greige-light)',
                   letterSpacing: '0.15em',
                   textTransform: 'uppercase',
                   marginTop: '28px',
                   maxWidth: '520px',
                 }}
               >
-                Ask how these standards shape the home you&apos;re about to walk through, and what they could mean for your own project.
+                Ask during your viewing how these standards shaped the property, and what they could mean for your plans.
               </p>
             </div>
           </motion.div>

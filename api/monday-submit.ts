@@ -25,8 +25,30 @@ function extractFirstName(fullName: string | undefined): string {
   return trimmed.split(/\s+/)[0];
 }
 
-function buildNotes(budget: string | undefined, timing: string | undefined): string {
-  return `Investment: ${budget || 'Not specified'}\nIdeal Start: ${timing || 'Not specified'}`;
+const projectTypeMap: Record<string, string> = {
+  Extension: 'Extension',
+  Renovation: 'Full Renovation',
+  'New Build': 'New Build',
+  'Multiple Projects': 'Other',
+};
+
+function mapProjectType(extensionType: string | undefined): string {
+  if (!extensionType) return '';
+  return projectTypeMap[extensionType] ?? extensionType;
+}
+
+const LEAD_CHANNELS = ['Meta Ad', 'Google Ad', 'Website'];
+
+function resolveLeadChannel(leadChannel: unknown): string {
+  return typeof leadChannel === 'string' && LEAD_CHANNELS.includes(leadChannel) ? leadChannel : 'Website';
+}
+
+function buildNotes(budget: string | undefined, extensionType: string | undefined): string {
+  const lines = [`Investment: ${budget || 'Not specified'}`];
+  if (extensionType === 'Multiple Projects') {
+    lines.push('Project type: Multiple projects');
+  }
+  return lines.join('\n');
 }
 
 // UK-local calendar date, so the counter rolls over at UK midnight rather than UTC midnight.
@@ -110,15 +132,19 @@ async function createMondayItem(
     return { success: false };
   }
 
-  const { firstName, email, phone, extensionType, budget, timing } = body;
+  const { firstName, email, phone, extensionType, budget, timing, leadChannel } = body;
+
+  const projectType = mapProjectType(extensionType as string | undefined);
 
   const columnValues = {
     email_mm51mezw: { email: email ?? '', text: email ?? '' },
     phone_mm51yhe7: { phone: phone ?? '', countryShortName: 'GB' },
-    dropdown_mm47dr86: { labels: extensionType ? [extensionType] : [] },
+    dropdown_mm47dr86: { labels: projectType ? [projectType] : [] },
     numeric_mm47arbw: String(getBudgetValue(budget as string | undefined)),
-    text_mm47r0fc: buildNotes(budget as string | undefined, timing as string | undefined),
-    dropdown_mm47gc2c: { labels: ['Viewing Landing Page'] },
+    text_mm47r0fc: buildNotes(budget as string | undefined, extensionType as string | undefined),
+    dropdown_mm47gc2c: { labels: [resolveLeadChannel(leadChannel)] },
+    dropdown_mm894w44: { labels: ['LP Viewing'] },
+    text_mm8kh8kd: typeof timing === 'string' ? timing : '',
     deal_stage: { label: 'New Enquiry' },
     text_mm5q24an: extractFirstName(firstName as string | undefined),
   };
@@ -129,7 +155,7 @@ async function createMondayItem(
     const result = await attemptMondayRequest(apiKey, itemName, columnValues);
     if (result.ok) {
       console.log(
-        `[monday-submit] item created on attempt ${attempt}/${MAX_ATTEMPTS} — item ID: ${result.id}`
+        `[monday-submit] item created on attempt ${attempt}/${MAX_ATTEMPTS}, item ID: ${result.id}`
       );
       return { success: true, itemId: result.id };
     }
@@ -163,11 +189,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { success, itemId } = await createMondayItem(req.body ?? {});
   console.log(
     success
-      ? `[monday-submit] outcome: success — item ID ${itemId}`
-      : '[monday-submit] outcome: failure — see attempt logs above for error details'
+      ? `[monday-submit] outcome: success, item ID ${itemId}`
+      : '[monday-submit] outcome: failure, see attempt logs above for error details'
   );
 
-  // Tracks completed form submissions, not CRM delivery — increments regardless of Monday outcome.
+  // Tracks completed form submissions, not CRM delivery: increments regardless of Monday outcome.
   await incrementFormSubmissionCounter();
 
   res.status(success ? 200 : 502).json({ success });

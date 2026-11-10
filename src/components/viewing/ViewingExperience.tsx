@@ -6,12 +6,12 @@ const DESKTOP_VISIT_IMAGE = '/media/visitpc.webp';
 const MOBILE_VISIT_IMAGE = '/media/visitmob.webp';
 
 const journeyPoints = [
-  "The layout and flow decisions that shaped how the finished home works, day to day.",
-  "Real proportions, real square footage, and materials you can consider for your own project.",
-  "The design choices that maximise space and natural light.",
-  "Luxury features most homeowners only discover after moving in.",
-  "Honest cost and timeline benchmarks for a project of this scale.",
-  "The full journey from first sketch to completed home, with the person who led it there to answer your questions.",
+  'How the layout and flow were planned around daily life',
+  'True proportions and natural light, experienced at full scale',
+  'Materials, joinery and finishes you can see and touch',
+  'The details owners value most once they move in',
+  'Realistic cost and timeline benchmarks for work of this scale',
+  'The full journey from first sketch to handover, with time for your questions',
 ];
 
 export default function ViewingExperience() {
@@ -43,19 +43,19 @@ export default function ViewingExperience() {
           width: 34px;
           font-size: 20px;
           font-weight: 500;
-          color: #C9A96E;
+          color: var(--sov-greige-dark);
           line-height: 1.6;
         }
         .visit-list-rule {
           flex-shrink: 0;
           width: 2px;
           height: 27px;
-          background-color: #C9A96E;
+          background-color: var(--sov-greige-dark);
         }
         .visit-list-text {
           font-size: 17px;
           font-weight: 400;
-          color: #0a0a0a;
+          color: var(--sov-black);
           line-height: 1.6;
           letter-spacing: normal;
         }
@@ -73,7 +73,7 @@ export default function ViewingExperience() {
           .visit-list-text { font-size: 15px; }
         }
       `}</style>
-      <section data-theme="light" style={{ backgroundColor: '#F5F0EB', padding: '100px 0' }}>
+      <section data-theme="light" style={{ backgroundColor: 'var(--sov-white)', padding: '100px 0' }}>
         <div className="inner" ref={ref}>
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
@@ -82,13 +82,13 @@ export default function ViewingExperience() {
             style={{
               fontSize: 'clamp(32px, 3.8vw, 52px)',
               fontWeight: 900,
-              color: '#0a0a0a',
+              color: 'var(--sov-black)',
               letterSpacing: '-0.01em',
               lineHeight: 1.08,
               maxWidth: '760px',
             }}
           >
-            What You&apos;ll See On Your Visit
+            What The Viewing Reveals
           </motion.h2>
 
           <motion.p
@@ -98,14 +98,14 @@ export default function ViewingExperience() {
             style={{
               fontSize: '17px',
               fontWeight: 400,
-              color: 'rgba(10,10,10,0.65)',
+              color: 'var(--sov-grey)',
               lineHeight: 1.7,
               letterSpacing: 'normal',
               maxWidth: '620px',
               marginTop: '22px',
             }}
           >
-            A working look at a finished Sovran design and build project, guided in person from start to finish.
+            Your guide is the design and build specialist who delivered the project. They will explain how each space was planned, which materials were specified and why, and what this level of finish involves for a project like yours.
           </motion.p>
 
           <motion.ul

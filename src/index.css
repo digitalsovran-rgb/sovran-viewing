@@ -1,3 +1,12 @@
+:root {
+  --sov-black: #0A0A0A;
+  --sov-white: #FFFFFF;
+  --sov-grey: #6B655C;
+  --sov-greige-light: #C2B2A0;
+  --sov-greige-dark: #4A443C;
+  --sov-error: #c0392b;
+}
+
 *, *::before, *::after {
   font-family: 'Inter', sans-serif;
   box-sizing: border-box;
@@ -13,8 +22,8 @@ html {
 body {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  background: #0a0a0a;
-  color: #ffffff;
+  background: var(--sov-black);
+  color: var(--sov-white);
   margin: 0;
   padding: 0;
   overflow-x: clip;

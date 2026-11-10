@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getSlotCount } from '../../utils/slotCount';
+import { getLeadChannel } from '../../utils/leadChannel';
 
 type FormData = {
   name: string;
@@ -12,7 +12,7 @@ type AvailabilitySubStep = 'input' | 'loading' | 'result';
 
 const projectTypeOptions = ['Extension', 'Renovation', 'New Build', 'Multiple Projects'];
 
-// Single £ sign per range and tight dash (no spaces) — "£150K – £500K" was the widest
+// Single £ sign per range and tight dash (no spaces): "£150K – £500K" was the widest
 // option text in the merged Investment/Ideal Start step's two-column mobile layout, and
 // repeating the currency symbol wasted width without adding information.
 const budgetOptions = ['Under £150K', '£150K–500K', '£500K–1M', '£1M+'];
@@ -37,7 +37,7 @@ const columnLabelStyle: React.CSSProperties = {
   fontWeight: 500,
   textTransform: 'uppercase',
   letterSpacing: '0.15em',
-  color: 'rgba(0,0,0,0.45)',
+  color: 'var(--sov-grey)',
   marginBottom: '16px',
 };
 
@@ -70,9 +70,9 @@ function SelectCard({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        border: `1px solid ${selected ? '#0a0a0a' : hovered ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.12)'}`,
-        backgroundColor: selected ? '#0a0a0a' : 'transparent',
-        color: selected ? '#f5f0eb' : '#0a0a0a',
+        border: `1px solid ${selected ? 'var(--sov-black)' : hovered ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.12)'}`,
+        backgroundColor: selected ? 'var(--sov-black)' : 'transparent',
+        color: selected ? 'var(--sov-white)' : 'var(--sov-black)',
         fontSize: '12px',
         fontWeight: 500,
         textTransform: 'uppercase',
@@ -115,7 +115,7 @@ function TextInput({
           fontWeight: 500,
           textTransform: 'uppercase',
           letterSpacing: '0.15em',
-          color: 'rgba(0,0,0,0.45)',
+          color: 'var(--sov-grey)',
           marginBottom: '8px',
         }}
       >
@@ -135,8 +135,8 @@ function TextInput({
           width: '100%',
           backgroundColor: 'transparent',
           border: 'none',
-          borderBottom: `1px solid ${error ? '#c0392b' : focused ? '#c9a96e' : 'rgba(0,0,0,0.2)'}`,
-          color: '#0a0a0a',
+          borderBottom: `1px solid ${error ? 'var(--sov-error)' : focused ? 'var(--sov-greige-dark)' : 'rgba(0,0,0,0.2)'}`,
+          color: 'var(--sov-black)',
           fontSize: '14px',
           fontWeight: 400,
           padding: '16px 0',
@@ -149,7 +149,7 @@ function TextInput({
         <p
           style={{
             fontSize: '12px',
-            color: '#c0392b',
+            color: 'var(--sov-error)',
             marginTop: '6px',
             letterSpacing: 'normal',
           }}
@@ -174,9 +174,9 @@ const fadeVariants = {
 };
 
 const navBtnBase: React.CSSProperties = {
-  backgroundColor: '#0a0a0a',
-  color: '#ffffff',
-  border: '1px solid #0a0a0a',
+  backgroundColor: 'var(--sov-greige-dark)',
+  color: 'var(--sov-white)',
+  border: '1px solid var(--sov-greige-dark)',
   fontSize: '13px',
   fontWeight: 500,
   letterSpacing: '0.1em',
@@ -197,7 +197,7 @@ function WheelPicker({
   value: string;
   onChange: (v: string) => void;
   defaultIndex?: number;
-  // Taller rows let long option text wrap to two lines instead of clipping — only needed
+  // Taller rows let long option text wrap to two lines instead of clipping, only needed
   // where two pickers sit side by side (Investment/Ideal Start) and are narrow enough that
   // their longest option can't always fit on one line even after shortening labels and
   // reducing font-size. Step 1's picker doesn't need this, so it keeps the default.
@@ -212,13 +212,13 @@ function WheelPicker({
   const CONTAINER_HEIGHT = ITEM_HEIGHT * 3;
   const PADDING = ITEM_HEIGHT;
   // Space reserved on the left for the arrow + gap before the pill/text start. Kept as small
-  // as the arrow can comfortably sit in — every px reclaimed here is a px the pill gets to use,
+  // as the arrow can comfortably sit in: every px reclaimed here is a px the pill gets to use,
   // which matters now that two pickers sit side by side in the merged Investment/Ideal Start step.
   const LEFT_OFFSET = 32;
 
   const longestOption = options.reduce((a, b) => a.length > b.length ? a : b, '');
   // Sized for the (now smaller, 15px/14px) option font. When a pill still can't fit its text
-  // on one line at this width — e.g. "Within 3 Months" in the narrow two-column layout — the
+  // on one line at this width (e.g. "Within 3 Months" in the narrow two-column layout), the
   // text wraps to two lines (see the span's whiteSpace below) rather than clipping.
   const PILL_WIDTH = Math.max(120, longestOption.length * 7 + 50);
 
@@ -226,16 +226,16 @@ function WheelPicker({
     ? (options.indexOf(value) === -1 ? defaultIndex : options.indexOf(value))
     : defaultIndex;
 
-  // Mutable ref — tracks which index is highlighted without triggering any re-render
+  // Mutable ref: tracks which index is highlighted without triggering any re-render
   const centeredIndexRef = useRef<number>(initIdx);
 
-  // Sets scrollTop synchronously before first paint — no visible jump
+  // Sets scrollTop synchronously before first paint, so there is no visible jump
   const assignRef = (el: HTMLDivElement | null) => {
     containerRef.current = el;
     if (el) el.scrollTop = initIdx * ITEM_HEIGHT;
   };
 
-  // Imperative highlight update — zero React involvement, zero re-render
+  // Imperative highlight update: zero React involvement, zero re-render
   const applyHighlight = (idx: number) => {
     const prevIdx = centeredIndexRef.current;
 
@@ -277,7 +277,7 @@ function WheelPicker({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Direct DOM mutation — no setState, no re-render, momentum unaffected
+            // Direct DOM mutation: no setState, no re-render, momentum unaffected
             applyHighlight(Number((entry.target as HTMLElement).dataset.idx));
           }
         });
@@ -298,7 +298,7 @@ function WheelPicker({
     };
   }, []);
 
-  // Scroll handler does nothing visual — only commits the settled value after 80ms
+  // Scroll handler does nothing visual, it only commits the settled value after 80ms
   const handleScroll = () => {
     const el = containerRef.current;
     if (!el) return;
@@ -311,7 +311,7 @@ function WheelPicker({
   };
 
   return (
-    // No isolation/z-index on outer div — stacking order is resolved by siblings below.
+    // No isolation/z-index on outer div: stacking order is resolved by siblings below.
     // Layer order (back to front): pill(z:1) → scroll container(z:2) → fades(z:3) → arrow(z:4).
     // The scroll container's transparent background lets the pill show through;
     // item text renders inside the z:2 stacking context, naturally above the z:1 pill.
@@ -320,14 +320,14 @@ function WheelPicker({
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0,
         height: `${PADDING}px`,
-        background: 'linear-gradient(to bottom, rgba(245,240,235,1) 40%, rgba(245,240,235,0))',
+        background: 'linear-gradient(to bottom, rgba(255,255,255,1) 40%, rgba(255,255,255,0))',
         zIndex: 3, pointerEvents: 'none',
       }} />
       {/* Bottom fade */}
       <div style={{
         position: 'absolute', bottom: 0, left: 0, right: 0,
         height: `${PADDING}px`,
-        background: 'linear-gradient(to top, rgba(245,240,235,1) 40%, rgba(245,240,235,0))',
+        background: 'linear-gradient(to top, rgba(255,255,255,1) 40%, rgba(255,255,255,0))',
         zIndex: 3, pointerEvents: 'none',
       }} />
       {/* Static chevron arrow */}
@@ -345,8 +345,8 @@ function WheelPicker({
       >
         <polygon points="4,2 4,22 20,12" fill="#0a0a0a"/>
       </svg>
-      {/* Outlined pill — z:1, behind the scroll container (z:2).
-          Transparent fill + gold border frames the selected item without heavy fill. */}
+      {/* Outlined pill: z:1, behind the scroll container (z:2).
+          Light tint + dark border frames the selected item without heavy fill. */}
       <div style={{
         position: 'absolute',
         top: `${PADDING}px`,
@@ -360,7 +360,7 @@ function WheelPicker({
         zIndex: 1,
         pointerEvents: 'none',
       }} />
-      {/* Scroll list — z:2 sits above the pill so item text is always in front of it.
+      {/* Scroll list: z:2 sits above the pill so item text is always in front of it.
           touch-action: pan-y ensures vertical swipes scroll the list, never the page. */}
       <div
         ref={assignRef}
@@ -379,7 +379,7 @@ function WheelPicker({
       >
         <div style={{ height: `${PADDING}px`, flexShrink: 0 }} />
         {options.map((opt, i) => {
-          // Static initial styles — applyHighlight overrides these imperatively after mount
+          // Static initial styles: applyHighlight overrides these imperatively after mount
           const isInitial = i === initIdx;
           return (
             <div
@@ -490,6 +490,7 @@ export default function SiteVisitForm() {
             extensionType: selectedProjectType,
             budget: selectedBudget,
             timing: selectedStartTiming,
+            leadChannel: getLeadChannel(),
           }),
         });
         if (!response.ok) {
@@ -537,7 +538,7 @@ export default function SiteVisitForm() {
         @media (max-width: 768px) {
           .form-name-grid { grid-template-columns: 1fr !important; }
           .form-options-grid { grid-template-columns: 1fr !important; }
-          /* Same padding as every other step, no exceptions — the merged Investment/Ideal
+          /* Same padding as every other step, no exceptions: the merged Investment/Ideal
              Start step must not grow the card. Its two-column layout is tightened instead
              (smaller inter-column gap; WheelPicker's own left offset is also reduced, see
              LEFT_OFFSET below) so it fits within this fixed size. */
@@ -547,7 +548,7 @@ export default function SiteVisitForm() {
       `}</style>
       <section
         data-theme="dark"
-        style={{ backgroundColor: '#0a0a0a', padding: '100px 0' }}
+        style={{ backgroundColor: 'var(--sov-black)', padding: '100px 0' }}
       >
       <div className="inner">
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
@@ -555,23 +556,23 @@ export default function SiteVisitForm() {
             style={{
               fontSize: '12px',
               fontWeight: 600,
-              color: '#C9A96E',
+              color: 'var(--sov-greige-light)',
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
               marginBottom: '10px',
             }}
           >
-            Limited Availability This Month
+            Limited Availability
           </p>
           <p
             style={{
               fontSize: '18px',
               fontWeight: 700,
-              color: '#F5F0EB',
+              color: 'var(--sov-white)',
               letterSpacing: 'normal',
             }}
           >
-            Only {getSlotCount()} slots remain.
+            Viewings are hosted one-to-one, with a limited number of places.
           </p>
         </div>
 
@@ -579,13 +580,13 @@ export default function SiteVisitForm() {
           style={{
             fontSize: 'clamp(34px, 4vw, 52px)',
             fontWeight: 900,
-            color: '#ffffff',
+            color: 'var(--sov-white)',
             letterSpacing: '-0.02em',
             textAlign: 'center',
             marginBottom: '60px',
           }}
         >
-          Confirm Your Viewing.
+          Request Your Private Viewing.
         </h2>
 
 
@@ -594,8 +595,8 @@ export default function SiteVisitForm() {
           style={{
             maxWidth: '860px',
             margin: '0 auto',
-            backgroundColor: '#F5F0EB',
-            border: '1px solid rgba(10,10,10,0.08)',
+            backgroundColor: 'var(--sov-white)',
+            border: '1px solid rgba(10,10,10,0.1)',
             padding: '60px 80px',
           }}
         >
@@ -614,10 +615,10 @@ export default function SiteVisitForm() {
                 xmlns="http://www.w3.org/2000/svg"
                 style={{ margin: '0 auto 32px' }}
               >
-                <circle cx="28" cy="28" r="27" stroke="#c9a96e" strokeWidth="1.5" />
+                <circle cx="28" cy="28" r="27" stroke="var(--sov-greige-dark)" strokeWidth="1.5" />
                 <path
                   d="M17 28L24 35L39 20"
-                  stroke="#c9a96e"
+                  stroke="var(--sov-greige-dark)"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -627,7 +628,7 @@ export default function SiteVisitForm() {
                 style={{
                   fontSize: 'clamp(34px, 4vw, 52px)',
                   fontWeight: 900,
-                  color: '#0a0a0a',
+                  color: 'var(--sov-black)',
                   letterSpacing: '-0.02em',
                   marginBottom: '24px',
                 }}
@@ -638,14 +639,14 @@ export default function SiteVisitForm() {
                 style={{
                   fontSize: '15px',
                   fontWeight: 400,
-                  color: 'rgba(0,0,0,0.6)',
+                  color: 'var(--sov-grey)',
                   lineHeight: 1.7,
                   maxWidth: '500px',
                   margin: '0 auto 40px',
                   letterSpacing: 'normal',
                 }}
               >
-                One of our team will be in touch shortly to confirm your site visit.
+                Our team will be in touch shortly to arrange a date for your viewing.
               </p>
               <button
                 type="button"
@@ -662,9 +663,9 @@ export default function SiteVisitForm() {
                   setPhoneBlurred(false);
                 }}
                 style={{
-                  backgroundColor: '#ffffff',
-                  color: '#0a0a0a',
-                  border: '1px solid #0a0a0a',
+                  backgroundColor: 'var(--sov-white)',
+                  color: 'var(--sov-black)',
+                  border: '1px solid var(--sov-black)',
                   fontSize: '13px',
                   fontWeight: 500,
                   letterSpacing: '0.1em',
@@ -674,12 +675,12 @@ export default function SiteVisitForm() {
                   transition: 'all 0.2s ease',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#0a0a0a';
-                  e.currentTarget.style.color = '#ffffff';
+                  e.currentTarget.style.backgroundColor = 'var(--sov-black)';
+                  e.currentTarget.style.color = 'var(--sov-white)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#ffffff';
-                  e.currentTarget.style.color = '#0a0a0a';
+                  e.currentTarget.style.backgroundColor = 'var(--sov-white)';
+                  e.currentTarget.style.color = 'var(--sov-black)';
                 }}
               >
                 Submit Another Enquiry
@@ -687,7 +688,7 @@ export default function SiteVisitForm() {
             </motion.div>
           ) : (
             <>
-              {/* Progress bar — only shown on the counted steps (1–TOTAL_STEPS) */}
+              {/* Progress bar: only shown on the counted steps (1 to TOTAL_STEPS) */}
               {step <= TOTAL_STEPS && (
                 <div
                   style={{
@@ -705,7 +706,7 @@ export default function SiteVisitForm() {
                       top: 0,
                       left: 0,
                       height: '100%',
-                      backgroundColor: '#c9a96e',
+                      backgroundColor: 'var(--sov-greige-dark)',
                     }}
                   />
                 </div>
@@ -716,7 +717,7 @@ export default function SiteVisitForm() {
                 style={{
                   fontSize: 'clamp(20px, 2.2vw, 28px)',
                   fontWeight: 900,
-                  color: '#0a0a0a',
+                  color: 'var(--sov-black)',
                   letterSpacing: '-0.02em',
                   marginBottom: '36px',
                 }}
@@ -735,7 +736,7 @@ export default function SiteVisitForm() {
                   exit="exit"
                   transition={{ duration: 0.3 }}
                 >
-                  {/* STEP 1 — Project type */}
+                  {/* STEP 1: Project type */}
                   {step === 1 && (
                     isMobile ? (
                       <div style={{ marginBottom: '40px' }}>
@@ -768,7 +769,7 @@ export default function SiteVisitForm() {
                     )
                   )}
 
-                  {/* STEP 2 — Investment + Ideal Start (merged), then availability check */}
+                  {/* STEP 2: Investment + Ideal Start (merged), then availability check */}
                   {step === 2 && (
                     <div style={{ marginBottom: '40px' }}>
                       <AnimatePresence mode="wait">
@@ -865,13 +866,13 @@ export default function SiteVisitForm() {
                                 }}
                                 onMouseEnter={(e) => {
                                   if (investmentStepValid) {
-                                    e.currentTarget.style.backgroundColor = '#c9a96e';
-                                    e.currentTarget.style.borderColor = '#c9a96e';
+                                    e.currentTarget.style.backgroundColor = 'var(--sov-black)';
+                                    e.currentTarget.style.borderColor = 'var(--sov-black)';
                                   }
                                 }}
                                 onMouseLeave={(e) => {
-                                  e.currentTarget.style.backgroundColor = '#0a0a0a';
-                                  e.currentTarget.style.borderColor = '#0a0a0a';
+                                  e.currentTarget.style.backgroundColor = 'var(--sov-greige-dark)';
+                                  e.currentTarget.style.borderColor = 'var(--sov-greige-dark)';
                                 }}
                               >
                                 Check Availability
@@ -899,14 +900,14 @@ export default function SiteVisitForm() {
                                     top: 0,
                                     left: 0,
                                     height: '100%',
-                                    backgroundColor: '#c9a96e',
+                                    backgroundColor: 'var(--sov-greige-dark)',
                                   }}
                                 />
                               </div>
                               <p
                                 style={{
                                   fontSize: '14px',
-                                  color: 'rgba(0,0,0,0.55)',
+                                  color: 'var(--sov-grey)',
                                   lineHeight: 1.6,
                                   letterSpacing: 'normal',
                                 }}
@@ -920,20 +921,8 @@ export default function SiteVisitForm() {
                             <div style={{ paddingTop: '8px' }}>
                               <p
                                 style={{
-                                  fontSize: '12px',
-                                  fontWeight: 600,
-                                  color: '#c9a96e',
-                                  letterSpacing: '0.15em',
-                                  textTransform: 'uppercase',
-                                  marginBottom: '12px',
-                                }}
-                              >
-                                {getSlotCount()} slots left
-                              </p>
-                              <p
-                                style={{
                                   fontSize: '14px',
-                                  color: 'rgba(0,0,0,0.55)',
+                                  color: 'var(--sov-grey)',
                                   lineHeight: 1.65,
                                   marginBottom: '32px',
                                   letterSpacing: 'normal',
@@ -960,13 +949,13 @@ export default function SiteVisitForm() {
                                 }}
                                 onMouseEnter={(e) => {
                                   if (nameStepValid) {
-                                    e.currentTarget.style.backgroundColor = '#c9a96e';
-                                    e.currentTarget.style.borderColor = '#c9a96e';
+                                    e.currentTarget.style.backgroundColor = 'var(--sov-black)';
+                                    e.currentTarget.style.borderColor = 'var(--sov-black)';
                                   }
                                 }}
                                 onMouseLeave={(e) => {
-                                  e.currentTarget.style.backgroundColor = '#0a0a0a';
-                                  e.currentTarget.style.borderColor = '#0a0a0a';
+                                  e.currentTarget.style.backgroundColor = 'var(--sov-greige-dark)';
+                                  e.currentTarget.style.borderColor = 'var(--sov-greige-dark)';
                                 }}
                               >
                                 Continue
@@ -978,7 +967,7 @@ export default function SiteVisitForm() {
                     </div>
                   )}
 
-                  {/* STEP 3 — Contact details */}
+                  {/* STEP 3: Contact details */}
                   {step === 3 && (
                     <div
                       style={{
@@ -1044,14 +1033,14 @@ export default function SiteVisitForm() {
                       border: 'none',
                       fontSize: '12px',
                       fontWeight: 500,
-                      color: 'rgba(0,0,0,0.4)',
+                      color: 'var(--sov-grey)',
                       cursor: 'pointer',
                       letterSpacing: '0.05em',
                       padding: '0',
                       transition: 'color 0.2s',
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#0a0a0a')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(0,0,0,0.4)')}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--sov-black)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--sov-grey)')}
                   >
                     ← Back
                   </button>
@@ -1069,16 +1058,16 @@ export default function SiteVisitForm() {
                     }}
                     onMouseEnter={(e) => {
                       if (canNext()) {
-                        e.currentTarget.style.backgroundColor = '#c9a96e';
-                        e.currentTarget.style.borderColor = '#c9a96e';
+                        e.currentTarget.style.backgroundColor = 'var(--sov-black)';
+                        e.currentTarget.style.borderColor = 'var(--sov-black)';
                       }
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#0a0a0a';
-                      e.currentTarget.style.borderColor = '#0a0a0a';
+                      e.currentTarget.style.backgroundColor = 'var(--sov-greige-dark)';
+                      e.currentTarget.style.borderColor = 'var(--sov-greige-dark)';
                     }}
                   >
-                    {step === 3 ? 'BOOK YOUR SITE VISIT' : 'Next →'}
+                    {step === 3 ? 'REQUEST MY VIEWING' : 'Next →'}
                   </button>
                 )}
               </div>
