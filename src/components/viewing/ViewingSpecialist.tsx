@@ -1,6 +1,6 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Smartphone, Thermometer, TrendingDown, type LucideIcon } from 'lucide-react';
+import { ChevronDown, ChevronUp, Smartphone, Thermometer, TrendingDown, type LucideIcon } from 'lucide-react';
 
 const outcomeRows: { Icon: LucideIcon; title: string; text: string }[] = [
   { Icon: Thermometer, title: 'Steady Warmth', text: 'Rooms that hold their heat through the coldest months.' },
@@ -28,10 +28,24 @@ function SectionLabel({ label }: { label: string }) {
 export default function ViewingSpecialist() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: '0px 0px -120px 0px', amount: 0.2 });
+  const [statementOpen, setStatementOpen] = useState(false);
 
   return (
     <>
       <style>{`
+        /* Read more toggle for the statement: mobile only. At 768px and up the full paragraph shows. */
+        .future-statement-fade,
+        .future-statement-toggle { display: none; }
+        @media (max-width: 767px) {
+          .future-statement.is-collapsed {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+          }
+          .future-statement-fade { display: block; }
+          .future-statement-toggle { display: inline-flex; }
+        }
         @media (max-width: 767px) {
           .expect-row { flex-direction: column !important; }
           .expect-text-col { flex: auto !important; width: 100% !important; padding: 64px 24px 48px !important; }
@@ -81,19 +95,60 @@ export default function ViewingSpecialist() {
               >
                 Designed For What Comes Next
               </h2>
-              <p
+              <div style={{ position: 'relative' }}>
+                <p
+                  className={`future-statement${statementOpen ? '' : ' is-collapsed'}`}
+                  style={{
+                    fontSize: '15px',
+                    fontWeight: 400,
+                    color: 'rgba(255,255,255,0.78)',
+                    lineHeight: 1.75,
+                    letterSpacing: 'normal',
+                    marginTop: '24px',
+                    maxWidth: '520px',
+                  }}
+                >
+                  From March 2027, new homes in England must meet the Future Homes Standard, with higher energy performance and low-carbon heating. Sovran already applies that thinking to new builds, extensions and renovations alike, settling comfort and running costs at the drawing stage.
+                </p>
+                {!statementOpen && (
+                  <div
+                    className="future-statement-fade"
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      height: '1.6em',
+                      pointerEvents: 'none',
+                      background: 'linear-gradient(to bottom, rgba(10,10,10,0), #0A0A0A)',
+                    }}
+                  />
+                )}
+              </div>
+              <button
+                type="button"
+                className="future-statement-toggle"
+                aria-expanded={statementOpen}
+                onClick={() => setStatementOpen((open) => !open)}
                 style={{
-                  fontSize: '15px',
-                  fontWeight: 400,
-                  color: 'rgba(255,255,255,0.78)',
-                  lineHeight: 1.75,
-                  letterSpacing: 'normal',
-                  marginTop: '24px',
-                  maxWidth: '520px',
+                  background: 'none',
+                  border: 'none',
+                  padding: '8px 0',
+                  margin: '6px 0 0',
+                  cursor: 'pointer',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  letterSpacing: '0.06em',
+                  color: '#C2B2A0',
+                  minHeight: '44px',
                 }}
               >
-                From March 2027, new homes in England must meet the Future Homes Standard, with higher energy performance and low-carbon heating. Sovran already applies that thinking to new builds, extensions and renovations alike, settling comfort and running costs at the drawing stage.
-              </p>
+                {statementOpen ? 'Read less' : 'Read more'}
+                {statementOpen ? <ChevronUp size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}
+              </button>
 
               <div style={{ marginTop: '32px', display: 'grid', gap: '20px' }}>
                 {outcomeRows.map(({ Icon, title, text }) => (

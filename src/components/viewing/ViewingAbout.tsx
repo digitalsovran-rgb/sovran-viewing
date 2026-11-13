@@ -1,6 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
-
-const figures = ['Since 2011', '1,000+ Projects', '97% Planning Success', '4.9 Rated On Google'];
+import { ArrowRight } from 'lucide-react';
 
 export default function ViewingAbout() {
   const reduceMotion = useReducedMotion();
@@ -16,25 +15,25 @@ export default function ViewingAbout() {
       <style>{`
         .about-section { padding: 128px 24px; text-align: center; }
         .about-statement { font-size: 26px; }
-        .about-figures {
-          text-transform: uppercase;
-          font-size: 12px;
-          letter-spacing: 0.18em;
-          font-weight: 600;
-          color: #C2B2A0;
-          line-height: 1.9;
+        .about-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: 40px;
+          font-size: 15px;
+          font-weight: 500;
+          color: #FFFFFF;
+          text-decoration: none;
+          border-bottom: 1px solid rgba(194,178,160,0.6);
+          padding-bottom: 4px;
+          transition: color 0.2s, border-bottom-color 0.2s;
         }
-        .about-figures-grid { display: none; }
+        @media (hover: hover) and (pointer: fine) {
+          .about-link:hover { color: #C2B2A0; border-bottom-color: #C2B2A0; }
+        }
         @media (max-width: 767px) {
           .about-section { padding: 96px 22px; }
           .about-statement { font-size: 20px; }
-          .about-figures-line { display: none; }
-          .about-figures-grid {
-            display: grid;
-            grid-template-columns: repeat(2, auto);
-            justify-content: center;
-            gap: 14px 18px;
-          }
         }
       `}</style>
       <section className="about-section" data-theme="dark" style={{ backgroundColor: '#0A0A0A' }}>
@@ -75,22 +74,27 @@ export default function ViewingAbout() {
               color: '#FFFFFF',
             }}
           >
-            We believe a home should feel quietly exceptional long after the last trade has left. Since 2011, our design and build team has pursued that standard on each project, until the finished property feels unmistakably personal to the people who live there.
+            A home quietly shapes the people inside it: how mornings begin, where a family gathers, what lingers with a guest on the way out. Since 2011, Sovran has designed and built with that in mind, for the many years after handover.
           </motion.p>
 
-          <div
-            aria-hidden="true"
-            style={{ width: '48px', height: '1px', backgroundColor: 'rgba(194,178,160,0.5)', margin: '56px auto' }}
-          />
+          <p
+            style={{
+              marginTop: '28px',
+              textTransform: 'uppercase',
+              fontSize: '12px',
+              letterSpacing: '0.18em',
+              fontWeight: 600,
+              color: '#C2B2A0',
+              textAlign: 'center',
+            }}
+          >
+            The Sovran Team
+          </p>
 
-          <motion.div {...fade}>
-            <p className="about-figures about-figures-line">{figures.join(' · ')}</p>
-            <div className="about-figures about-figures-grid">
-              {figures.map((item) => (
-                <span key={item}>{item}</span>
-              ))}
-            </div>
-          </motion.div>
+          <a className="about-link" href="https://www.sovranstudio.co.uk/about" target="_blank" rel="noopener">
+            Explore the world of Sovran
+            <ArrowRight size={16} aria-hidden="true" />
+          </a>
 
           <img
             src="/media/logo-sovran-white.webp"

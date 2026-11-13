@@ -217,7 +217,7 @@ export default function ViewingApply() {
                   color: '#4A443C',
                 }}
               >
-                After A Recent Viewing
+                After A Private Viewing
               </p>
             </div>
 
