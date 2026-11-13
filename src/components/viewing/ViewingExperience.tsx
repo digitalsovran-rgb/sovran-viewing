@@ -1,135 +1,112 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { KenBurnsStatic } from './KenBurnsCarousel';
+import { motion } from 'framer-motion';
+import { Eye, MessagesSquare, PoundSterling, ShieldCheck, type LucideIcon } from 'lucide-react';
 
-const DESKTOP_VISIT_IMAGE = '/media/visitpc.webp';
-const MOBILE_VISIT_IMAGE = '/media/visitmob.webp';
+type Card = { Icon: LucideIcon; title: string; text: string };
 
-const journeyPoints = [
-  'How the layout and flow were planned around daily life',
-  'True proportions and natural light, experienced at full scale',
-  'Materials, joinery and finishes you can see and touch',
-  'The details owners value most once they move in',
-  'Realistic cost and timeline benchmarks for work of this scale',
-  'The full journey from first sketch to handover, with time for your questions',
+const cards: Card[] = [
+  {
+    Icon: ShieldCheck,
+    title: 'Certainty Before You Commit',
+    text: 'See the standard in person, then plan your own project with full confidence.',
+  },
+  {
+    Icon: Eye,
+    title: 'A Clearer Vision',
+    text: 'Ideas for layout, light and materials that suit the property you own.',
+  },
+  {
+    Icon: PoundSterling,
+    title: 'Realistic Numbers',
+    text: 'What this level of finish costs and how long it takes, from the team that delivered it.',
+  },
+  {
+    Icon: MessagesSquare,
+    title: 'Answers At The Source',
+    text: 'Every question about your plans put to the specialist behind the project, face to face.',
+  },
 ];
 
 export default function ViewingExperience() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '0px 0px -120px 0px', amount: 0.2 });
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
-
-  useEffect(() => {
-    const handler = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handler);
-    return () => window.removeEventListener('resize', handler);
-  }, []);
-
   return (
     <>
       <style>{`
-        .visit-list-item {
-          display: flex;
-          align-items: flex-start;
-          gap: 22px;
-          padding: 26px 0;
-          border-bottom: 1px solid rgba(10,10,10,0.08);
+        .leave-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 20px;
+          max-width: 1200px;
+          margin: 56px auto 0;
         }
-        .visit-list-item:last-child {
-          border-bottom: none;
+        .leave-card {
+          background-color: #FFFFFF;
+          border: 1px solid rgba(10,10,10,0.1);
+          border-radius: 0;
+          padding: 28px;
         }
-        .visit-list-number {
-          flex-shrink: 0;
-          width: 34px;
-          font-size: 20px;
-          font-weight: 500;
-          color: var(--sov-greige-dark);
-          line-height: 1.6;
-        }
-        .visit-list-rule {
-          flex-shrink: 0;
-          width: 2px;
-          height: 27px;
-          background-color: var(--sov-greige-dark);
-        }
-        .visit-list-text {
-          font-size: 17px;
-          font-weight: 400;
-          color: var(--sov-black);
-          line-height: 1.6;
-          letter-spacing: normal;
-        }
-        .visit-feature-image-wrap {
-          position: relative;
-          width: 100%;
-          height: clamp(280px, 44vw, 560px);
-          overflow: hidden;
+        .leave-card-icon {
           display: block;
+          margin-bottom: 16px;
         }
-        @media (max-width: 768px) {
-          .visit-list-item { gap: 16px; padding: 20px 0; }
-          .visit-list-number { width: 28px; font-size: 17px; }
-          .visit-list-rule { height: 22px; }
-          .visit-list-text { font-size: 15px; }
+        .leave-card-title {
+          font-size: 17px;
+          font-weight: 700;
+          color: #0A0A0A;
+          margin-bottom: 8px;
+        }
+        .leave-card-text {
+          font-size: 15px;
+          line-height: 1.6;
+          color: #6B655C;
+        }
+        @media (max-width: 767px) {
+          .leave-grid { grid-template-columns: 1fr; gap: 12px; }
+          .leave-card { padding: 22px; }
         }
       `}</style>
-      <section data-theme="light" style={{ backgroundColor: 'var(--sov-white)', padding: '100px 0' }}>
-        <div className="inner" ref={ref}>
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+      <section data-theme="light" style={{ backgroundColor: '#FFFFFF', padding: '100px 0' }}>
+        <div className="inner">
+          <p
             style={{
+              textAlign: 'center',
+              textTransform: 'uppercase',
+              fontSize: '13px',
+              letterSpacing: '0.18em',
+              fontWeight: 600,
+              color: '#4A443C',
+              marginBottom: '18px',
+            }}
+          >
+            The Viewing
+          </p>
+
+          <h2
+            style={{
+              textAlign: 'center',
               fontSize: 'clamp(32px, 3.8vw, 52px)',
               fontWeight: 900,
               color: 'var(--sov-black)',
               letterSpacing: '-0.01em',
               lineHeight: 1.08,
-              maxWidth: '760px',
             }}
           >
-            What The Viewing Reveals
-          </motion.h2>
+            What You Leave With
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
-            style={{
-              fontSize: '17px',
-              fontWeight: 400,
-              color: 'var(--sov-grey)',
-              lineHeight: 1.7,
-              letterSpacing: 'normal',
-              maxWidth: '620px',
-              marginTop: '22px',
-            }}
-          >
-            Your guide is the design and build specialist who delivered the project. They will explain how each space was planned, which materials were specified and why, and what this level of finish involves for a project like yours.
-          </motion.p>
-
-          <motion.ul
-            initial={{ opacity: 0, y: 24 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-            style={{ listStyle: 'none', margin: '56px 0 0', padding: 0 }}
-          >
-            {journeyPoints.map((text, i) => (
-              <li key={i} className="visit-list-item">
-                <span className="visit-list-number">{String(i + 1).padStart(2, '0')}</span>
-                <span className="visit-list-rule" />
-                <span className="visit-list-text">{text}</span>
-              </li>
+          <div className="leave-grid">
+            {cards.map(({ Icon, title, text }, i) => (
+              <motion.div
+                key={title}
+                className="leave-card"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.08, ease: 'easeOut' }}
+              >
+                <Icon className="leave-card-icon" size={22} strokeWidth={1.6} color="#4A443C" aria-hidden="true" />
+                <p className="leave-card-title">{title}</p>
+                <p className="leave-card-text">{text}</p>
+              </motion.div>
             ))}
-          </motion.ul>
-
-          <div className="visit-feature-image-wrap" style={{ marginTop: '64px' }}>
-            <KenBurnsStatic
-              src={isMobile ? MOBILE_VISIT_IMAGE : DESKTOP_VISIT_IMAGE}
-              alt="A completed Sovran design and build project"
-              duration={14}
-              zoomScale={1.06}
-            />
           </div>
         </div>
       </section>

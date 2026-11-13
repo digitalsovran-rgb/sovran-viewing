@@ -3,7 +3,7 @@ import ViewingHero from './components/viewing/ViewingHero';
 import LazySection from './components/LazySection';
 
 // Below-the-fold sections are code-split AND viewport-gated via LazySection, so their JS
-// (including SiteVisitForm's validation/submission logic and Footer's gsap + ScrollTrigger
+// (including ConsultationForm's validation/submission logic and Footer's gsap + ScrollTrigger
 // import) doesn't download or execute until the user is actually about to scroll to it.
 // React.lazy alone triggers its import() on first render regardless of scroll position, so
 // code-splitting without this gating just moved the same near-immediate load out of the
@@ -11,7 +11,7 @@ import LazySection from './components/LazySection';
 const ViewingExperience = lazy(() => import('./components/viewing/ViewingExperience'));
 const ViewingSpecialist = lazy(() => import('./components/viewing/ViewingSpecialist'));
 const ViewingAbout = lazy(() => import('./components/viewing/ViewingAbout'));
-const SiteVisitForm = lazy(() => import('./components/viewing/SiteVisitForm'));
+const ConsultationForm = lazy(() => import('./components/ConsultationForm'));
 const Footer = lazy(() => import('./components/Footer'));
 
 type SectionTheme = 'dark' | 'light';
@@ -196,7 +196,7 @@ export default function App() {
       <LazySection component={ViewingExperience} minHeight={1520} />
       <LazySection component={ViewingSpecialist} minHeight={1070} />
       <LazySection component={ViewingAbout} minHeight={1010} />
-      <LazySection component={SiteVisitForm} minHeight={900} id="viewing-form" />
+      <LazySection component={ConsultationForm} minHeight={900} id="viewing-form" />
       <LazySection component={Footer} minHeight={870} />
       <StickyCTABar />
     </>

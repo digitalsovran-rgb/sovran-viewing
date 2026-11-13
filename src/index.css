@@ -75,4 +75,11 @@ img {
   .inner {
     padding: 0 24px;
   }
+  /* Used by ConsultationForm (same rules as the design page). */
+  .form-options-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .form-inner {
+    padding: 40px 24px !important;
+  }
 }

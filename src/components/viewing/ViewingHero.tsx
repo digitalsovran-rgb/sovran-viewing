@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import KenBurnsCarousel from './KenBurnsCarousel';
+import ActivityLine from './ActivityLine';
 
 const DESKTOP_IMAGES = ['/media/hero.webp', '/media/hero2.webp?v=2', '/media/hero3.webp?v=2'];
-const MOBILE_IMAGES = ['/media/heromob.webp', '/media/heromob2.webp?v=2', '/media/heromob3.webp?v=2'];
 
 export default function ViewingHero() {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
@@ -48,19 +48,47 @@ export default function ViewingHero() {
           backgroundColor: 'var(--sov-black)',
         }}
       >
-        {/* Background: rotating Ken Burns carousel, per breakpoint.
-            No entrance fade on this wrapper, since it sits directly behind the LCP candidate,
-            and KenBurnsCarousel's own internal crossfade already handles first-appearance. */}
+        {/* Background: a muted looping video on mobile (poster shown until it plays), the
+            rotating Ken Burns carousel on desktop. No entrance fade on this wrapper, since it
+            sits directly behind the LCP candidate. */}
         <div className="viewing-hero-bg" style={{ position: 'absolute', inset: 0 }}>
-          <KenBurnsCarousel
-            images={isMobile ? MOBILE_IMAGES : DESKTOP_IMAGES}
-            alt="A completed Sovran home extension"
-            interval={6500}
-            fadeDuration={1.2}
-            zoomScale={1.09}
-            panX={-2.5}
-            panY={-1.5}
-          />
+          {isMobile ? (
+            <video
+              // React only sets `muted` as a property; iOS Safari needs the attribute to autoplay.
+              ref={(el) => {
+                if (el) {
+                  el.defaultMuted = true;
+                  el.setAttribute('muted', '');
+                }
+              }}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              poster="/media/herovidph-poster.webp"
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+            >
+              <source src="/media/herovidph.webm" type="video/webm" />
+            </video>
+          ) : (
+            <KenBurnsCarousel
+              images={DESKTOP_IMAGES}
+              alt="A completed Sovran home extension"
+              interval={6500}
+              fadeDuration={1.2}
+              zoomScale={1.09}
+              panX={-2.5}
+              panY={-1.5}
+            />
+          )}
         </div>
 
         {/* Gradient overlay: light enough for the photo to read clearly, just enough contrast
@@ -206,6 +234,8 @@ export default function ViewingHero() {
                 Request A Viewing
               </button>
             </motion.div>
+
+            <ActivityLine />
           </div>
         </div>
       </section>
