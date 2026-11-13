@@ -3,12 +3,12 @@ import { motion, useReducedMotion } from 'framer-motion';
 const steps = [
   {
     number: '01',
-    title: 'I Share My Project',
+    title: 'I Submit My Project',
     text: 'A few short questions about what I am planning, my investment level and when I would like to begin.',
   },
   {
     number: '02',
-    title: 'My Project Is Reviewed',
+    title: 'My Project Is Qualified',
     text: 'A member of the Sovran team calls me to understand my plans and confirm the project is eligible.',
   },
   {
@@ -77,8 +77,34 @@ export default function ViewingApply() {
           max-width: 300px;
           margin: 0 auto;
         }
-        .apply-callout {
-          font-size: 22px;
+        .apply-review-card {
+          display: grid;
+          grid-template-columns: 45% 55%;
+          background-color: #4A443C;
+          border-radius: 0;
+          overflow: hidden;
+        }
+        .apply-review-img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          min-height: 460px;
+          object-fit: cover;
+        }
+        .apply-review-body {
+          padding: 52px 52px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        .apply-review-title { font-size: 36px; }
+        .apply-review-text { text-align: left; }
+        @media (max-width: 767px) {
+          .apply-review-card { display: block; }
+          .apply-review-img { height: auto; min-height: 0; aspect-ratio: 1 / 1; }
+          .apply-review-body { display: block; padding: 26px 24px 30px; }
+          .apply-review-title { font-size: 30px; }
+          .apply-review-text { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
         }
         @media (max-width: 767px) {
           .apply-section { padding: 72px 20px; }
@@ -107,7 +133,6 @@ export default function ViewingApply() {
           .apply-step-body { padding-top: 11px; }
           .apply-step-title { margin: 0 0 6px; }
           .apply-step-text { max-width: none; margin: 0; }
-          .apply-callout { font-size: 19px; }
         }
       `}</style>
       <section className="apply-section" data-theme="light" style={{ backgroundColor: '#FFFFFF' }}>
@@ -173,19 +198,74 @@ export default function ViewingApply() {
             Viewings are reserved for eligible design and build projects, and each application is reviewed individually.
           </p>
 
-          <div
-            style={{
-              maxWidth: '760px',
-              margin: '48px auto 0',
-              textAlign: 'left',
-              borderLeft: '2px solid #4A443C',
-              padding: '8px 0 8px 24px',
-            }}
+          <motion.div
+            className="apply-review"
+            style={{ maxWidth: '1000px', margin: '72px auto 0' }}
+            initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={reduceMotion ? { duration: 0 } : { duration: 0.5, ease: 'easeOut' }}
           >
-            <p className="apply-callout" style={{ lineHeight: 1.5, fontWeight: 500, color: '#0A0A0A' }}>
-              In our experience, homeowners who attend a viewing begin their own design stage with a clearer brief, firmer budgets and far fewer doubts.
-            </p>
-          </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '18px' }}>
+              <span aria-hidden="true" style={{ display: 'block', width: '24px', height: '1px', backgroundColor: '#4A443C' }} />
+              <p
+                style={{
+                  textTransform: 'uppercase',
+                  fontSize: '12px',
+                  letterSpacing: '0.18em',
+                  fontWeight: 600,
+                  color: '#4A443C',
+                }}
+              >
+                After A Recent Viewing
+              </p>
+            </div>
+
+            <div className="apply-review-card">
+              <img
+                className="apply-review-img"
+                src="/media/reviewlf.webp"
+                alt="Living space in a completed Sovran home"
+                loading="lazy"
+              />
+              <div className="apply-review-body">
+                <p
+                  className="apply-review-title"
+                  style={{
+                    fontFamily: "'Cormorant Garamond', Georgia, 'Times New Roman', serif",
+                    fontStyle: 'italic',
+                    fontWeight: 400,
+                    lineHeight: 1.15,
+                    color: '#FFFFFF',
+                    margin: '0 0 18px',
+                  }}
+                >
+                  &ldquo;It Changed Everything For Us&rdquo;
+                </p>
+                <p
+                  className="apply-review-text"
+                  lang="en-GB"
+                  style={{ fontSize: '15px', lineHeight: 1.75, color: 'rgba(255,255,255,0.85)', margin: 0 }}
+                >
+                  Visiting a completed project changed everything for us. Seeing the spaces in person, understanding the quality, and experiencing how the home actually felt gave us a level of confidence we simply couldn't get from plans alone. Looking back, it was one of the most important decisions we made before starting our own project.
+                </p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '24px' }}>
+                  <span aria-hidden="true" style={{ display: 'block', width: '20px', height: '1px', backgroundColor: '#C2B2A0' }} />
+                  <p
+                    style={{
+                      textTransform: 'uppercase',
+                      fontSize: '12px',
+                      letterSpacing: '0.16em',
+                      fontWeight: 600,
+                      color: '#C2B2A0',
+                    }}
+                  >
+                    George Fairchild · Sovran Client
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
     </>

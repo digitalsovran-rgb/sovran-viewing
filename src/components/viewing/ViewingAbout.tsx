@@ -1,61 +1,51 @@
-// Review overlay on the image. Set REVIEW_READY to true once REVIEW_TEXT and REVIEW_NAME are
-// filled in; while false, nothing is rendered on the image.
-const REVIEW_READY: boolean = false;
-const REVIEW_TEXT = '';
-const REVIEW_NAME = '';
+import { motion, useReducedMotion } from 'framer-motion';
+
+const figures = ['Since 2011', '1,000+ Projects', '97% Planning Success', '4.9 Rated On Google'];
 
 export default function ViewingAbout() {
+  const reduceMotion = useReducedMotion();
+  const fade = {
+    initial: reduceMotion ? false : { opacity: 0 },
+    whileInView: { opacity: 1 },
+    viewport: { once: true },
+    transition: reduceMotion ? { duration: 0 } : { duration: 0.6, ease: 'easeOut' as const },
+  };
+
   return (
     <>
       <style>{`
-        .about-statement {
-          text-align: center;
-          max-width: 640px;
-          font-size: 18px;
-          line-height: 1.65;
-          color: #0A0A0A;
-          margin: 20px auto 0;
+        .about-section { padding: 128px 24px; text-align: center; }
+        .about-statement { font-size: 26px; }
+        .about-figures {
+          text-transform: uppercase;
+          font-size: 12px;
+          letter-spacing: 0.18em;
+          font-weight: 600;
+          color: #C2B2A0;
+          line-height: 1.9;
         }
-        .about-image-wrap {
-          position: relative;
-          width: 100%;
-          max-width: 1200px;
-          margin: 48px auto 0;
-          aspect-ratio: 16 / 9;
-          overflow: hidden;
-        }
-        .about-image-wrap picture {
-          display: block;
-          width: 100%;
-          height: 100%;
-        }
-        .about-image-wrap img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-        .about-review-text {
-          font-size: 18px;
-          line-height: 1.5;
-          color: #FFFFFF;
-          max-width: 560px;
-        }
+        .about-figures-grid { display: none; }
         @media (max-width: 767px) {
-          .about-statement { font-size: 17px; }
-          .about-image-wrap { aspect-ratio: 4 / 5; }
-          .about-review-text { font-size: 16px; }
+          .about-section { padding: 96px 22px; }
+          .about-statement { font-size: 20px; }
+          .about-figures-line { display: none; }
+          .about-figures-grid {
+            display: grid;
+            grid-template-columns: repeat(2, auto);
+            justify-content: center;
+            gap: 14px 18px;
+          }
         }
       `}</style>
-      <section data-theme="light" style={{ backgroundColor: '#C2B2A0', padding: '110px 0' }}>
-        <div className="inner">
+      <section className="about-section" data-theme="dark" style={{ backgroundColor: '#0A0A0A' }}>
+        <div style={{ maxWidth: '860px', margin: '0 auto' }}>
           <p
             style={{
-              textAlign: 'center',
               textTransform: 'uppercase',
               fontSize: '13px',
               letterSpacing: '0.18em',
               fontWeight: 600,
-              color: '#4A443C',
+              color: '#C2B2A0',
               marginBottom: '18px',
             }}
           >
@@ -64,10 +54,9 @@ export default function ViewingAbout() {
 
           <h2
             style={{
-              textAlign: 'center',
               fontSize: 'clamp(32px, 3.8vw, 52px)',
               fontWeight: 900,
-              color: '#0A0A0A',
+              color: '#FFFFFF',
               letterSpacing: '-0.01em',
               lineHeight: 1.08,
             }}
@@ -75,64 +64,40 @@ export default function ViewingAbout() {
             Designed To Be Remembered.
           </h2>
 
-          <p className="about-statement">
-            We believe a home should feel quietly exceptional long after the last trade has left. Since 2011, our design and build team has pursued that standard on each project, until the finished property feels unmistakably personal to the people who live there.
-          </p>
-
-          <div className="about-image-wrap">
-            <picture>
-              <source media="(max-width: 767px)" srcSet="/media/visitmob.webp" />
-              <img src="/media/visitpc.webp" alt="A completed Sovran design and build project" loading="lazy" />
-            </picture>
-
-            {REVIEW_READY && (
-              <div
-                style={{
-                  position: 'absolute',
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  height: '40%',
-                  background: 'linear-gradient(to bottom, rgba(10,10,10,0) 0%, rgba(10,10,10,0.75) 100%)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-end',
-                  alignItems: 'flex-start',
-                  padding: '28px',
-                }}
-              >
-                <span aria-hidden="true" style={{ fontSize: '28px', lineHeight: 1, color: '#C2B2A0' }}>
-                  &ldquo;
-                </span>
-                <p className="about-review-text">{REVIEW_TEXT}</p>
-                <p
-                  style={{
-                    textTransform: 'uppercase',
-                    fontSize: '12px',
-                    letterSpacing: '0.16em',
-                    color: '#C2B2A0',
-                    marginTop: '12px',
-                  }}
-                >
-                  {REVIEW_NAME}
-                </p>
-              </div>
-            )}
-          </div>
-
-          <p
+          <motion.p
+            className="about-statement"
+            {...fade}
             style={{
-              textAlign: 'center',
-              marginTop: '20px',
-              textTransform: 'uppercase',
-              fontSize: '12px',
-              letterSpacing: '0.16em',
-              fontWeight: 600,
-              color: '#4A443C',
+              margin: '28px auto 0',
+              maxWidth: '820px',
+              fontWeight: 300,
+              lineHeight: 1.55,
+              color: '#FFFFFF',
             }}
           >
-            4.9 Rated On Google
-          </p>
+            We believe a home should feel quietly exceptional long after the last trade has left. Since 2011, our design and build team has pursued that standard on each project, until the finished property feels unmistakably personal to the people who live there.
+          </motion.p>
+
+          <div
+            aria-hidden="true"
+            style={{ width: '48px', height: '1px', backgroundColor: 'rgba(194,178,160,0.5)', margin: '56px auto' }}
+          />
+
+          <motion.div {...fade}>
+            <p className="about-figures about-figures-line">{figures.join(' · ')}</p>
+            <div className="about-figures about-figures-grid">
+              {figures.map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </div>
+          </motion.div>
+
+          <img
+            src="/media/logo-sovran-white.webp"
+            alt="Sovran"
+            loading="lazy"
+            style={{ width: '110px', height: 'auto', display: 'block', margin: '56px auto 0', opacity: 0.9 }}
+          />
         </div>
       </section>
     </>

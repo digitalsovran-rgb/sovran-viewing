@@ -47,6 +47,9 @@ export default function ViewingHero() {
           .viewing-hero-cta-wrap { margin-top: 22px !important; }
           .viewing-hero-logo-wrap { top: 24px !important; }
         }
+        @media (max-width: 399px) {
+          .viewing-hero-eyebrow { font-size: 11px !important; letter-spacing: 0.14em !important; }
+        }
       `}</style>
       <section
         id="viewing-hero"
@@ -171,10 +174,11 @@ export default function ViewingHero() {
                 letterSpacing: '0.22em',
                 color: 'var(--sov-greige-light)',
                 textTransform: 'uppercase',
+                whiteSpace: 'nowrap',
                 marginBottom: '20px',
               }}
             >
-              Applications Open · Design And Build Projects
+              Now Accepting Applications
             </motion.p>
 
             <motion.h1
@@ -233,7 +237,7 @@ export default function ViewingHero() {
                 lineHeight: 1.5,
               }}
             >
-              For homeowners planning an investment of £100K or more.
+              Most rewarding for projects of £100K or more.
             </p>
 
             <motion.div

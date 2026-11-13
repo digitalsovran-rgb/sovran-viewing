@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Eye, MessagesSquare, PoundSterling, ShieldCheck, type LucideIcon } from 'lucide-react';
+import { Compass, MessagesSquare, PoundSterling, ShieldCheck, type LucideIcon } from 'lucide-react';
 
 type Card = { Icon: LucideIcon; title: string; text: string };
 
@@ -10,19 +10,19 @@ const cards: Card[] = [
     text: 'Plan your own project knowing the standard you want and the team able to reach it.',
   },
   {
-    Icon: Eye,
-    title: 'A Vision You Can Describe',
-    text: 'Ideas for layout, light and materials that suit the property you own.',
+    Icon: Compass,
+    title: 'Know What Is Possible',
+    text: 'Learn which layouts, spaces and finishes could work for the property you own.',
   },
   {
     Icon: PoundSterling,
-    title: 'Numbers You Can Plan Around',
-    text: 'Realistic cost and timeline benchmarks from the team that delivered the work.',
+    title: "Today's Real Costs",
+    text: 'Current costs and timelines for work at this level.',
   },
   {
     Icon: MessagesSquare,
-    title: 'Every Doubt Answered',
-    text: 'Questions settled face to face with the specialist behind the completed project.',
+    title: 'A Specialist At Your Side',
+    text: 'Every question answered in person by the specialist who delivered the project.',
   },
 ];
 
@@ -89,7 +89,7 @@ export default function ViewingExperience() {
               lineHeight: 1.08,
             }}
           >
-            Leave Knowing Exactly What You Want Built.
+            Discover What You Can Achieve.
           </h2>
 
           <div className="leave-grid">

@@ -1,21 +1,12 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { Smartphone, Thermometer, TrendingDown, type LucideIcon } from 'lucide-react';
 
-const checklistItems = [
-  'Warmer, more energy efficient homes',
-  'Lower running costs',
-  'More natural light throughout',
-  'Healthier, more comfortable living',
-  'Built to hold their value for years to come',
+const outcomeRows: { Icon: LucideIcon; title: string; text: string }[] = [
+  { Icon: Thermometer, title: 'Steady Warmth', text: 'Rooms that hold their heat through the coldest months.' },
+  { Icon: TrendingDown, title: 'Lower Running Costs', text: 'Efficient systems that keep energy bills down.' },
+  { Icon: Smartphone, title: 'One App, Full Control', text: 'Smart lighting, heating and security, available on request.' },
 ];
-
-function CheckIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--sov-greige-light)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="3,8.5 6.5,12 13,4" />
-    </svg>
-  );
-}
 
 function SectionLabel({ label }: { label: string }) {
   return (
@@ -41,28 +32,6 @@ export default function ViewingSpecialist() {
   return (
     <>
       <style>{`
-        .expect-checklist {
-          list-style: none;
-          margin: 24px 0 0;
-          padding: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-        .expect-checklist li {
-          display: flex;
-          align-items: flex-start;
-          gap: 10px;
-          font-size: 15px;
-          font-weight: 400;
-          color: rgba(255,255,255,0.85);
-          line-height: 1.5;
-          letter-spacing: normal;
-        }
-        .expect-checklist svg {
-          flex-shrink: 0;
-          margin-top: 3px;
-        }
         @media (max-width: 767px) {
           .expect-row { flex-direction: column !important; }
           .expect-text-col { flex: auto !important; width: 100% !important; padding: 64px 24px 48px !important; }
@@ -123,31 +92,20 @@ export default function ViewingSpecialist() {
                   maxWidth: '520px',
                 }}
               >
-                From March 2027, the Future Homes Standard raises the energy performance UK homes must reach, along with the move to low-carbon heating. Our team already designs to that level, with comfort and running costs in mind from the first drawing.
+                From March 2027, new homes in England must meet the Future Homes Standard, with higher energy performance and low-carbon heating. Sovran already applies that thinking to new builds, extensions and renovations alike, settling comfort and running costs at the drawing stage.
               </p>
 
-              <ul className="expect-checklist" style={{ maxWidth: '520px' }}>
-                {checklistItems.map((item) => (
-                  <li key={item}>
-                    <CheckIcon />
-                    <span>{item}</span>
-                  </li>
+              <div style={{ marginTop: '32px', display: 'grid', gap: '20px' }}>
+                {outcomeRows.map(({ Icon, title, text }) => (
+                  <div key={title} style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+                    <Icon size={22} strokeWidth={1.6} color="#C2B2A0" style={{ flex: '0 0 auto', marginTop: '2px' }} aria-hidden="true" />
+                    <div>
+                      <p style={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', margin: '0 0 4px' }}>{title}</p>
+                      <p style={{ fontSize: '14.5px', lineHeight: 1.55, color: 'rgba(255,255,255,0.7)' }}>{text}</p>
+                    </div>
+                  </div>
                 ))}
-              </ul>
-
-              <p
-                style={{
-                  fontSize: '15px',
-                  fontWeight: 400,
-                  color: 'rgba(255,255,255,0.78)',
-                  lineHeight: 1.75,
-                  letterSpacing: 'normal',
-                  marginTop: '24px',
-                  maxWidth: '520px',
-                }}
-              >
-                Many of our projects also include smart lighting, heating and security, all managed from a single app.
-              </p>
+              </div>
 
               <p
                 style={{
@@ -156,11 +114,11 @@ export default function ViewingSpecialist() {
                   color: 'var(--sov-greige-light)',
                   letterSpacing: '0.15em',
                   textTransform: 'uppercase',
-                  marginTop: '28px',
+                  marginTop: '32px',
                   maxWidth: '520px',
                 }}
               >
-                Ask during your viewing how these standards shaped the property, and what they could mean for your plans.
+                Ask During Your Viewing How These Standards Shaped The Property.
               </p>
             </div>
           </motion.div>
