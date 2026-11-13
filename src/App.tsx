@@ -10,6 +10,7 @@ import LazySection from './components/LazySection';
 // critical path without deferring it.
 const ViewingExperience = lazy(() => import('./components/viewing/ViewingExperience'));
 const ViewingSpecialist = lazy(() => import('./components/viewing/ViewingSpecialist'));
+const ViewingApply = lazy(() => import('./components/viewing/ViewingApply'));
 const ViewingAbout = lazy(() => import('./components/viewing/ViewingAbout'));
 const ConsultationForm = lazy(() => import('./components/ConsultationForm'));
 const Footer = lazy(() => import('./components/Footer'));
@@ -183,7 +184,7 @@ function StickyCTABar() {
       }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <span>Register Your Interest</span>
+        <span>Apply For A Viewing</span>
       </div>
     </button>
   );
@@ -195,6 +196,7 @@ export default function App() {
       <ViewingHero />
       <LazySection component={ViewingExperience} minHeight={1520} />
       <LazySection component={ViewingSpecialist} minHeight={1070} />
+      <LazySection component={ViewingApply} minHeight={900} />
       <LazySection component={ViewingAbout} minHeight={1010} />
       <LazySection component={ConsultationForm} minHeight={900} id="viewing-form" />
       <LazySection component={Footer} minHeight={870} />

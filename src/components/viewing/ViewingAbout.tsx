@@ -119,6 +119,20 @@ export default function ViewingAbout() {
               </div>
             )}
           </div>
+
+          <p
+            style={{
+              textAlign: 'center',
+              marginTop: '20px',
+              textTransform: 'uppercase',
+              fontSize: '12px',
+              letterSpacing: '0.16em',
+              fontWeight: 600,
+              color: '#4A443C',
+            }}
+          >
+            4.9 Rated On Google
+          </p>
         </div>
       </section>
     </>

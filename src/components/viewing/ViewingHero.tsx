@@ -1,9 +1,17 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Check } from 'lucide-react';
 import KenBurnsCarousel from './KenBurnsCarousel';
 import ActivityLine from './ActivityLine';
 
 const DESKTOP_IMAGES = ['/media/hero.webp', '/media/hero2.webp?v=2', '/media/hero3.webp?v=2'];
+
+const heroChecks = [
+  'A private, guided walkthrough',
+  'Materials and finishes at full scale',
+  'Realistic cost and timeline benchmarks',
+  'Time with the specialist who delivered it',
+];
 
 export default function ViewingHero() {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
@@ -21,6 +29,10 @@ export default function ViewingHero() {
   return (
     <>
       <style>{`
+        .viewing-hero-checks li { font-size: 15px; }
+        @media (min-width: 768px) {
+          .viewing-hero-checks li { font-size: 16px; }
+        }
         @media (max-width: 767px) {
           #viewing-hero { min-height: 640px !important; }
           .viewing-hero-content { padding: 0 24px 40px !important; max-width: none !important; }
@@ -162,7 +174,7 @@ export default function ViewingHero() {
                 marginBottom: '20px',
               }}
             >
-              For Homeowners Planning A Design And Build Project
+              Applications Open · Design And Build Projects
             </motion.p>
 
             <motion.h1
@@ -180,24 +192,48 @@ export default function ViewingHero() {
                 fontFamily: 'Inter, sans-serif',
               }}
             >
-              A Private Viewing Of A Completed Sovran Home
+              Step Inside A Finished Sovran Home.
             </motion.h1>
 
-            {/* Plain, unanimated: this is the confirmed LCP element (per live Lighthouse trace).
-                Its entrance fade was responsible for ~95% of total LCP render delay. */}
-            <p
-              className="viewing-hero-desc"
+            {/* Plain, unanimated, like the paragraph it replaces (which was the confirmed LCP
+                element): no entrance fade on the text below the H1. */}
+            <ul
+              className="viewing-hero-checks"
               style={{
-                fontSize: 'clamp(17px, 1.45vw, 20px)',
-                fontWeight: 400,
-                color: 'rgba(255,255,255,0.72)',
-                margin: '28px 0 0',
-                lineHeight: 1.7,
-                letterSpacing: 'normal',
-                textAlign: 'justify',
+                listStyle: 'none',
+                margin: '18px 0 0',
+                padding: 0,
+                display: 'grid',
+                gap: '10px',
               }}
             >
-              Before committing to your own plans, see one of our finished properties in person. A Sovran design and build specialist will guide you through the layout, the materials and the decisions behind each room, and answer the questions your project raises.
+              {heroChecks.map((item) => (
+                <li
+                  key={item}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    fontWeight: 500,
+                    color: '#FFFFFF',
+                    lineHeight: 1.4,
+                  }}
+                >
+                  <Check size={16} strokeWidth={2} color="#C2B2A0" style={{ flex: '0 0 auto' }} aria-hidden="true" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <p
+              style={{
+                fontSize: '12.5px',
+                color: 'rgba(255,255,255,0.7)',
+                margin: '16px 0 0',
+                lineHeight: 1.5,
+              }}
+            >
+              For homeowners planning an investment of £100K or more.
             </p>
 
             <motion.div
@@ -231,7 +267,7 @@ export default function ViewingHero() {
                   e.currentTarget.style.borderColor = 'var(--sov-white)';
                 }}
               >
-                Request A Viewing
+                Apply For A Viewing
               </button>
             </motion.div>
 

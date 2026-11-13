@@ -93,8 +93,8 @@ const screenHeadings: Record<Screen, string> = {
   type: "I'm looking for:",
   invest: 'The Level Of Work I Need',
   start: "I'm ready to start.",
-  loading: 'Checking Availability',
-  result: 'Good News: A Viewing Is Available For Your Project.',
+  loading: 'Reviewing Your Project',
+  result: 'Good News: Your Project Meets Our Viewing Criteria.',
   contact: 'Almost Done: Your Contact Details.',
 };
 
@@ -1111,7 +1111,7 @@ export default function ConsultationForm() {
         return {
           back: () => goTo('result', -1),
           primary: {
-            label: submitting ? 'Submitting…' : 'Request My Viewing',
+            label: submitting ? 'Submitting…' : 'Submit My Application',
             onClick: handleSubmit,
             disabled: !emailValid || !phoneValid || formData.email.trim() === '' || submitting,
             grow: true,
@@ -1152,7 +1152,7 @@ export default function ConsultationForm() {
             marginBottom: 0,
           }}
         >
-          Request Your
+          Apply For Your
           <br />
           Private Viewing.
         </h2>
@@ -1166,7 +1166,7 @@ export default function ConsultationForm() {
             color: '#4A443C',
           }}
         >
-          Viewings are hosted one-to-one, with a limited number of places
+          Viewings are offered one-to-one, by application, to eligible projects
         </p>
 
         <div
@@ -1618,7 +1618,7 @@ export default function ConsultationForm() {
                           letterSpacing: 'normal',
                         }}
                       >
-                        Matching your project to an available viewing...
+                        Checking your details against our viewing criteria...
                       </p>
                     </div>
                   )}
@@ -1635,7 +1635,7 @@ export default function ConsultationForm() {
                           letterSpacing: 'normal',
                         }}
                       >
-                        Enter your details to complete your request.
+                        Enter your details and our team will arrange your discovery call.
                       </p>
                       <TextInput
                         label="Name"

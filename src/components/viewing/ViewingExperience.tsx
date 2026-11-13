@@ -6,23 +6,23 @@ type Card = { Icon: LucideIcon; title: string; text: string };
 const cards: Card[] = [
   {
     Icon: ShieldCheck,
-    title: 'Certainty Before You Commit',
-    text: 'See the standard in person, then plan your own project with full confidence.',
+    title: 'Confidence In Each Decision',
+    text: 'Plan your own project knowing the standard you want and the team able to reach it.',
   },
   {
     Icon: Eye,
-    title: 'A Clearer Vision',
+    title: 'A Vision You Can Describe',
     text: 'Ideas for layout, light and materials that suit the property you own.',
   },
   {
     Icon: PoundSterling,
-    title: 'Realistic Numbers',
-    text: 'What this level of finish costs and how long it takes, from the team that delivered it.',
+    title: 'Numbers You Can Plan Around',
+    text: 'Realistic cost and timeline benchmarks from the team that delivered the work.',
   },
   {
     Icon: MessagesSquare,
-    title: 'Answers At The Source',
-    text: 'Every question about your plans put to the specialist behind the project, face to face.',
+    title: 'Every Doubt Answered',
+    text: 'Questions settled face to face with the specialist behind the completed project.',
   },
 ];
 
@@ -89,7 +89,7 @@ export default function ViewingExperience() {
               lineHeight: 1.08,
             }}
           >
-            What You Leave With
+            Leave Knowing Exactly What You Want Built.
           </h2>
 
           <div className="leave-grid">
